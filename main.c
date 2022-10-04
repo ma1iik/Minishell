@@ -6,26 +6,65 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/09/30 23:30:49 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/04 14:22:45 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
-void read_line(void)
+typedef struct s_data
+{
+	char *line;
+}				t_data;
+
+void	*ft_memset(void *s, int c, size_t len)
+{
+	unsigned char	*dest;
+	size_t			i;
+
+	dest = s;
+	i = 0;
+	while (i < len)
+	{
+		*dest++ = c;
+		i++;
+	}
+	return (s);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	char	*str;
+	size_t	total;
+
+	total = count * size;
+	str = malloc(total);
+	if (!str)
+		return (NULL);
+	ft_memset(str, 0, total);
+	return (str);
+}
+
+void read_line(t_data *data)
 {
 	char *line;
 	while (1)
 	{
-		line = readline("minishell:");
+		data->line = readline("minishell:");
 	}
 }
 
+parse
+
 int main(void)
 {
-    read_line();
-    // parse_line();
+	t_data *data;
+
+	data = ft_calloc(1, sizeof(t_data));
+    read_line(data);
+    parse_line(data);
     // execute_line();
 }
