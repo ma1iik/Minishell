@@ -1,15 +1,16 @@
-NAME			=	philo
-HEADERS			=	philo.h
+NAME			=	minishell
+HEADERS			=	minishell.h
 CC				= 	gcc
 RM				= 	rm -rf
-CFLAGS 			= 	-g -Wall -Wextra -Werror #-pthread #-fsanitize=address
+CFLAGS 			= 	-Wall -Wextra -Werror  #-fsanitize=address
 
-SRCS	=	main.c	\ 
+SRCS	=	main.c	\
+			utils.c	
 
 OBJS	= ${SRCS:.c=.o}
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME}
 
 all:	${NAME}
 

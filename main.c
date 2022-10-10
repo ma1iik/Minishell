@@ -6,33 +6,34 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/04 14:22:45 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/10 20:47:55 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "minishell.h"
 
-typedef struct s_data
+bool ft_logic_groups(char *cmd)
 {
-	char *line;
-}				t_data;
-
-void	*ft_memset(void *s, int c, size_t len)
+	
+	return (0);
+	return (1);
+}
+char **ft_custom_plit(char * cmd)
 {
-	unsigned char	*dest;
-	size_t			i;
-
-	dest = s;
+	int	 i;
+	char **sptil_cmds;
+	if (!ft_logic_groups(cmd))
+		exit(EXIT_FAILURE);
+	.
 	i = 0;
-	while (i < len)
+	while (cmd[i])
 	{
-		*dest++ = c;
-		i++;
+		if (cmd[i] != '|')
+			i++;
+		else 
+			
 	}
-	return (s);
+	return (0);
 }
 
 void	*ft_calloc(size_t count, size_t size)
@@ -50,14 +51,15 @@ void	*ft_calloc(size_t count, size_t size)
 
 void read_line(t_data *data)
 {
-	char *line;
-	while (1)
+	data->exit_t = 1;
+	while (data->exit_t)
 	{
-		data->line = readline("minishell:");
+		data->cmd = readline("minishell:");
+		//data->cmd_tab = ft_custom_plit(data->cmd);
 	}
 }
 
-parse
+//parse
 
 int main(void)
 {
@@ -65,6 +67,6 @@ int main(void)
 
 	data = ft_calloc(1, sizeof(t_data));
     read_line(data);
-    parse_line(data);
+    //parse_line(data);
     // execute_line();
 }
