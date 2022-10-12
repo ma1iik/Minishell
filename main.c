@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/12 20:28:38 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:50:11 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int ft_custom_split(char * cmd)
 				
 	}
 	return (0);
-	//should return **char
+	////should return **char
 }
 
 void read_line(t_data *data)
