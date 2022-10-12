@@ -6,47 +6,58 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/10 20:47:55 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/12 20:28:38 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool ft_logic_groups(char *cmd)
+bool ft_logic_groups(char *cmd, int i, int pipes, int groups)
 {
-	
-	return (0);
-	return (1);
-}
-char **ft_custom_plit(char * cmd)
-{
-	int	 i;
-	char **sptil_cmds;
-	if (!ft_logic_groups(cmd))
-		exit(EXIT_FAILURE);
-	.
-	i = 0;
-	while (cmd[i])
+	while (ft_isspace(cmd[i]))
+		i++;
+	while (cmd[i] != '\0')
 	{
 		if (cmd[i] != '|')
+		{
+			while (cmd[i] != '|' && cmd[i + 1] != '\0')
+				i++;
+			groups += 1; 
+		}
+		if (cmd[i] == '|')
+		{
+			while (ft_isspace(cmd[i + 1]))
+				i++;
+			if (cmd[i + 1] == '|')
+				return (0);
+			pipes += 1;
 			i++;
-		else 
-			
+		}
+		if (cmd[i + 1] == '\0')
+			break;
 	}
+	if (pipes + 1 == groups)
+		return (1);
 	return (0);
 }
 
-void	*ft_calloc(size_t count, size_t size)
+int ft_custom_split(char * cmd)
 {
-	char	*str;
-	size_t	total;
-
-	total = count * size;
-	str = malloc(total);
-	if (!str)
-		return (NULL);
-	ft_memset(str, 0, total);
-	return (str);
+	int	 i;
+	
+	i = 0;
+	char **sptil_cmds;
+	if (!ft_logic_groups(cmd, 0, 0, 0))
+	{
+		printf("BAD GROUPS\n");
+		exit(EXIT_FAILURE);
+	}
+	while (cmd[i])
+	{
+				
+	}
+	return (0);
+	//should return **char
 }
 
 void read_line(t_data *data)
@@ -55,11 +66,11 @@ void read_line(t_data *data)
 	while (data->exit_t)
 	{
 		data->cmd = readline("minishell:");
-		//data->cmd_tab = ft_custom_plit(data->cmd);
+		//data->cmd_tab = 
+		ft_custom_split(data->cmd);
 	}
+	data->exit_t = 0;
 }
-
-//parse
 
 int main(void)
 {
@@ -69,4 +80,6 @@ int main(void)
     read_line(data);
     //parse_line(data);
     // execute_line();
+	
+	return (0);
 }
