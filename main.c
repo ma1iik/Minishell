@@ -6,7 +6,7 @@
 /*   By: malik <malik@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/13 18:25:17 by malik            ###   ########.fr       */
+/*   Updated: 2022/10/15 18:18:16 by malik            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	ft_save_groups(t_data *data, int grp_nbr)
 	grp_nb = grp_nbr + 1;
 	i = 0;
 	j = 0;
+    print("step 1\n");
 	while (data->cmd[i])
 	{
 		while(ft_isspace(data->cmd[i]))
