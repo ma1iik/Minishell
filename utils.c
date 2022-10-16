@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: malik <malik@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/12 19:59:05 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:09:58 by malik            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,22 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	ft_memset(str, 0, total);
 	return (str);
+}
+
+char	*ft_strncpy(char *dst, const char *src, ssize_t len)
+{
+	ssize_t	i;
+
+	i = 0;
+	while (src[i] != 0 && i < len)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	while (i < len)
+	{
+		dst[i] = '\0';
+		i++;
+	}
+	return (dst);
 }
