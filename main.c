@@ -6,7 +6,7 @@
 /*   By: malik <malik@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/15 18:18:16 by malik            ###   ########.fr       */
+/*   Updated: 2022/10/15 20:35:30 by malik            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,27 +41,38 @@ bool ft_logic_groups(t_data *data, int i, int pipes)
 	return (0);
 }
 
-int	ft_save_groups(t_data *data, int grp_nbr)
+int	ft_save_groups(t_data *data, int grp_nbr, int ii)
 {
 	int	i;
 	int j;
 	int grp_nb;
+    int start;
 
 	grp_nb = grp_nbr + 1;
-	i = 0;
+	i = ii;
 	j = 0;
-    print("step 1\n");
-	while (data->cmd[i])
+	while (data->cmd[i] && grp_nb < data->groups)
 	{
+        if(grp_nb == data->groups)
+        {
+            printf("lo\n");
+            return (0);
+        }
 		while(ft_isspace(data->cmd[i]))
 			i++;
-		while(data->cmd[i] != '|')
-			j++;
+		start = i;
+        while(data->cmd[i] != '|' && data->cmd[i] != '\0')
+		{
+            printf("the char is --> %c\n", data->cmd[i]);
+            i++;
+            j++;
+        }
 		data->cmd_tab[grp_nb] = ft_calloc(j, sizeof(char));
-		ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[i], j);
-		printf("logic grouop %d is %s\n", grp_nb, data->cmd_tab[grp_nb]);
+		ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
+		printf("logic grouop %d is %s\ngroups exist - %d\n", grp_nb, data->cmd_tab[grp_nb], data->groups);
 		i++;
-		ft_save_groups(data, grp_nb);
+        //ft_save_groups(data, grp_nb, i);
+        grp_nb++;
 	}
 	return (0);
 }
@@ -77,7 +88,7 @@ int ft_custom_split(t_data *data)
 		exit(EXIT_FAILURE);
 	}
 	data->cmd_tab = ft_calloc(data->groups, sizeof(char *));
-	ft_save_groups(data, -1);
+	ft_save_groups(data, -1, 0);
 	// {		
 	// }
 	return (0);
@@ -90,7 +101,7 @@ void read_line(t_data *data)
 	while (data->exit_t)
 	{
 		data->cmd = readline("minishell:");
-		//data->cmd_tab = 
+		add_history(data->cmd);
 		ft_custom_split(data);
 	}
 	data->exit_t = 0;
@@ -101,7 +112,7 @@ int main(void)
 	t_data *data;
 
 	data = ft_calloc(1, sizeof(t_data));
-	printf("\ndata struct is %lu\ncmd aka one pointer is %lu\ncmds or 2 pointers is %lu\nsize of int is %lu\n", sizeof(t_data), sizeof(data->cmd), sizeof(data->cmd_tab), sizeof(data->exit_t));
+    data->groups = 0;
     read_line(data);
     //parse_line(data);
     // execute_line();
