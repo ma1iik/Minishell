@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/19 21:52:31 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/24 18:43:11 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 	while (data->cmd[i] && data->cmd[i] != c)
 		i++;
 	if (data->cmd[i] == c)
+	{
+		printf("closed succesfully\n");
 		return (i);
+	}
 	else
 	{
 		printf ("quotes didnt close\n");
@@ -106,6 +109,7 @@ int	ft_save_groups(t_data *data, int grp_nbr, int ii)
 	int	j;
 	int	grp_nb;
 	int	start;
+	char	c_char;
 
 	grp_nb = grp_nbr + 1;//3 ---> right amount of groups
 	i = ii;// ii = 0 
@@ -130,8 +134,9 @@ int	ft_save_groups(t_data *data, int grp_nbr, int ii)
             }
             else if (data->cmd[i] && (data->cmd[i] == '"' || data->cmd[i] == '\''))
             {
+				c_char = data->cmd[i];
                 i++;
-                while (data->cmd[i] && (data->cmd[i] != '"' && data->cmd[i] != '\''))
+                while (data->cmd[i] && (data->cmd[i] != c_char))
                 {
                     i++;
                     j++;
