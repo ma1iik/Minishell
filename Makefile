@@ -5,7 +5,8 @@ RM				= 	rm -rf
 CFLAGS 			= 	-Wall -Wextra -Werror  #-fsanitize=address
 
 SRCS	=	main.c	\
-			utils.c	
+			utils.c	\
+			parsing.c \
 
 OBJS	= ${SRCS:.c=.o}
 

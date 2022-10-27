@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/19 21:26:49 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/27 23:09:36 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,39 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef enum e_type
+{
+	R_REDIR,
+	L_REDIR,
+	DR_REDIR,
+	DL_REDIR,
+	FILE_NAME,
+	DOLLAR,
+	CMD,
+	ARG,
+}	t_type;
+
+typedef struct s_token
+{
+	t_type	e_type;	
+	char	*value;
+}			t_token;
+
+typedef struct s_lexer
+{
+	char			c;
+	unsigned int	index;
+	char			*content;
+	int				i;
+}					t_lexer;
+
 typedef struct s_data
 {
+	t_lexer lexer;
+	t_token token;
 	char *cmd;
 	char **cmd_tab;
 	int exit_t;
-	int **pipes;
 	int    groups;
 }				t_data;
 
