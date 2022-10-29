@@ -3,27 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/27 23:12:57 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/28 23:16:32 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-int init_lexer(t_data *data)
-{
-	data->lexer.index = 0;
-	data->lexer.i = 0;
-	data->lexer.c = data->lexer.content[0];
-}
-
-void	lexer_advance(t_data *data)
-{
-	if (data->lexer.c != '\0' && data->lexer.i < ft_strlen(data->lexer.content))
-}
 
 void	make_exec(t_data *data)
 {

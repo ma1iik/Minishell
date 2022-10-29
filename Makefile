@@ -7,6 +7,8 @@ CFLAGS 			= 	-Wall -Wextra -Werror  #-fsanitize=address
 SRCS	=	main.c	\
 			utils.c	\
 			parsing.c \
+			lexer.c \
+			free.c
 
 OBJS	= ${SRCS:.c=.o}
 
