@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/30 13:45:59 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/31 13:01:42 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,18 +159,13 @@ int	ft_save_groups(t_data *data, int grp_nbr, int ii)
 
 int	ft_custom_split(t_data *data)
 {
-	// int	i;
-
-	// i = 0;
 	data->groups = 0;
 	if (!ft_logic_groups(data, 0, 0))
-	{
-		return (1);
-	}
+		return (0);
 	data->cmd_tab = ft_calloc(data->groups, sizeof(char *));
 	ft_save_groups(data, -1, 0);
 	// {		
 	// }
-	return (0);
+	return (1);
 	//should return **char
 }

@@ -6,14 +6,14 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/30 15:34:01 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/31 09:27:08 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <stdio.h>
-#include <stdbool.h>
+# include <stdbool.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <readline/readline.h>
@@ -64,18 +64,19 @@ int			ft_one_group_function(t_data *data, int grp_nb, int ii);
 int			ft_check_if_closed(char c_char, int ii, t_data *data);
 
 //LEXER
-int 		init_lexer(t_data *data);
+void 		init_lexer(t_data *data);
 int			lexer_advance(t_data *data);
 void		skip_space(t_data *data);
-t_token 	*get_next_token(t_data *data);
+void 		get_next_token(t_data *data);
 void		ft_init_tok(t_data *data, int type, char *value);
-void		ft_token_r_red (t_data *data, int cmd);
-void		ft_token_l_red (t_data *data, int cmd);
+void		ft_token_r_red (t_data *data);
+void		ft_token_l_red (t_data *data);
 void		ft_token_filename(t_data *data);
-void		ft_tokenise_rest(t_data *data, int cmd);
 int			ft_separated(t_data *data);
 char		*ft_take_arg(t_data *data);
 char		*ft_take_cmd(t_data *data);
+void		ft_rm_quotes(t_data *data);
+char 		*ft_rm_quotes2(char *str, int start, int end);
 
 //FREE MEMORY
 
@@ -87,6 +88,7 @@ int			ft_isspace (char c);
 int			ft_strlen(const char *str);
 char		*ft_strncpy(char *dst, char *src, size_t len);
 void 		print_cmd(t_data *data);
+void 		print_tok(t_data *data);
 char		*ft_strdup(char *src);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:57:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/10/30 16:59:16 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/31 13:19:22 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int init_lexer(t_data *data)
+void init_lexer(t_data *data)
 {
 	data->lexer.content = data->cmd;
 	data->lexer.i = 0;
@@ -43,7 +43,7 @@ void	skip_space(t_data *data)
 	}
 }
 
-t_token   *get_next_token(t_data *data)
+void   get_next_token(t_data *data)
 {
 	int		cmd;
 	char	*tok;
@@ -53,9 +53,9 @@ t_token   *get_next_token(t_data *data)
 	{
 		skip_space(data);
 		if (data->lexer.c == '<')
-			ft_token_l_red(data, cmd);
+			ft_token_l_red(data);
 		else if (data->lexer.c == '>')
-			ft_token_r_red(data, cmd);
+			ft_token_r_red(data);
 		else if (cmd == 0)
 		{
 			tok = ft_take_cmd(data);
@@ -64,12 +64,12 @@ t_token   *get_next_token(t_data *data)
 		}
 		else if (data->lexer.c == '$' && cmd != 0)
 		{
-			tok = ft_take_arg(data);
+			tok = ft_take_cmd(data);
 			ft_init_tok(data, DOLLAR, tok);
 		}
 		else if (!ft_separated(data) && cmd != 0)
 		{
-			tok = ft_take_arg(data);
+			tok = ft_take_cmd(data);
 			ft_init_tok(data, ARG, tok);
 		}
 		free (tok);

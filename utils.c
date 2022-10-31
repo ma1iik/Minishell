@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/30 15:17:52 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/31 13:25:14 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_strncpy(char *dst, char *src, size_t len)
 	}
 	else
 	{
-		printf("one zero at the end\n");
+		//printf("one zero at the end\n");
 		dst[i] = '\0';
 	}
 	return (dst);
@@ -86,6 +86,16 @@ void print_cmd(t_data *data)
 		printf("---------------------\n");
 		for(int i = 0; i < data->groups; i++)
 			printf("[%s]\n", data->cmd_tab[i]);
+		printf("---------------------\n");
+	}
+
+void print_tok(t_data *data)
+	{
+		printf("---------------------\n");
+		printf("|	TOKENS	     |\n");
+		printf("---------------------\n");
+		for(int i = 0; i < data->tok_nb; i++)
+			printf("[%s]\n", data->tokens[i].value);
 		printf("---------------------\n");
 	}
 
@@ -123,7 +133,7 @@ char	*ft_strdup(char *src)
 
 int	ft_separated(t_data *data)
 {
-	if (data->lexer.c == ' ' || data->lexer.c == '<' || data->lexer.c == '>')
+	if (data->lexer.c == ' ' || data->lexer.c == '<' || data->lexer.c == '>' || !data->lexer.c)
 		return (1);
 	else
 		return (0);
