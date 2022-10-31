@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/29 08:50:38 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/30 15:34:01 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ int			lexer_advance(t_data *data);
 void		skip_space(t_data *data);
 t_token 	*get_next_token(t_data *data);
 void		ft_init_tok(t_data *data, int type, char *value);
+void		ft_token_r_red (t_data *data, int cmd);
+void		ft_token_l_red (t_data *data, int cmd);
+void		ft_token_filename(t_data *data);
+void		ft_tokenise_rest(t_data *data, int cmd);
+int			ft_separated(t_data *data);
+char		*ft_take_arg(t_data *data);
+char		*ft_take_cmd(t_data *data);
 
 //FREE MEMORY
 
@@ -77,7 +84,7 @@ void	ft_free_tokens(t_data *data);
 void		*ft_calloc(size_t count, size_t size);
 void		*ft_memset(void *s, int c, size_t len);
 int			ft_isspace (char c);
-size_t		ft_strlen(const char *str);
+int			ft_strlen(const char *str);
 char		*ft_strncpy(char *dst, char *src, size_t len);
 void 		print_cmd(t_data *data);
 char		*ft_strdup(char *src);

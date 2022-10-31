@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:57:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/10/29 08:46:44 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/30 16:59:16 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,38 +33,46 @@ int	lexer_advance(t_data *data)
 
 void	skip_space(t_data *data)
 {
-	while (ft_isspace(data->lexer.c))
-		{
-			data->lexer.i++;
-			data->lexer.c = data->lexer.content[data->lexer.i];
-		}
+	if (ft_isspace(data->lexer.c))
+	{
+		while (ft_isspace(data->lexer.c))
+			{
+				data->lexer.i++;
+				data->lexer.c = data->lexer.content[data->lexer.i];
+			}
+	}
 }
 
 t_token   *get_next_token(t_data *data)
 {
 	int		cmd;
+	char	*tok;
 
 	cmd = 0;
 	while (data->lexer.c != '\0' && data->lexer.i < ft_strlen(data->lexer.content))
 	{
-		if (data->lexer.c == ' ')
-			lexer_skip_whitespace(data);
+		skip_space(data);
 		if (data->lexer.c == '<')
-			ft_token_l_red(data);
+			ft_token_l_red(data, cmd);
 		else if (data->lexer.c == '>')
-			ft_token_r_red(data);
-		else
-			cmd = ft_tokenise_rest(data, cmd);
+			ft_token_r_red(data, cmd);
+		else if (cmd == 0)
+		{
+			tok = ft_take_cmd(data);
+			ft_init_tok(data, CMD, tok);
+			cmd = 1;
+		}
+		else if (data->lexer.c == '$' && cmd != 0)
+		{
+			tok = ft_take_arg(data);
+			ft_init_tok(data, DOLLAR, tok);
+		}
+		else if (!ft_separated(data) && cmd != 0)
+		{
+			tok = ft_take_arg(data);
+			ft_init_tok(data, ARG, tok);
+		}
+		free (tok);
 	}
-}
-
-t_token *collect_opened_str(t_data *data)
-{
-	
-}
-
-char *get_char_as_str(t_data *data)
-{
-	
 }
 

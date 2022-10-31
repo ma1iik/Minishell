@@ -8,7 +8,8 @@ SRCS	=	main.c	\
 			utils.c	\
 			parsing.c \
 			lexer.c \
-			free.c
+			free.c \
+			tokenize.c
 
 OBJS	= ${SRCS:.c=.o}
 

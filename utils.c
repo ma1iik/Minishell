@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/28 23:33:07 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/10/30 15:17:52 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ void print_cmd(t_data *data)
 		printf("---------------------\n");
 	}
 
-size_t	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -119,4 +119,12 @@ char	*ft_strdup(char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+int	ft_separated(t_data *data)
+{
+	if (data->lexer.c == ' ' || data->lexer.c == '<' || data->lexer.c == '>')
+		return (1);
+	else
+		return (0);
 }

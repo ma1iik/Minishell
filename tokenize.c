@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tockenize.c                                        :+:      :+:    :+:   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/28 23:15:49 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/10/29 09:38:36 by ma1iik           ###   ########.fr       */
+/*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
+/*   Updated: 2022/10/30 16:10:57 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_init_tok(t_data *data, int type, char *value)
 	data->tok_nb++;
 }
 
-ft_token_l_red (t_data *data, int cmd)
+void	ft_token_l_red (t_data *data, int cmd)
 {
 	char	*file;
 
@@ -47,11 +47,10 @@ ft_token_l_red (t_data *data, int cmd)
 	else
 		ft_init_tok(data, L_RED, "<");
 	lexer_advance(data);
-	ft_tocken_filename(data);
-	
+	ft_token_filename(data);
 }
 
-ft_token_r_red (t_data *data, int cmd)
+void	ft_token_r_red (t_data *data, int cmd)
 {
 	char	*file;
 
@@ -63,11 +62,11 @@ ft_token_r_red (t_data *data, int cmd)
 	else
 		ft_init_tok(data, L_RED, ">");
 	lexer_advance(data);
-	ft_tocken_filename(data);
+	ft_token_filename(data);
 	
 }
 
-void	ft_tocken_filename(t_data *data)
+void	ft_token_filename(t_data *data)
 {
 	char	*file;
 	int		start;
@@ -91,4 +90,74 @@ void	ft_tocken_filename(t_data *data)
 	file[i] = '\0';
 	ft_init_tok(data, FILE_NAME, file);
 	free (file);
+}
+
+char	*ft_take_cmd(t_data *data)
+{
+	char	*str;
+	int		start;
+	int		end;
+	int		i;
+
+	i = 0;
+	start = data->lexer.i;
+	while (!ft_separated(data))
+		lexer_advance(data);
+	end = data->lexer.i;
+	str = ft_calloc(sizeof(char), (end - start + 1));
+	while (start < end)
+	{
+		str[i] = data->lexer.content[start];
+		i++;
+		start++;
+	}
+	str[i] = '\0';
+	return (str);	
+}
+
+char	*ft_take_arg(t_data *data)
+{
+	char	*str;
+	int		start;
+	int		end;
+	int		i;
+	char	sign;
+
+	i = 0;
+	start = data->lexer.i;
+	while (!ft_separated(data))
+	{
+		if (data->lexer.c == '\'' || data->lexer.c == '"')
+		{
+			sign = data->lexer.c;
+			lexer_advance(data);
+			while (data->lexer.c != '\'' && data->lexer.c != '"')
+				lexer_advance(data);
+			lexer_advance(data);
+		}
+		lexer_advance(data);
+	}
+	end = data->lexer.i;
+	str = ft_calloc(sizeof(char), (end - start + 1));
+	while (start < end)
+	{
+		str[i] = data->lexer.content[start];
+		i++;
+		start++;
+	}
+	str[i] = '\0';
+	return (str);	
+}
+
+void ft_tokenise_rest(t_data *data, int cmd)
+{
+	char *tok;
+
+	tok = NULL;
+	if (cmd == 0)
+	{
+		tok = ft_take_cmd(data);
+	}
+	ft_take_arg(data);
+	if (data->lexer.c)
 }

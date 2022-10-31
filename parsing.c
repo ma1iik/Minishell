@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/27 22:45:49 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/10/30 13:45:59 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,9 @@ int	ft_save_groups(t_data *data, int grp_nbr, int ii)
 
 int	ft_custom_split(t_data *data)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	data->groups = 0;
 	if (!ft_logic_groups(data, 0, 0))
 	{
