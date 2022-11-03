@@ -1,8 +1,8 @@
 NAME			=	minishell
 HEADERS			=	minishell.h
-CC				= 	gcc
+CC				= 	gcc 
 RM				= 	rm -rf
-CFLAGS 			= 	-Wall -Wextra -Werror  #-fsanitize=address
+CFLAGS 			= 	-Wall -Wextra -Werror -fsanitize=address
 
 SRCS	=	main.c	\
 			utils.c	\

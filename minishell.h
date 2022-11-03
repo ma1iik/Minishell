@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/31 09:27:08 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/03 14:31:53 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ typedef struct s_token
 	char	*value;
 }			t_token;
 
+typedef	struct	t_list
+{
+	char	*name;
+	char	*value;
+	struct t_list	*link;
+}				t_list;
+
 typedef struct s_lexer
 {
 	char			c;
@@ -46,14 +53,21 @@ typedef struct s_lexer
 
 typedef struct s_data
 {
-	t_lexer lexer;
-	t_token *tokens;
+	t_lexer 	lexer;
+	t_token		*tokens;
+	t_list		*env;
 	int		tok_nb;
 	char 	*cmd;
 	char	**cmd_tab;
 	int		exit_t;
 	int		groups;
 }				t_data;
+
+//ENV
+void		ft_create_env(t_list *head, char **env);
+int 		ft_tab_len(char **env);
+void		ft_get_val(t_list *head, char *env);
+void		ft_get_name(t_list *head, char *env);
 
 //PARSING
 void		read_line(t_data *data);

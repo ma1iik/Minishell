@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/31 13:14:00 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/03 14:31:53 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,28 @@ void	read_line(t_data *data)
 	data->exit_t = 0;
 }
 
-int	main(void)
+void	print_env(t_list *head)
+{
+	t_list *tmp;
+
+	tmp = head;
+	printf("LOL\n");
+	while (tmp->link != NULL)
+	{
+		printf("%s\n", tmp->name);
+		tmp = tmp->link;
+	}
+}
+
+int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
+	(void) ac;
+	(void) av;
 	data = ft_calloc(1, sizeof(t_data));
+	ft_create_env(data->env, env);
+	print_env(data->env);
 	read_line(data);
 
     //parse_line(data);

@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/31 13:25:14 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/03 14:34:22 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char	*ft_strncpy(char *dst, char *src, size_t len)
 	}
 	return (dst);
 }
+
 void print_cmd(t_data *data)
 	{
 		printf("---------------------\n");
@@ -137,4 +138,94 @@ int	ft_separated(t_data *data)
 		return (1);
 	else
 		return (0);
+}
+
+void	ft_create_env(t_list *head, char **env)
+{
+	int		len;
+	int		i;
+	t_list *cur;
+	t_list *tmp;
+	t_list	node;
+
+	head = &node;
+	i = 1;
+	len = ft_tab_len(env);
+	ft_get_name(head, env[0]);
+	ft_get_val(head, env[0]);
+	cur = head;
+	while (i < len)
+	{
+		tmp = ft_calloc(sizeof(t_list), 1);
+		ft_get_name(tmp, env[i]);
+		ft_get_val(tmp, env[i]);
+		tmp->link = NULL;
+		cur->link = tmp;
+		cur = tmp;
+		i++;
+	}
+		// tmp = ft_calloc(sizeof(t_list), 1);
+		// tmp->name = ft_calloc(sizeof(char), 1);
+		// tmp->name = "?";
+		// tmp->name = ft_calloc(sizeof(char), 1);
+		// tmp->value = NULL;
+		// tmp->link = NULL;
+		// cur->link = tmp;
+		// cur = tmp;
+}
+
+void	ft_get_val(t_list *head, char *env)
+{
+	int		j;
+	int		i;
+	int		len;
+
+	i = 0;
+	len = 0;
+	while(env[i] && env[i] != '=')
+		i++;
+	j = i + 1;
+	while (env[j] != '\0' && env[j] != '\n')
+	{
+		len++;
+		j++;
+	}
+	head->value = ft_calloc(sizeof(char), len + 1);
+	j = 0;
+	i = i + 1;
+	while (env[i] != '\0' && env[i] != '\n')
+	{
+		head->value[j] = env[i];
+		j++;
+		i++;
+	}
+	head->value[j] = '\0';
+}
+
+void	ft_get_name(t_list *head, char *env)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (env[i] && env[i] != '=')
+		i++;
+	head->name = ft_calloc(sizeof(char), i + 1);
+	while (j < i)
+	{
+		head->name[j] = env[j];
+		j++;
+	}
+	head->name[j] = '\0';
+}
+
+int ft_tab_len(char **env)
+{
+	int i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	return (i);
 }
