@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/03 14:34:22 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/05 21:00:37 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,17 +151,18 @@ void	ft_create_env(t_list *head, char **env)
 	head = &node;
 	i = 1;
 	len = ft_tab_len(env);
-	ft_get_name(head, env[0]);
-	ft_get_val(head, env[0]);
+	head->name = ft_get_name(env[0]);
+	head->value ft_get_val(env[0]);
 	cur = head;
 	while (i < len)
 	{
-		tmp = ft_calloc(sizeof(t_list), 1);
-		ft_get_name(tmp, env[i]);
-		ft_get_val(tmp, env[i]);
-		tmp->link = NULL;
-		cur->link = tmp;
-		cur = tmp;
+		ft_lstadd_back(&head, ft_lstnew(env[i]));
+		// tmp = ft_calloc(sizeof(t_list), 1);
+		// ft_get_name(tmp, env[i]);
+		// ft_get_val(tmp, env[i]);
+		// tmp->link = NULL;
+		// cur->link = tmp;
+		// cur = tmp;
 		i++;
 	}
 		// tmp = ft_calloc(sizeof(t_list), 1);
@@ -174,14 +175,17 @@ void	ft_create_env(t_list *head, char **env)
 		// cur = tmp;
 }
 
-void	ft_get_val(t_list *head, char *env)
+char	*ft_get_val(char *env)
 {
 	int		j;
 	int		i;
 	int		len;
+	char	*dest;
 
 	i = 0;
 	len = 0;
+	if (!env)
+	return (NULL);
 	while(env[i] && env[i] != '=')
 		i++;
 	j = i + 1;
@@ -190,34 +194,43 @@ void	ft_get_val(t_list *head, char *env)
 		len++;
 		j++;
 	}
-	head->value = ft_calloc(sizeof(char), len + 1);
+	dest = ft_calloc(sizeof(char), len + 1);
+	if (!dest)
+		return (NULL);
 	j = 0;
 	i = i + 1;
 	while (env[i] != '\0' && env[i] != '\n')
 	{
-		head->value[j] = env[i];
+		dest[j] = env[i];
 		j++;
 		i++;
 	}
-	head->value[j] = '\0';
+	dest[j] = '\0';
+	return (dest);
 }
 
-void	ft_get_name(t_list *head, char *env)
+char	*ft_get_name(char *env)
 {
 	int		i;
 	int		j;
+	char	*dest;
 
 	i = 0;
 	j = 0;
+	if (!env)
+		return (NULL);
 	while (env[i] && env[i] != '=')
 		i++;
-	head->name = ft_calloc(sizeof(char), i + 1);
+	dest = ft_calloc(sizeof(char), i + 1);
+	if (!dest)
+		return (0);
 	while (j < i)
 	{
-		head->name[j] = env[j];
+		dest[j] = env[j];
 		j++;
 	}
-	head->name[j] = '\0';
+	dest[j] = '\0';
+	return (dest);
 }
 
 int ft_tab_len(char **env)
@@ -228,4 +241,40 @@ int ft_tab_len(char **env)
 	while (env[i])
 		i++;
 	return (i);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*add;
+
+	add = *lst;
+	if (!add)
+	{
+		*lst = new;
+		return ;
+	}
+	add = ft_lstlast(*lst);
+	add->link = new;
+}
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*new;
+
+	new = ft_calloc(sizeof(t_list), 1);
+	if (!new)
+		return (NULL);
+	new->name = content;
+	new->value = content;
+	new->link = NULL;
+	return (new);
+}
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst -> link)
+		lst = lst -> link;
+	return (lst);
 }
