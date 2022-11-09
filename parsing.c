@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/10/31 13:01:42 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/06 17:31:10 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 	int		i;
 
 	c = c_char;
-	//printf("%c\n", data->cmd[ii + 1]);
 	if ((data->cmd[ii + 1]) == '\0')
 	{
         printf ("quotes didnt close\n");
@@ -51,9 +50,8 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 			while (data->cmd[i] != '|' && data->cmd[i] != '\0')
 			{
 				if (data->cmd[i] == '"' || data->cmd[i] == '\'')
-				{
-					//printf("char is %c\n", data->cmd[i]);
-					i = ft_check_if_closed(data->cmd[i], i, data); /*CHANGE*/
+				{;
+					i = ft_check_if_closed(data->cmd[i], i, data);
                     if (i == -1)
 						return (0);
 				}
@@ -99,7 +97,6 @@ int ft_one_group_function(t_data *data, int grp_nb, int ii)
     }
     data->cmd_tab[grp_nb] = ft_calloc(j + 1, sizeof(char));
     ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
-    //printf("logic grouop %d is %s\ngroups exist - %d\n", grp_nb, data->cmd_tab[0], data->groups);
     return (0);
 }
 

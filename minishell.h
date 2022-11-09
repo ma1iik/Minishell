@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/05 09:59:46 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/07 23:08:16 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,17 @@ typedef struct s_data
 	char 	*cmd;
 	char	**cmd_tab;
 	int		exit_t;
+	int		env_f;
+	int		cmd_n;
 	int		groups;
 }				t_data;
 
 //ENV
 void		ft_create_env(t_list *head, char **env);
 int 		ft_tab_len(char **env);
-void		ft_get_val(t_list *head, char *env);
 char		*ft_get_name(char *env);
-char		*ft_get_val(char *env)
+char		*ft_get_val(char *env);
+
 
 //PARSING
 void		read_line(t_data *data);
@@ -106,8 +108,10 @@ void 		print_cmd(t_data *data);
 void 		print_tok(t_data *data);
 char		*ft_strdup(char *src);
 void		ft_lstadd_back(t_list **lst, t_list *new);
-t_list		*ft_lstnew(void *content);
+t_list		*ft_lstnew(char *content);
 t_list		*ft_lstlast(t_list *lst);
-
+t_list		*ft_lstnew_last(void);
+void		ft_dealloc_env(t_list **lst);
+void		ft_init_data(t_data *data)
 
 #endif
