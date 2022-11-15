@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/07 23:08:16 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/15 14:41:46 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 typedef enum e_type
 {
@@ -55,7 +56,6 @@ typedef struct s_data
 {
 	t_lexer 	lexer;
 	t_token		*tokens;
-	t_list		*env;
 	int		tok_nb;
 	char 	*cmd;
 	char	**cmd_tab;
@@ -63,10 +63,18 @@ typedef struct s_data
 	int		env_f;
 	int		cmd_n;
 	int		groups;
+	t_list		*env;
 }				t_data;
 
+typedef	struct	s_cmd
+{
+	int			i;
+}				t_cmd;
+
+extern	t_cmd		glv;
+
 //ENV
-void		ft_create_env(t_list *head, char **env);
+void		ft_create_env(t_data *data, char **env);
 int 		ft_tab_len(char **env);
 char		*ft_get_name(char *env);
 char		*ft_get_val(char *env);
@@ -95,23 +103,30 @@ char		*ft_take_cmd(t_data *data);
 void		ft_rm_quotes(t_data *data);
 char 		*ft_rm_quotes2(char *str, int start, int end);
 
+//FT_EXEC
+void		ft_exec(t_data *data);
+void		ft_sig_exec(int sig);
+void	ft_exst(int num);
+
 //FREE MEMORY
 
 void	ft_free_tokens(t_data *data);
 
 void		*ft_calloc(size_t count, size_t size);
 void		*ft_memset(void *s, int c, size_t len);
+int			ft_strcmp(char *s1, char *s2);
+char		*ft_itoa(int n);
 int			ft_isspace (char c);
 int			ft_strlen(const char *str);
 char		*ft_strncpy(char *dst, char *src, size_t len);
 void 		print_cmd(t_data *data);
 void 		print_tok(t_data *data);
 char		*ft_strdup(char *src);
-void		ft_lstadd_back(t_list **lst, t_list *new);
 t_list		*ft_lstnew(char *content);
 t_list		*ft_lstlast(t_list *lst);
 t_list		*ft_lstnew_last(void);
-void		ft_dealloc_env(t_list **lst);
-void		ft_init_data(t_data *data)
+void		ft_dealloc_env(t_data *data);
+void		ft_init_data(t_data *data);
+void		ft_lstadd_back(t_list **lst, t_list *new);
 
 #endif

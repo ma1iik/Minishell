@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/06 21:21:21 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/15 06:03:44 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,16 @@ int	ft_strlen(const char *str)
 	return (i);
 }
 
+int	ft_strcmp(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
+		i++;
+	return (s1[i] - s2[i]);
+}
+
 char	*ft_strdup(char *src)
 {
 	int		l;
@@ -135,20 +145,20 @@ int	ft_separated(t_data *data)
 		return (0);
 }
 
-void	ft_create_env(t_list *head, char **env)
+void	ft_create_env(t_data *data, char **env)
 {
 	int		len;
 	int		i;
-	head = ft_calloc(sizeof(t_list), 1);
+	data->env = ft_calloc(sizeof(t_list), 1);
 	
 	i = 0;
 	len = ft_tab_len(env);
 	while (i < len)
 	{
-		ft_lstadd_back(&head, ft_lstnew(env[i]));
+		ft_lstadd_back(&data->env, ft_lstnew(env[i]));
 		i++;
 	}
-	ft_lstadd_back(&head, ft_lstnew_last());
+	ft_lstadd_back(&data->env, ft_lstnew_last());
 }
 
 char	*ft_get_val(char *env)
@@ -270,12 +280,12 @@ t_list	*ft_lstnew_last(void)
 	return (new);
 }
 
-void	ft_dealloc_env(t_list **lst)
+void	ft_dealloc_env(t_data *data)
 {
 	t_list	*tmp;
 	t_list	*aux;
 
-	tmp = *lst;
+	tmp = data->env;
 	while (tmp != NULL)
 	{
 		aux = tmp;
@@ -285,4 +295,72 @@ void	ft_dealloc_env(t_list **lst)
 		free (aux->value);
 		free (aux);
 	}
+}
+
+static int	ft_itoasize(int n)
+{
+	int		nbr;
+	int		size;
+
+	nbr = n;
+	size = 0;
+	if (nbr < 0 && nbr > -2147483648)
+	{
+		size++;
+		nbr = -nbr;
+	}
+	if (nbr == 0)
+		return (1);
+	else if (nbr == -2147483648)
+		return (11);
+	while (nbr > 0)
+	{
+		nbr /= 10;
+		size++;
+	}
+	return (size);
+}
+
+static int	ft_isneg(int n)
+{
+	if (n < 0)
+		return (1);
+	return (0);
+}
+
+static int	ft_makepos(int n)
+{
+	if (n < 0)
+		return (-n);
+	else
+		return (n);
+}
+
+char	*ft_itoa(int n)
+{
+	char			*str;
+	unsigned int	makepos;
+	int				isneg;
+	int				i;
+	int				size;
+
+	i = 1;
+	makepos = ft_makepos(n);
+	isneg = ft_isneg(n);
+	size = ft_itoasize(n);
+	str = malloc(sizeof(char) * ft_itoasize(n) + 1);
+	if (!str)
+		return (NULL);
+	if (makepos == 0)
+		str[makepos] = '0';
+	while (makepos > 0)
+	{	
+		str[size - i] = (makepos % 10) + '0';
+		makepos /= 10;
+		i++;
+	}
+	if (isneg)
+		*str = '-';
+	str[size] = '\0';
+	return (str);
 }

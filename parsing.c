@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/06 17:31:10 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/13 20:13:03 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 	}
 	if (pipes + 1 == data->groups)
 		return (1);
+	else if (pipes == 0 && data->groups == 0)
+		return (0);
 	printf("Wrong pipe usage error\n");
 	return (0);
 }

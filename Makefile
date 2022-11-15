@@ -2,7 +2,7 @@ NAME			=	minishell
 HEADERS			=	minishell.h
 CC				= 	gcc 
 RM				= 	rm -rf
-CFLAGS 			= 	-g -Wall -Wextra -Werror -fsanitize=address
+CFLAGS 			=  -Wall -Wextra -Werror #-fsanitize=address
 
 SRCS	=	main.c	\
 			utils.c	\
@@ -28,3 +28,5 @@ fclean: clean
 		${RM} ${NAME}
 
 re:		fclean all
+
+.PHONY:	all clean fclean re
