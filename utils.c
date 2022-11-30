@@ -6,23 +6,24 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/15 06:03:44 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/30 21:47:02 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_memset(void *s, int c, size_t len)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	unsigned char	*dest;
 	size_t			i;
+	unsigned char	*ptr;
 
-	dest = s;
 	i = 0;
-	while (i < len)
+	ptr = (unsigned char *)s;
+	while (i < n)
 	{
-		*dest++ = c;
+		*ptr = (unsigned char)c;
 		i++;
+		ptr++;
 	}
 	return (s);
 }
@@ -76,14 +77,38 @@ char	*ft_strncpy(char *dst, char *src, size_t len)
 }
 
 void print_cmd(t_data *data)
-	{
-		printf("---------------------\n");
-		printf("|	CMD	     |\n");
-		printf("---------------------\n");
-		for(int i = 0; i < data->groups; i++)
-			printf("[%s]\n", data->cmd_tab[i]);
-		printf("---------------------\n");
-	}
+{
+	printf("---------------------\n");
+	printf("|	CMD	     |\n");
+	printf("---------------------\n");
+	for(int i = 0; i < data->groups; i++)
+		printf("[%s]\n", data->cmd_tab[i]);
+	printf("---------------------\n");
+}
+
+void	tok_printf(unsigned int tok)
+{
+	if (tok == 1)
+		printf("R_RED");
+	else if (tok == 2)
+		printf("L_RED");
+	else if (tok == 3)
+		printf("DR_RED");
+	else if (tok == 4)
+		printf("DL_RED");
+	else if (tok == 5)
+		printf("FILE_NAME");
+	else if (tok == 6)
+		printf("DOLLAR");
+	else if (tok == 7)
+		printf("CMD");
+	else if (tok == 8)
+		printf("ARG");
+	else if (tok == 9)
+		printf("PIPE");
+	printf("\n");
+	return ;
+}
 
 void print_tok(t_data *data)
 	{
@@ -91,8 +116,11 @@ void print_tok(t_data *data)
 		printf("|	TOKENS	     |\n");
 		printf("---------------------\n");
 		for(int i = 0; i < data->tok_nb; i++)
+		{
 			printf("[%s]\n", data->tokens[i].value);
+			tok_printf(data->tokens[i].e_type);
 		printf("---------------------\n");
+		}
 	}
 
 int	ft_strlen(const char *str)
@@ -145,6 +173,56 @@ int	ft_separated(t_data *data)
 		return (0);
 }
 
+void	ft_fill_env(t_data *data, char **env)
+{
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = data->env;
+	while (env[i])
+	{
+		tmp->name = ft_get_name(env[i]);
+		tmp->value = ft_get_val(env[i]);
+		i++;
+		tmp = tmp->link;
+	}
+	tmp->name = ft_get_name("?");
+}
+
+void	ft_fill_glv(char **env)
+{
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = glv.env;
+	while (env[i])
+	{
+		tmp->name = ft_get_name(env[i]);
+		tmp->value = ft_get_val(env[i]);
+		i++;
+		tmp = tmp->link;
+	}
+	tmp->name = ft_get_name("?");
+}
+
+void	ft_fill_envstr(t_data *data, char **env)
+{
+	int		len;
+	int		i;
+
+	len = ft_tab_len(env);
+	data->env_str = ft_calloc(sizeof(char *), len + 1);
+	i = 0;
+	while (i < len)
+	{
+		data->env_str[i] = ft_strdup(env[i]);
+		i++;
+	}
+	data->env_str[i] = ft_strdup("?=0");
+}
+
 void	ft_create_env(t_data *data, char **env)
 {
 	int		len;
@@ -153,12 +231,14 @@ void	ft_create_env(t_data *data, char **env)
 	
 	i = 0;
 	len = ft_tab_len(env);
-	while (i < len)
+	while (i <= len)
 	{
 		ft_lstadd_back(&data->env, ft_lstnew(env[i]));
 		i++;
 	}
-	ft_lstadd_back(&data->env, ft_lstnew_last());
+	//ft_lstadd_back(&data->env, ft_lstnew_last());
+	ft_fill_env(data, env);
+	ft_fill_envstr(data, env);
 }
 
 char	*ft_get_val(char *env)
@@ -247,13 +327,14 @@ t_list	*ft_lstnew(char *content)
 {
 	t_list	*new;
 
+	(void)content;
 	new = ft_calloc(sizeof(t_list), 1);
 	if (!content)
 		return (NULL);
 	if (!new)
 		return (NULL);
-	new->name = ft_get_name(content);
-	new->value = ft_get_val(content);
+	new->name = NULL; //ft_get_name(content);
+	new->value = NULL; //ft_get_val(content);
 	new->link = NULL;
 	return (new);
 }
@@ -265,6 +346,17 @@ t_list	*ft_lstlast(t_list *lst)
 	while (lst -> link)
 		lst = lst -> link;
 	return (lst);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	len;
+
+	if (s)
+	{
+		len = ft_strlen(s);
+		write(fd, s, len);
+	}
 }
 
 t_list	*ft_lstnew_last(void)
@@ -363,4 +455,241 @@ char	*ft_itoa(int n)
 		*str = '-';
 	str[size] = '\0';
 	return (str);
+}
+
+int	ft_isalnum(int c)
+{
+	if ((c >= '0' && c <= '9')
+		|| (c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
+}
+
+int	ft_isalpha(int c)
+{
+	if ((c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
+}
+
+char	*ft_strcat(char *str1, char *str2)
+{
+	int		i;
+	int		j;
+	char	*dest;
+
+	i = 0;
+	j = 0;
+	if (!str1 && !str2)
+		return (0);
+	dest = ft_calloc(sizeof(char), (ft_strlen(str1) + ft_strlen(str2) + 1));
+	while (str1[i])
+	{
+		dest[i] = str1[i];
+		i++;
+	}
+	while (str2[j])
+	{
+		dest[i] = str2[j];
+		j++;
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+char	*ft_strcat1(char *str1, char *str2)
+{
+	int		i;
+	int		j;
+	char	*dest;
+
+	i = 0;
+	j = 0;
+	if (!str1 && !str2)
+		return (0);
+	dest = ft_calloc(sizeof(char), ft_strlen(str1) + ft_strlen(str2) + 1);
+	while (str1[i])
+	{
+		dest[i] = str1[i];
+		i++;
+	}
+	while (str2[j])
+	{
+		dest[i] = str2[j];
+		j++;
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+void	ft_exit_st(int x)
+{
+	t_list	*tmp;
+
+	tmp = glv.env;
+	while (ft_strcmp(tmp->name, "?") != 0)
+		tmp = tmp->link;
+	if (ft_strcmp(tmp->name, "?") == 0)
+	{
+		free (tmp->name);
+		tmp->name = ft_strdup(ft_itoa(x));
+	}
+}
+
+void	ft_free_2d(char **str)
+{
+	int		i;
+
+	i = 0;
+	if (!str)
+		return ;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free (str);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	unsigned int	a;
+	unsigned int	b;
+	char			*newstr;
+
+	a = 0;
+	b = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	newstr = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!newstr)
+		return (NULL);
+	while (s1[a])
+	{
+		newstr[a] = s1[a];
+		a++;
+	}
+	while (s2[b])
+	{
+		newstr[a + b] = s2[b];
+		b++;
+	}
+	newstr[a + b] = '\0';
+	return (newstr);
+}
+
+int	ft_isbuiltin(t_data *data)
+{
+	if (!ft_strcmp(data->cmd_l->cmd[0], "pwd")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "env")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "cd")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "echo")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "export")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "unset"))
+		return (1);
+	return (0);
+}
+
+int	ft_strncmp(const char *str1, const char *str2, size_t n)
+{
+	size_t	i;
+	unsigned char	*s1;
+	unsigned char	*s2;
+
+	i = 0;
+	s1 = (unsigned char *)str1;
+	s2 = (unsigned char *)str2;
+	if (n == 0)
+		return (0);
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0' && i < (n - 1))
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+static int	ft_wordcount(const char *str, char c)
+{
+	int		i;
+	int		words;
+
+	i = 0;
+	words = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			i++;
+		else
+		{
+			words++;
+			while (str[i] != '\0' && str[i] != c)
+				i++;
+		}
+	}
+	return (words);
+}
+
+char	*ft_words(const char *str, char c)
+{
+	int		i;
+	int		l;
+	char	*word;
+
+	i = 0;
+	l = 0;
+	while (*str == c)
+		str++;
+	while (str[i] != c && str[i] != '\0')
+		i++;
+	word = malloc(sizeof(char) * (i + 1));
+	if (word == NULL)
+		return (NULL);
+	while (str[l] != c && str[l] != '\0')
+	{
+		word[l] = str[l];
+		l++;
+	}
+	word[l] = '\0';
+	return (word);
+}
+
+void	ft_freemem(char **ptr_str, int i)
+{
+	while (i > 0)
+	{
+		free(ptr_str[i - 1]);
+		i--;
+	}
+}
+
+char	**ft_split(char const *s, char c)
+{
+	int		i;
+	char	**ptr_str;
+	int		words;
+
+	i = 0;
+	words = ft_wordcount(s, c);
+	if (!s)
+		return (NULL);
+	ptr_str = malloc(sizeof(char *) * (words + 1));
+	if (!ptr_str)
+		return (NULL);
+	while (i < words)
+	{
+		while (*s && *s == c)
+			s++;
+		ptr_str[i] = ft_words(s, c);
+		if (ptr_str[i] == NULL)
+			ft_freemem(ptr_str, i);
+		while (*s && *s != c)
+			s++;
+		i++;
+	}
+	ptr_str[i] = 0;
+	return (ptr_str);
 }

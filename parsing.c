@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/13 20:13:03 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/26 08:20:14 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 
 int	ft_logic_groups(t_data *data, int i, int pipes)
 {
-	while (ft_isspace(data->cmd[i]))
+	while (ft_isspace(data->cmd[i]) && data->cmd[i] != '\0')
 		i++;
 	while (data->cmd[i] != '\0')
 	{
@@ -69,8 +69,8 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 			pipes += 1;
 			i++;
 		}
-		if (data->cmd[i + 1] == '\0')
-			break ;
+		// if (data->cmd[i + 1] == '\0')
+		// 	return ();
 	}
 	if (pipes + 1 == data->groups)
 		return (1);

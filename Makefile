@@ -2,14 +2,20 @@ NAME			=	minishell
 HEADERS			=	minishell.h
 CC				= 	gcc 
 RM				= 	rm -rf
-CFLAGS 			=  -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
 
 SRCS	=	main.c	\
 			utils.c	\
 			parsing.c \
 			lexer.c \
 			free.c \
-			tokenize.c
+			tokenize.c \
+			signal.c \
+			parsing2.c \
+			dollar.c \
+			exec.c \
+			fill_cmdl.c \
+			builtins/pwd.c
 
 OBJS	= ${SRCS:.c=.o}
 

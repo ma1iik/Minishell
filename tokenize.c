@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/10/31 13:26:09 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/11/26 18:31:04 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,7 @@ void	ft_init_tok(t_data *data, int type, char *value)
 	data->tok_nb++;
 }
 
-void	ft_token_l_red(t_data *data)
-{
-	if (data->lexer.content[data->lexer.i + 1 == '<'])
-	{
-		ft_init_tok(data, DL_RED, "<<");
-		lexer_advance(data);
-	}
-	else
-		ft_init_tok(data, L_RED, "<");
-	lexer_advance(data);
-	ft_token_filename(data);
-}
-
-void	ft_token_r_red (t_data *data)
-{
-	if (data->lexer.content[data->lexer.i + 1 == '>'])
-	{
-		ft_init_tok(data, DL_RED, ">>");
-		lexer_advance(data);
-	}
-	else
-		ft_init_tok(data, L_RED, ">");
-	lexer_advance(data);
-	ft_token_filename(data);
-	
-}
-
-void	ft_token_filename(t_data *data)
+int	ft_token_filename(t_data *data)
 {
 	char	*file;
 	int		start;
@@ -72,6 +45,8 @@ void	ft_token_filename(t_data *data)
 	i = 0;
 	while (ft_isspace(data->lexer.c))
 		skip_space(data);
+	if (data->lexer.c == '\0')
+		return (0);
 	start = data->lexer.i;
 	while (!ft_isspace(data->lexer.c) && data->lexer.c != '<' && data->lexer.c != '>')
 		lexer_advance(data);
@@ -85,7 +60,9 @@ void	ft_token_filename(t_data *data)
 	}
 	file[i] = '\0';
 	ft_init_tok(data, FILE_NAME, file);
+	printf("file\n");
 	free (file);
+	return (1);
 }
 
 char	*ft_take_cmd(t_data *data)
@@ -167,6 +144,7 @@ void	ft_rm_quotes(t_data *data)
 				while (data->tokens[i].value[j] != sign && data->tokens[i].value[j])
 					j++;
 				end = j;
+				//printf("\nTHE VALUE: %s\n", data->tokens[i].value);
 				data->tokens[i].value = ft_rm_quotes2(data->tokens[i].value, start, end);
 				j = j - 2;
 			}
@@ -184,7 +162,7 @@ char *ft_rm_quotes2(char *str, int start, int end)
 
 	i = 0;
 	j = 0;
-	tmp = ft_calloc(sizeof(char), ft_strlen(str) - 2);
+	tmp = ft_calloc(sizeof(char), ft_strlen(str) - 1);
 	while (str[i])
 	{
 		if (i != start && i != end)
@@ -194,7 +172,7 @@ char *ft_rm_quotes2(char *str, int start, int end)
 		}
 		i++;
 	}
-	tmp[i] = '\0';
+	tmp[j] = '\0';
 	free (str);
 	return (tmp);
 }
