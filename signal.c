@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 04:06:24 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/26 08:16:21 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/01 09:39:54 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 void	ft_exst(int num)
 {
 	t_list	*tmp;
+	char	*n;
 
 	tmp = glv.env;
+	n = ft_itoa(num);
 	while (tmp != NULL)
 	{
 		if (ft_strcmp(tmp->name, "?") == 0)
 		{
 			free(tmp->value);
-			tmp->value = ft_strdup(ft_itoa(num));
+			tmp->value = ft_strdup(n);
+			free (n);
 			return ;
 		}
 		tmp = tmp->link;

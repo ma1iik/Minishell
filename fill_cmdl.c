@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 18:58:09 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/30 21:33:07 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 12:50:30 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	**ft_get_args(t_data *data)
 	int		i;
 
 	i = 0;
-	arg_c = ft_count_arg(data, data->cmdl_i);
-	printf("arg count is %d\n", arg_c);
+	arg_c = ft_count_arg(data, data->cmdl_i) + 1;
+	// printf("arg count is %d\n", arg_c);
 	args = ft_calloc(sizeof(char *), arg_c);
 	while (data->tokens[data->cmdl_i].e_type && data->tokens[data->cmdl_i].e_type != PIPE
 		&& data->tokens[data->cmdl_i].e_type != END && i < arg_c)
@@ -42,11 +42,12 @@ char	**ft_get_args(t_data *data)
 		if (data->tokens[data->cmdl_i].e_type == CMD || data->tokens[data->cmdl_i].e_type == ARG)
 		{
 			args[i] = ft_strdup(data->tokens[data->cmdl_i].value);
-			printf("get args is -->%s\n", args[i]);
+			// printf("get args is -->%s\n", args[i]);
 			i++;
 		}
 		data->cmdl_i++;
 	}
+	args[i] = NULL;
 	// if (data->tokens[data->cmdl_i].e_type == END)
 	// 	data->cmdl_i++;
 	return (args);
@@ -89,9 +90,9 @@ t_cmdl	*ft_cmdl_new(t_data *data)
 	x = data->cmdl_i;
 	tmp = ft_calloc(sizeof(t_cmdl), 1);
 	tmp->cmd = ft_get_args(data);
-	printf("THE CMD -->%s\n", tmp->cmd[0]);
+	// printf("THE CMD -->%s\n", tmp->cmd[0]);
 	tmp->nb_args = ft_count_arg(data, x);
-	printf("nb args -->%d\n", tmp->nb_args);
+	// printf("nb args -->%d\n", tmp->nb_args);
 	tmp->in = STDIN_FILENO;
 	tmp->out = STDOUT_FILENO;
 	tmp->exit = 0;
@@ -105,12 +106,8 @@ void	ft_set_cmdl(t_data *data)
 
 void	ft_fill_cmdl(t_data *data)
 {
-	//t_cmdl		*tmp;
 
 	data->cmdl_i = 0;
-	//data->cmd_l = ft_calloc(sizeof(t_cmdl) , 1);
-	//tmp = data->cmd_l = ft_calloc(sizeof(t_cmdl) , 1);
-	printf("tok nb -->%d\n", data->tok_nb);
 	while (data->cmdl_i < data->tok_nb && data->tokens[data->cmdl_i].e_type != END)
 	{
 		if (data->tokens[data->cmdl_i].e_type == PIPE)
@@ -120,4 +117,5 @@ void	ft_fill_cmdl(t_data *data)
 		else
 			ft_set_cmdl(data);
 	}
+	//ft_free_all(data);
 }

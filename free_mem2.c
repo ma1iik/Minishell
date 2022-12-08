@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   free_mem2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/27 02:52:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/02 01:05:58 by ma1iik           ###   ########.fr       */
+/*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
+/*   Updated: 2022/12/08 11:11:51 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	ft_pwd(void)
+void	ft_free_cmdl(t_data *data)
 {
-	char	*ret;
+	t_cmdl	*tmp;
+	t_cmdl	*head;
 
-	ret = getcwd(NULL, 0);
-	if (ret == NULL)
-		perror(ret);
-	else
-	{
-		ft_putstr_fd(ret, STDOUT_FILENO);
-		write(STDOUT_FILENO, "\n", 1);
-	}
-	free(ret);
+	tmp = data->cmd_l;
+	head = data->cmd_l;
+	while (head != NULL)
+    {
+		tmp = head;
+		head = head->next;
+		ft_free_2d(tmp->cmd);
+		free(tmp);
+    }
 }

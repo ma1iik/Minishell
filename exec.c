@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/30 21:44:56 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 13:46:21 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ char	**ft_dum_env_unset(t_data *data)
 	char	**ret;
 
 	i = 0;
-	ret = calloc(sizeof(char *), (ft_tlsize(data->env) + 1));
-	tmp = data->env;
+	ret = calloc(sizeof(char *), (ft_tlsize(glv.env) + 1));
+	tmp = glv.env;
 	while (tmp && (ft_strcmp(tmp->name, "?") != 0))
 	{
 		ret[i] = ft_combine_envvars(data, tmp);
@@ -67,13 +67,14 @@ char	**ft_dum_env_unset(t_data *data)
 		tmp = tmp->link;
 	}
 	ret[i] = ft_strdup("?=0");
+	free(tmp);
 	return (ret);
 }
 
 char	*ft_cur_var(char *cur, char **sp_path, int i, t_cmdl *cmd)
 {
-	 cur = ft_calloc(sizeof(char),
-	 		(ft_strlen(sp_path[i]) + ft_strlen((*cmd).cmd[0]) + 1));
+	cur =   ft_calloc(sizeof(char),
+	  		(ft_strlen(sp_path[i]) + ft_strlen((*cmd).cmd[0]) + 2));
 	cur = ft_strcat1(cur, sp_path[i]);
 	cur = ft_strcat1(cur, "/");
 	cur = ft_strcat1(cur, (*cmd).cmd[0]);
@@ -90,43 +91,50 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 	i = 0;
 	cur = NULL;
 	path = getenv("PATH");
-	printf("%s\n", cmd->cmd[0]);
+	//printf("%s\n", cmd->cmd[0]);
+	splitted = ft_split(path, ':');
 	if ((access((cmd)->cmd[0], F_OK) == 0) || ft_isbuiltin(data))
 		return ;
 	else if (cmd->cmd[0][0] != '/' && (cmd->cmd[0][0] != '.' && cmd->cmd[0][1] != '/'))
 	{
-		splitted = ft_split(path, ':');
 		while (splitted[i])
 		{
 			cur = ft_cur_var(cur, splitted, i, cmd);
 			if (access(cur, F_OK) == 0)
 			{
-				(cmd)->cmd[0] = cur;
+				(cmd)->cmd[0] = ft_cur_var(cur, splitted, i, cmd);
+				ft_free_2d(splitted);
+				free (cur);
 				return ;
 			}
+			free (cur);
 			i++;
 		}
 	}
+	ft_free_2d(splitted);
 }
 
 void	ft_check_path(t_data *data)
 {
 	int		i;
 	char	*str;
+	int		len;
 
 	i = 0;
+	len = ft_tab_len(data->env_str);
 	if (glv.env_sig == 1)
 	{
 		ft_free_2d(data->env_str);
 		data->env_str = ft_dum_env_unset(data);
 	}
-	while (data->env_str[i] && (ft_strcmp(data->env_str[i], "?=0") != 0))
+	str = ft_strjoin("PATH=", getenv("PATH"));
+	while (data->env_str[i] && i < len)
 	{
-		str = ft_strjoin("PATH=", getenv("PATH"));
 		if (!ft_strcmp(str, data->env_str[i]))
 			ft_arrange_path(data->cmd_l, data);
 		i++;
 	}
+	free (str);
 }
 
 void	ft_pipes(t_cmdl *cmd)
@@ -173,34 +181,38 @@ void	ft_exec_err(t_data *data, int errn, char **env)
 void	ft_exbuiltin(t_data *data)
 {
 	if (!ft_strcmp(data->cmd_l->cmd[0], "pwd"))
-		printf("theres a builtin\n"); //pwd();
+		ft_pwd();
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "cd"))
-		printf("theres a builtin\n"); //exec_cd(data, data->cmd_l->cmd[1]);
+	{
+		ft_cd(data->cmd_l->cmd);
+	}
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "export"))
-		printf("theres a builtin\n"); //exec_export(data, 1);
+		ft_export(data->cmd_l->cmd, 1);
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "env"))
-		printf("theres a builtin\n"); //exec_env(data);
+		ft_env();
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "unset"))
-		printf("theres a builtin\n"); //exec_unset(data);
+		ft_unset(data->cmd_l->cmd);
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "echo"))
-		printf("theres a builtin\n"); //ft_echo(data, 1);
+		ft_echo(data->cmd_l->cmd);
 }
 
 void	ft_execcmd(t_data *data, char **env)
 {
-	int	exec;
+	int	execc;
 
-	printf("EXEC--> %s\n", data->cmd_l->cmd[0]);
+	//printf("EXEC--> %s\n", data->cmd_l->cmd[0]);
 	if (ft_isbuiltin(data) == 1)
 	{
 		ft_exbuiltin(data);
-		exit(EXIT_SUCCESS);
 	}
 	else
 	{
-		exec = execve(data->cmd_l->cmd[0], data->cmd_l->cmd, env);
-		if (exec == -1)
+		execc = execve(data->cmd_l->cmd[0], data->cmd_l->cmd, env);
+		if (execc == -1)
+		{
+			printf("ERROR %d\n", errno);
 			ft_exec_err(data, errno, env);
+		}
 	}
 }
 
@@ -228,7 +240,7 @@ int	ft_exec(t_data *data)
 {
 	signal(SIGINT, ft_sig_exec);
 	signal(SIGQUIT, ft_sig_exec);
-	ft_exit_st(0);
+	//ft_exit_st(0);
 	(void)data;
 	while (data->cmd_l)
 	{

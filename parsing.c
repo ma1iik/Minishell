@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/26 08:20:14 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 10:52:23 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,19 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 
 int	ft_logic_groups(t_data *data, int i, int pipes)
 {
-	while (ft_isspace(data->cmd[i]) && data->cmd[i] != '\0')
+	int		end;
+
+	end = ft_strlen_rl(data->cmd);
+	while (ft_isspace(data->cmd[i]) && i < end)
 		i++;
-	while (data->cmd[i] != '\0')
+	while (i < end)
 	{
 		if (data->cmd[i] != '|')
 		{
 			while (data->cmd[i] != '|' && data->cmd[i] != '\0')
 			{
 				if (data->cmd[i] == '"' || data->cmd[i] == '\'')
-				{;
+				{
 					i = ft_check_if_closed(data->cmd[i], i, data);
                     if (i == -1)
 						return (0);
@@ -161,10 +164,8 @@ int	ft_custom_split(t_data *data)
 	data->groups = 0;
 	if (!ft_logic_groups(data, 0, 0))
 		return (0);
-	data->cmd_tab = ft_calloc(data->groups, sizeof(char *));
+	data->cmd_tab = ft_calloc(data->groups + 1, sizeof(char *));
 	ft_save_groups(data, -1, 0);
-	// {		
-	// }
+
 	return (1);
-	//should return **char
 }

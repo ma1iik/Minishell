@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/30 21:47:02 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 10:48:32 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,15 +123,26 @@ void print_tok(t_data *data)
 		}
 	}
 
-int	ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (str[i])
+	while (str[i] != '\0')
 		i++;
 	return (i);
 }
+
+size_t	ft_strlen_rl(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0' && str[i] != '\n')
+		i++;
+	return (i);
+}
+
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -173,13 +184,16 @@ int	ft_separated(t_data *data)
 		return (0);
 }
 
-void	ft_fill_env(t_data *data, char **env)
+void	ft_fill_glv(char **env, int	num)
 {
 	int		i;
 	t_list	*tmp;
 
 	i = 0;
-	tmp = data->env;
+	if (num == 1)
+		tmp = glv.env;
+	else if (num == 2)
+		tmp = glv.env_exp;
 	while (env[i])
 	{
 		tmp->name = ft_get_name(env[i]);
@@ -187,24 +201,29 @@ void	ft_fill_env(t_data *data, char **env)
 		i++;
 		tmp = tmp->link;
 	}
-	tmp->name = ft_get_name("?");
+	tmp->name = ft_strdup("?");
 }
 
-void	ft_fill_glv(char **env)
+char *ft_strstr(char *str, char *to_find)
 {
-	int		i;
-	t_list	*tmp;
+	int i;
+	int j;
 
 	i = 0;
-	tmp = glv.env;
-	while (env[i])
+	while (str[i] != '\0')
 	{
-		tmp->name = ft_get_name(env[i]);
-		tmp->value = ft_get_val(env[i]);
+		j = 0;
+		while (to_find[j] == str[i + j])
+		{
+			if (to_find[j + 1] == '\0')
+			{
+				return (str + i);
+			}
+			j++;
+		}
 		i++;
-		tmp = tmp->link;
 	}
-	tmp->name = ft_get_name("?");
+	return (0);
 }
 
 void	ft_fill_envstr(t_data *data, char **env)
@@ -213,7 +232,7 @@ void	ft_fill_envstr(t_data *data, char **env)
 	int		i;
 
 	len = ft_tab_len(env);
-	data->env_str = ft_calloc(sizeof(char *), len + 1);
+	data->env_str = ft_calloc(sizeof(char *), len + 2);
 	i = 0;
 	while (i < len)
 	{
@@ -221,24 +240,6 @@ void	ft_fill_envstr(t_data *data, char **env)
 		i++;
 	}
 	data->env_str[i] = ft_strdup("?=0");
-}
-
-void	ft_create_env(t_data *data, char **env)
-{
-	int		len;
-	int		i;
-	data->env = ft_calloc(sizeof(t_list), 1);
-	
-	i = 0;
-	len = ft_tab_len(env);
-	while (i <= len)
-	{
-		ft_lstadd_back(&data->env, ft_lstnew(env[i]));
-		i++;
-	}
-	//ft_lstadd_back(&data->env, ft_lstnew_last());
-	ft_fill_env(data, env);
-	ft_fill_envstr(data, env);
 }
 
 char	*ft_get_val(char *env)
@@ -348,6 +349,34 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
+int	ft_len_list(t_list *lst)
+{
+	int	len;
+
+	len = 0;
+	while (lst)
+	{
+		lst = lst->link;
+		len++;
+	}
+	return (len);
+}
+
+void	ft_putstr(char *str)
+{
+	int		i;
+
+	if (!str)
+		return ;
+	i = 0;
+	while (str[i])
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+}
+
+
 void	ft_putstr_fd(char *s, int fd)
 {
 	int	len;
@@ -370,23 +399,6 @@ t_list	*ft_lstnew_last(void)
 	new->value = ft_strdup("0");
 	new->link = NULL;
 	return (new);
-}
-
-void	ft_dealloc_env(t_data *data)
-{
-	t_list	*tmp;
-	t_list	*aux;
-
-	tmp = data->env;
-	while (tmp != NULL)
-	{
-		aux = tmp;
-		tmp = tmp->link;
-		free (aux->link);
-		free (aux->name);
-		free (aux->value);
-		free (aux);
-	}
 }
 
 static int	ft_itoasize(int n)
@@ -440,7 +452,7 @@ char	*ft_itoa(int n)
 	makepos = ft_makepos(n);
 	isneg = ft_isneg(n);
 	size = ft_itoasize(n);
-	str = malloc(sizeof(char) * ft_itoasize(n) + 1);
+	str = ft_calloc(sizeof(char), ft_itoasize(n) + 1);
 	if (!str)
 		return (NULL);
 	if (makepos == 0)
@@ -502,29 +514,21 @@ char	*ft_strcat(char *str1, char *str2)
 	return (dest);
 }
 
-char	*ft_strcat1(char *str1, char *str2)
+char	*ft_strcat1(char *dest, char *src)
 {
-	int		i;
-	int		j;
-	char	*dest;
+	int i;
+	int j;
 
 	i = 0;
+	while (dest[i] != '\0')
+		i++;
 	j = 0;
-	if (!str1 && !str2)
-		return (0);
-	dest = ft_calloc(sizeof(char), ft_strlen(str1) + ft_strlen(str2) + 1);
-	while (str1[i])
+	while (src[j] != '\0')
 	{
-		dest[i] = str1[i];
-		i++;
-	}
-	while (str2[j])
-	{
-		dest[i] = str2[j];
+		dest[i + j] = src[j];
 		j++;
-		i++;
 	}
-	dest[i] = '\0';
+	dest[i + j] = '\0';
 	return (dest);
 }
 
@@ -533,13 +537,14 @@ void	ft_exit_st(int x)
 	t_list	*tmp;
 
 	tmp = glv.env;
-	while (ft_strcmp(tmp->name, "?") != 0)
+	while (tmp && ft_strcmp(tmp->name, "?") != 0)
 		tmp = tmp->link;
-	if (ft_strcmp(tmp->name, "?") == 0)
+	if ( tmp && ft_strcmp(tmp->name, "?") == 0)
 	{
 		free (tmp->name);
 		tmp->name = ft_strdup(ft_itoa(x));
 	}
+	free (tmp);
 }
 
 void	ft_free_2d(char **str)
@@ -645,7 +650,7 @@ char	*ft_words(const char *str, char c)
 		str++;
 	while (str[i] != c && str[i] != '\0')
 		i++;
-	word = malloc(sizeof(char) * (i + 1));
+	word = ft_calloc(sizeof(char), (i + 1));
 	if (word == NULL)
 		return (NULL);
 	while (str[l] != c && str[l] != '\0')
@@ -676,7 +681,7 @@ char	**ft_split(char const *s, char c)
 	words = ft_wordcount(s, c);
 	if (!s)
 		return (NULL);
-	ptr_str = malloc(sizeof(char *) * (words + 1));
+	ptr_str = ft_calloc(sizeof(char *), (words + 1));
 	if (!ptr_str)
 		return (NULL);
 	while (i < words)
@@ -690,6 +695,6 @@ char	**ft_split(char const *s, char c)
 			s++;
 		i++;
 	}
-	ptr_str[i] = 0;
+	ptr_str[i] = '\0';
 	return (ptr_str);
 }

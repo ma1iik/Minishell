@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/30 19:39:00 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 12:45:27 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef	struct	t_list
 {
 	char	*name;
 	char	*value;
+	int		flag;
 	struct t_list	*link;
 }				t_list;
 
@@ -94,18 +95,19 @@ typedef	struct	s_cmd
 {
 	int			i;
 	t_list		*env;
+	t_list		*env_exp;
 	int			env_sig;
 }				t_cmd;
 
 t_cmd		glv;
 
 //ENV
-void		ft_create_env(t_data *data, char **env);
-void		ft_fill_glv(char **env);
-void		ft_glv		(char **env);
+void		ft_fill_glv(char **env, int num);
+void		ft_glv(char **env, t_data *data);
 int 		ft_tab_len(char **env);
 char		*ft_get_name(char *env);
 char		*ft_get_val(char *env);
+void		ft_fill_envstr(t_data *data, char **env);
 
 
 //PARSING
@@ -118,9 +120,9 @@ int			ft_check_if_closed(char c_char, int ii, t_data *data);
 
 //PARSING2
 
-int		ft_rules(t_data *data);
-int		ft_check_rules(t_data *data);
-int		ft_redir_rules(t_data *data, int i);
+int			ft_rules(t_data *data);
+int			ft_check_rules(t_data *data);
+int			ft_redir_rules(t_data *data, int i);
 
 
 //LEXER
@@ -141,35 +143,42 @@ void		ft_rm_quotes(t_data *data);
 char 		*ft_rm_quotes2(char *str, int start, int end);
 
 //FT_EXEC
-int		ft_exec(t_data *data);
+int			ft_exec(t_data *data);
 void		ft_sig_exec(int sig);
 void		ft_sig_exec1(int sig);
 void		ft_exst(int num);
 void		ft_fill_cmdl(t_data *data);
 t_cmdl		*ft_init_cmd(void);
 char		**ft_get_args(t_data *data);
-char	**ft_dum_env_unset(t_data *data);
+char		**ft_dum_env_unset(t_data *data);
 
 //FREE MEMORY
 
 void	ft_free_tokens(t_data *data);
 void	ft_free_2d(char **str);
+void 	ft_free_all(t_data *data);
+void	ft_dealloc_envstr(t_data *data);
+void	ft_dealloc_cmds(t_data *data);
+void	ft_free_cmdl(t_data *data);
 
 void		*ft_calloc(size_t count, size_t size);
 void		ft_putstr_fd(char *s, int fd);
+char		*ft_strstr(char *str, char *to_find);
 void		ft_exit_st(int x);
+int			ft_len_list(t_list *lst);
 int			ft_isalnum(int c);
 char		*ft_strcat(char *str1, char *str2);
-char	*ft_strcat1(char *str1, char *str2);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-char	**ft_split(char const *s, char c);
+char		*ft_strcat1(char *str1, char *str2);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+char		**ft_split(char const *s, char c);
 void		*ft_memset(void *s, int c, size_t len);
 int			ft_isalpha(int c);
 char		*ft_strjoin(char const *s1, char const *s2);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_itoa(int n);
 int			ft_isspace (char c);
-int			ft_strlen(const char *str);
+size_t		ft_strlen(const char *str);
+size_t		ft_strlen_rl(const char *str);
 char		*ft_strncpy(char *dst, char *src, size_t len);
 void 		print_cmd(t_data *data);
 void 		print_tok(t_data *data);
@@ -183,6 +192,13 @@ void		ft_init_data(t_data *data);
 void		ft_lstadd_back(t_list **lst, t_list *new);
 
 //BUILTINS
-int	ft_isbuiltin(t_data *data);
+int		ft_isbuiltin(t_data *data);
+void	ft_echo(char **cmd);
+void	ft_pwd(void);
+void	ft_export(char **cmd, int c);
+int		ft_cd(char **cmd);
+void	ft_env(void);
+void	ft_exit(char **cmd);
+void	ft_unset(char **cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:57:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/27 01:41:52 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/01 21:52:40 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void init_lexer(t_data *data)
 
 int	lexer_advance(t_data *data)
 {
-	if (data->lexer.c != '\0' && data->lexer.i < ft_strlen(data->lexer.content))
+	int		len;
+
+	len = ft_strlen(data->lexer.content);
+	if (data->lexer.c != '\0' && data->lexer.i < len)
 	{
 		data->lexer.i++;
 		data->lexer.c = data->lexer.content[data->lexer.i];
@@ -46,40 +49,37 @@ int   get_next_token(t_data *data)
 {
 	int		cmd;
 	char	*tok;
+	int		len;
 
 	cmd = 0;
-	while (data->lexer.c != '\0' && data->lexer.i < ft_strlen(data->lexer.content))
+	len = ft_strlen(data->lexer.content);
+	while (data->lexer.c != '\0' && data->lexer.i < len)
 	{
 		skip_space(data);
 		if (data->lexer.c == '<')
 		{
-			printf("< or <<\n");
 			if (!ft_token_l_red(data))
 				return (0);
 		}
 		else if (data->lexer.c == '>')
 		{
-			printf("> or >>\n");
 			if (!ft_token_r_red(data))
 				return (0);
 		}
 		else if (data->lexer.c == '|')
 		{
-			//printf("pipe\n");
 			ft_init_tok(data, PIPE, "|");
 			lexer_advance(data);
 			cmd = 0;
 		}
 		else if (cmd == 0)
 		{
-			//printf("cmd\n");
 			tok = ft_take_cmd(data);
 			ft_init_tok(data, CMD, tok);
 			cmd = 1;
 		}
 		else if (!ft_separated(data) && cmd != 0)
 		{
-			//printf("arg\n");
 			tok = ft_take_cmd(data);
 			ft_init_tok(data, ARG, tok);
 		}

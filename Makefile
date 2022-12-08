@@ -2,7 +2,7 @@ NAME			=	minishell
 HEADERS			=	minishell.h
 CC				= 	gcc 
 RM				= 	rm -rf
-CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
+CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon #-fsanitize=address
 
 SRCS	=	main.c	\
 			utils.c	\
@@ -15,7 +15,15 @@ SRCS	=	main.c	\
 			dollar.c \
 			exec.c \
 			fill_cmdl.c \
-			builtins/pwd.c
+			free_mem.c \
+			free_mem2.c \
+			builtins/pwd.c \
+			builtins/echo.c \
+			builtins/cd.c \
+			builtins/export.c \
+			builtins/exit.c \
+			builtins/unset.c \
+			builtins/env.c
 
 OBJS	= ${SRCS:.c=.o}
 

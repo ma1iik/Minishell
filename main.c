@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/11/30 19:37:35 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 13:43:03 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ void	ft_init_data(t_data *data)
 void	read_line(t_data *data)
 {
 	ft_init_data(data);
-	while (data->exit_t)
+	while (1)
 	{
 		signal(SIGINT, ft_sig_exec1);
 		signal(SIGQUIT, ft_sig_exec1);
 		data->cmd = readline("minishell:");
+		if (!data->cmd)
+			break;
 		if (!ft_custom_split(data))
 			continue;
 		if (data->cmd)
@@ -52,6 +54,8 @@ void	read_line(t_data *data)
 			continue;
 		ft_fill_cmdl(data);
 		data->cmd_l_free = data->cmd_l;
+		//printf("cmd --> %s\n", data->cmd);
+		//printf("cmd2--> %s\n", data->lexer.content);
 		if (!ft_exec(data))
 			continue;
 		// print your cmd
@@ -59,9 +63,10 @@ void	read_line(t_data *data)
 	data->exit_t = 0;
 }
 
-void	ft_glv(char **env)
+void	ft_glv(char **env, t_data *data)
 {
 	glv.env = ft_calloc(sizeof(t_list), 1);
+	glv.env_exp = ft_calloc(sizeof(t_list), 1);
 	glv.i = 0;
 	glv.env_sig = 0;
 	int		len;
@@ -69,13 +74,21 @@ void	ft_glv(char **env)
 	
 	i = 0;
 	len = ft_tab_len(env);
+	ft_fill_envstr(data, env);
 	while (i < len)
 	{
 		ft_lstadd_back(&glv.env, ft_lstnew(env[i]));
 		i++;
 	}
+	i = 0;
+	while (i < len)
+	{
+		ft_lstadd_back(&glv.env_exp, ft_lstnew(env[i]));
+		i++;
+	}
 	// ft_lstadd_back(&glv.env, ft_lstnew_last());
-	ft_fill_glv(env);
+	ft_fill_glv(env, 1);
+	ft_fill_glv(env, 2);
 }
 
 void		ft_print_glv(void)
@@ -98,12 +111,15 @@ int	main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	data = ft_calloc(1, sizeof(t_data));
-	ft_create_env(data, env);
-	ft_glv(env);
+	ft_glv(env, data);
 	//ft_print_glv();
 	read_line(data);
+	//ft_dealloc_envstr(data);
+	ft_dealloc_cmds(data);
+	ft_free_tokens(data);
+	ft_free_cmdl(data);
     //parse_line(data);
-	ft_dealloc_env(data);
+	//ft_dealloc_env(data);
     // execute_line();
 	return (0);
 }
