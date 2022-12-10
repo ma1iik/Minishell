@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/10 14:42:27 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/11 00:47:36 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,46 @@ char	**ft_dum_env_unset(t_data *data)
 
 char	*ft_cur_var(char *cur, char **sp_path, int i, t_cmdl *cmd)
 {
-	cur =   ft_calloc(sizeof(char),
-	  		(ft_strlen(sp_path[i]) + ft_strlen((*cmd).cmd[0]) + 2));
-	cur = ft_strcat1(cur, sp_path[i]);
-	cur = ft_strcat1(cur, "/");
-	cur = ft_strcat1(cur, (*cmd).cmd[0]);
+	char	*tmp;
+	// cur =   ft_calloc(sizeof(char),
+	//   		(ft_strlen(sp_path[i]) + ft_strlen((*cmd).cmd[0]) + 2));
+	// cur = ft_strcat1(cur, sp_path[i]);
+	// cur = ft_strcat1(cur, "/");
+	// cur = ft_strcat1(cur, (*cmd).cmd[0]);
+	tmp = ft_strcat(sp_path[i], "/");
+	cur = ft_strcat(tmp, (*cmd).cmd[0]);
+	free (tmp);
+	return (cur);
+}
+
+char	**ft_cur_var1(t_data *data, char **sp_path, int i, t_cmdl *cmd)
+{
+	//int		len;
+	char	*name;
+	char	**cur;
+	int		len2;
+	int		j;
+	char	*tmp;
+
+	(void)cmd;
+	j = 1;
+	len2 = ft_tab_len(data->cmd_l->cmd);
+	//len = ft_strlen(data->cmd_l->cmd[0]);
+	name = ft_strdup(data->cmd_l->cmd[0]);
+	cur = ft_calloc(sizeof(char *), len2 + 1);
+	//cur[0] = ft_calloc(sizeof(char), (ft_strlen(sp_path[i]) + len + 2));
+	//cur[0] = ft_strcat(cur[0], sp_path[i]);
+	tmp = ft_strcat(sp_path[i], "/");
+	cur[0] = ft_strcat(tmp, name);
+	while (j < len2)
+	{
+		cur[j] = ft_strdup(data->cmd_l->cmd[j]);
+		j++;
+	}
+	cur[j] = NULL;
+	ft_free_2d(data->cmd_l->cmd);
+	free (name);
+	free (tmp);
 	return (cur);
 }
 
@@ -95,19 +130,19 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 		return ;
 	else if (cmd->cmd[0][0] != '/' && (cmd->cmd[0][0] != '.' && cmd->cmd[0][1] != '/'))
 	{
-		printf("wtf is this -->%s\n", cmd->cmd[0]);
 		splitted = ft_split(path, ':');
 		while (splitted[i])
 		{
 			cur = ft_cur_var(cur, splitted, i, cmd);
 			if (access(cur, F_OK) == 0)
 			{
-				(cmd)->cmd[0] = ft_cur_var(cur, splitted, i, cmd);
+				free (data->cmd_l->cmd[0]);
+				data->cmd_l->cmd[0] = cur;
 				ft_free_2d(splitted);
-				free (cur);
+				//free (cur);
 				return ;
 			}
-			free (cur);
+			//free (cur);
 			i++;
 		}
 	}
@@ -158,9 +193,15 @@ void	ft_pipes(t_cmdl *cmd)
 void	ft_close_pipe(t_cmdl *cmd)
 {
 	if (cmd->next)
+	{
 		close(cmd->pipe[1]);
+		printf("closed1\n\n\n\n");
+	}
 	if (cmd->prev)
+	{
 		close(cmd->prev->pipe[0]);
+		printf("closed2\n\n\n\n");
+	}
 }
 
 void	ft_exec_err(t_data *data, int errn, char **env)
@@ -206,6 +247,8 @@ void	ft_execcmd(t_data *data, char **env)
 	if (ft_isbuiltin(data) == 1)
 	{
 		ft_exbuiltin(data);
+		//ft_free_all(data);
+		exit (0);
 	}
 	else
 	{
@@ -247,9 +290,12 @@ int	ft_exec(t_data *data)
 	{
 		ft_open_pipe(data->cmd_l);
 		if (!ft_child(data))
+		{
 			return (0);
+		}
 		ft_close_pipe(data->cmd_l);
 		data->cmd_l = data->cmd_l->next;
+		
 	}
 	return (1);
 }

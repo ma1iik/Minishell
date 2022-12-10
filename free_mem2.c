@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 22:59:48 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/11 00:17:40 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 void	ft_free_cmdl(t_data *data)
 {
 	t_cmdl	*tmp;
-	t_cmdl	*head;
+	//t_cmdl	*head;
 	int		i;
 
 	i = 0;
 	tmp = data->cmd_l_free;
-	head = data->cmd_l_free;
-	while (head != NULL)
+	//head = data->cmd_l_free;
+	while (data->cmd_l_free)
     {
-		tmp = head;
-		head = head->next;
+		tmp = data->cmd_l_free;
+		data->cmd_l_free = data->cmd_l_free->next;
 		while (tmp->cmd[i])
 		{
 			free(tmp->cmd[i]);

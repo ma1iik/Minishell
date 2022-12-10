@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:57:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/01 21:52:40 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/10 18:05:57 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,17 @@ int   get_next_token(t_data *data)
 		{
 			tok = ft_take_cmd(data);
 			ft_init_tok(data, CMD, tok);
+			free (tok);
 			cmd = 1;
 		}
 		else if (!ft_separated(data) && cmd != 0)
 		{
 			tok = ft_take_cmd(data);
 			ft_init_tok(data, ARG, tok);
+			free (tok);
 		}
 	}
 	ft_init_tok(data, END, "\0");
-	free (tok);
 	return (1);
 }
 
