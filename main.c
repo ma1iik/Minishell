@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/08 13:43:03 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/10 14:25:34 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,12 @@ void	read_line(t_data *data)
 			continue;
 		ft_fill_cmdl(data);
 		data->cmd_l_free = data->cmd_l;
-		//printf("cmd --> %s\n", data->cmd);
-		//printf("cmd2--> %s\n", data->lexer.content);
 		if (!ft_exec(data))
 			continue;
+		ft_free_all(data);
+		free(data->cmd);
 		// print your cmd
 	}
-	data->exit_t = 0;
 }
 
 void	ft_glv(char **env, t_data *data)
@@ -72,6 +71,7 @@ void	ft_glv(char **env, t_data *data)
 	int		len;
 	int		i;
 	
+	(void)data;
 	i = 0;
 	len = ft_tab_len(env);
 	ft_fill_envstr(data, env);
@@ -114,10 +114,8 @@ int	main(int ac, char **av, char **env)
 	ft_glv(env, data);
 	//ft_print_glv();
 	read_line(data);
+	ft_free_envstr(data);
 	//ft_dealloc_envstr(data);
-	ft_dealloc_cmds(data);
-	ft_free_tokens(data);
-	ft_free_cmdl(data);
     //parse_line(data);
 	//ft_dealloc_env(data);
     // execute_line();

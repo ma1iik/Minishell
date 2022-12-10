@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 13:46:21 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/10 14:42:27 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 	i = 0;
 	cur = NULL;
 	path = getenv("PATH");
-	//printf("%s\n", cmd->cmd[0]);
-	splitted = ft_split(path, ':');
 	if ((access((cmd)->cmd[0], F_OK) == 0) || ft_isbuiltin(data))
 		return ;
 	else if (cmd->cmd[0][0] != '/' && (cmd->cmd[0][0] != '.' && cmd->cmd[0][1] != '/'))
 	{
+		printf("wtf is this -->%s\n", cmd->cmd[0]);
+		splitted = ft_split(path, ':');
 		while (splitted[i])
 		{
 			cur = ft_cur_var(cur, splitted, i, cmd);
@@ -126,6 +126,7 @@ void	ft_check_path(t_data *data)
 	{
 		ft_free_2d(data->env_str);
 		data->env_str = ft_dum_env_unset(data);
+		glv.env_sig = 0;
 	}
 	str = ft_strjoin("PATH=", getenv("PATH"));
 	while (data->env_str[i] && i < len)
@@ -173,8 +174,9 @@ void	ft_exec_err(t_data *data, int errn, char **env)
 		printf("%s: command not found\n", data->cmd_l->cmd[0]);
 	else if (errn == 126)
 		printf("%s: argument found but not executable\n", data->cmd_l->cmd[0]);
-	// else if (num == 1)
+	// else if (errn == 1)
 	// 	printf("%s: No such file or directory\n", cmd);
+	ft_free_all(data);
 	exit(EXIT_FAILURE);
 }
 
@@ -210,7 +212,6 @@ void	ft_execcmd(t_data *data, char **env)
 		execc = execve(data->cmd_l->cmd[0], data->cmd_l->cmd, env);
 		if (execc == -1)
 		{
-			printf("ERROR %d\n", errno);
 			ft_exec_err(data, errno, env);
 		}
 	}

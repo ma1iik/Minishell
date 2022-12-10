@@ -2,7 +2,7 @@ NAME			=	minishell
 HEADERS			=	minishell.h
 CC				= 	gcc 
 RM				= 	rm -rf
-CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon #-fsanitize=address
+CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
 
 SRCS	=	main.c	\
 			utils.c	\

@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 07:10:53 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 10:42:23 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/10 14:34:37 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	ft_unset_var(char **cmd, int i, int pos)
 		cur = cur->link;
 	}
 	ft_unset_var_exp(cmd, i, 0);
+	glv.env_sig = 1;
 	return ;
 }
 

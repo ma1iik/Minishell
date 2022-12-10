@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/08 12:45:27 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/08 22:21:04 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void 	ft_free_all(t_data *data);
 void	ft_dealloc_envstr(t_data *data);
 void	ft_dealloc_cmds(t_data *data);
 void	ft_free_cmdl(t_data *data);
+void	ft_free_envstr(t_data *data);
 
 void		*ft_calloc(size_t count, size_t size);
 void		ft_putstr_fd(char *s, int fd);

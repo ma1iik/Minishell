@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 05:02:31 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 12:56:21 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/10 14:35:49 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,8 @@ void	ft_exec_export(char *cmd, int num)
 		//ft_lstadd_back(&glv.env, ft_lstnew(cmd_sp[0]. cmd_sp[1], 1));
 		ft_lstadd_back(&glv.env_exp, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 1));
 	}
+	glv.env_sig = 1;
+	ft_free_2d(cmd_sp);
 }
 
 void	ft_export(char **cmd, int c)
@@ -191,10 +193,7 @@ void	ft_export(char **cmd, int c)
 			if(ft_exp_err(cmd[c]))
 			{
 				if (ft_check_ravno(cmd[c]) && ft_exp_exist(cmd[c]))
-				{
-					printf("LOL\n");
 					ft_exec_export(cmd[c], 1);
-				}
 				else if (ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
 					ft_exec_export(cmd[c], 2);
 				else if (!ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
