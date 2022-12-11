@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/11 00:03:27 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/11 16:37:54 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_cmdl
 	int				status;
 	int				pos;
 	int				exit;
+	char			**rerdir;
 	struct s_cmdl	*prev;
 	struct s_cmdl	*next;
 }				t_cmdl;

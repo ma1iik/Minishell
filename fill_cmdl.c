@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 18:58:09 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 12:50:30 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/11 17:13:06 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,49 @@ void	ft_addback_cmdl(t_cmdl **cmd, t_cmdl *new)
 	lst->next = new;
 }
 
+int	ft_count_red(t_data *data, int x)
+{
+	int		cnt;
+
+	cnt = 0;
+	while (data->tokens[x].e_type && data->tokens[x].e_type != PIPE && data->tokens[x].e_type != END)
+	{
+		if (data->tokens[x].e_type < 5|| data->tokens[x].e_type == 6)
+			cnt++;
+		x++;
+	}
+	return (cnt);
+}
+
+char	**ft_get_redir(t_data *data)
+{
+	char	**redirs;
+	int		red_c;
+	int		i;
+	int		place;
+
+	i = 0;
+	place = data->cmdl_i;
+	red_c = ft_count_red(data, data->cmdl_i) + 1;
+	// printf("red count is %d\n", red_c);
+	redirs = ft_calloc(sizeof(char *), red_c);
+	while (data->tokens[place].e_type && data->tokens[place].e_type != PIPE
+		&& data->tokens[place].e_type != END && i < red_c)
+	{
+		if (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6)
+		{
+			redirs[i] = ft_strdup(data->tokens[place].value);
+			// printf("get args is -->%s\n", args[i]);
+			i++;
+		}
+		place++;
+	}
+	redirs[i] = NULL;
+	// if (data->tokens[data->cmdl_i].e_type == END)
+	// 	data->cmdl_i++;
+	return (redirs);
+}
+
 t_cmdl	*ft_cmdl_new(t_data *data)
 {
 	t_cmdl	*tmp;
@@ -89,10 +132,9 @@ t_cmdl	*ft_cmdl_new(t_data *data)
 
 	x = data->cmdl_i;
 	tmp = ft_calloc(sizeof(t_cmdl), 1);
+	tmp->rerdir = ft_get_redir(data);
 	tmp->cmd = ft_get_args(data);
-	// printf("THE CMD -->%s\n", tmp->cmd[0]);
 	tmp->nb_args = ft_count_arg(data, x);
-	// printf("nb args -->%d\n", tmp->nb_args);
 	tmp->in = STDIN_FILENO;
 	tmp->out = STDOUT_FILENO;
 	tmp->exit = 0;

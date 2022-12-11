@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/11 00:47:36 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/11 21:24:35 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,12 +195,10 @@ void	ft_close_pipe(t_cmdl *cmd)
 	if (cmd->next)
 	{
 		close(cmd->pipe[1]);
-		printf("closed1\n\n\n\n");
 	}
 	if (cmd->prev)
 	{
 		close(cmd->prev->pipe[0]);
-		printf("closed2\n\n\n\n");
 	}
 }
 
@@ -290,12 +288,9 @@ int	ft_exec(t_data *data)
 	{
 		ft_open_pipe(data->cmd_l);
 		if (!ft_child(data))
-		{
 			return (0);
-		}
 		ft_close_pipe(data->cmd_l);
 		data->cmd_l = data->cmd_l->next;
-		
 	}
 	return (1);
 }
