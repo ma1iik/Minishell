@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/11 17:15:24 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/12 19:35:03 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,19 @@ void	ft_free_cmdl(t_data *data)
     {
 		tmp = data->cmd_l_free;
 		data->cmd_l_free = data->cmd_l_free->next;
-		while (tmp->cmd[i])
+		while (i < tmp->nb_args)
 		{
 			free(tmp->cmd[i]);
 			i++;
 		}
 		i = 0;
-		while (tmp->rerdir[i])
+		while (tmp->redir[i])
 		{
-			free(tmp->rerdir[i]);
+			free(tmp->redir[i]);
 			i++;
 		}
 		free (tmp->cmd);
-		free (tmp->rerdir);
+		free (tmp->redir);
 		free(tmp);
     }
 }

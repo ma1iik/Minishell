@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/11 21:24:35 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 16:43:51 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,17 @@ char	**ft_dum_env_unset(t_data *data)
 	return (ret);
 }
 
-char	*ft_cur_var(char *cur, char **sp_path, int i, t_cmdl *cmd)
+char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd)
 {
 	char	*tmp;
+	char	*cur;
 	// cur =   ft_calloc(sizeof(char),
 	//   		(ft_strlen(sp_path[i]) + ft_strlen((*cmd).cmd[0]) + 2));
 	// cur = ft_strcat1(cur, sp_path[i]);
 	// cur = ft_strcat1(cur, "/");
 	// cur = ft_strcat1(cur, (*cmd).cmd[0]);
 	tmp = ft_strcat(sp_path[i], "/");
-	cur = ft_strcat(tmp, (*cmd).cmd[0]);
+	cur = ft_strjoin(tmp, cmd->cmd[0]);
 	free (tmp);
 	return (cur);
 }
@@ -124,7 +125,8 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 	int		i;
 
 	i = 0;
-	cur = NULL;
+	if (cmd->nocmd == 1)
+		return ;
 	path = getenv("PATH");
 	if ((access((cmd)->cmd[0], F_OK) == 0) || ft_isbuiltin(data))
 		return ;
@@ -133,16 +135,17 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 		splitted = ft_split(path, ':');
 		while (splitted[i])
 		{
-			cur = ft_cur_var(cur, splitted, i, cmd);
+			cur = ft_cur_var(splitted, i, cmd);
 			if (access(cur, F_OK) == 0)
 			{
 				free (data->cmd_l->cmd[0]);
-				data->cmd_l->cmd[0] = cur;
+				data->cmd_l->cmd[0] = ft_strdup(cur);
 				ft_free_2d(splitted);
-				//free (cur);
+				free (cur);
 				return ;
 			}
-			//free (cur);
+			else
+				free (cur);
 			i++;
 		}
 	}
@@ -258,24 +261,131 @@ void	ft_execcmd(t_data *data, char **env)
 	}
 }
 
+int	ft_check_redir(t_data *data)
+{
+	int	i;
+
+	if (data->cmd_l->redir[0] != NULL)
+	{
+		if (data->cmd_l->redir[1] == NULL)
+		{
+			glv.redsig = 0;
+			printf("redirs changed to 0\n");
+			return (0);
+		}
+		i = 3;
+		if (data->cmd_l->redir[2] != NULL)
+		{
+			while (i <= ft_tab_len(data->cmd_l->redir))
+			{
+				if (data->cmd_l->redir[i] == NULL)
+				{
+					glv.redsig = 0;
+					printf("redirs changed to 0\n");
+					return (0);
+				}
+				i += 2;
+			}
+		}
+	}
+	return (1);
+}
+
+char	*ft_get_errstr(t_data *data)
+{
+	char	*str;
+	char	*tmp1;
+	char	*tmp2;
+
+	if (!data->cmd_l->redir[2])
+		return (NULL);
+	tmp1 = ft_strjoin(data->cmd_l->cmd[0], ": cannot access '");
+	tmp2 = ft_strjoin(tmp1, data->cmd_l->redir[2]);
+	str = ft_strjoin(tmp2, "': No such file or directory\n");
+	free (tmp1);
+	free (tmp2);
+	return (str);
+}
+
+void	ft_add_error(t_data *data, int rows, char *str)
+{
+	char	**dest;
+  	int		i;
+
+	i = 0;
+ 	dest = ft_calloc(rows + 2, sizeof(char*));
+	while (data->error_str[i])
+	{
+		dest[i] = ft_strdup(data->error_str[i]);
+		i++;
+	}
+	dest[i] = ft_strdup(str);
+	i++;
+	dest[i] = NULL;
+	ft_free_2d(data->error_str);
+	data->error_str = dest;
+}
+
+void	ft_errstr(t_data *data)
+{
+	char	*err;
+
+	err = NULL;
+	if (!data->error_str)
+	{
+		data->error_str = ft_calloc(sizeof(char *), 2);
+		data->error_str[0] = ft_get_errstr(data);
+		data->error_str[1] = NULL;
+	}
+	else
+	{
+		err = ft_get_errstr(data);
+		ft_add_error(data, ft_tab_len(data->error_str), err);
+	}
+	free (err);
+}
+
 int	ft_child(t_data *data)
 {
 	int		status;
 
 	ft_check_path(data);
+	if (!ft_check_redir(data))
+	if (!glv.redsig)
+		ft_errstr(data);
 	data->pid = fork();
 	if (data->pid < 0)
 	{
 		perror("fork error");
 		return (0);
 	}
-	if (data->pid == 0)
+	if (data->pid == 0 && glv.redsig)
 	{
 		ft_pipes(data->cmd_l);
+		ft_redirs(data->cmd_l);
 		ft_execcmd(data, data->env_str);
 	}
 	waitpid(data->pid, &status, 0);
+	if (!glv.redsig)
+		glv.redsig = 1;
 	return (1);
+}
+
+void	ft_print_err(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	if (data->error_str != NULL)
+	{
+		printf ("WTF\n");
+		while (data->error_str[i])
+		{
+			printf("%s", data->error_str[i]);
+			i++;
+		}
+	ft_free_2d(data->error_str);
+	}
 }
 
 int	ft_exec(t_data *data)

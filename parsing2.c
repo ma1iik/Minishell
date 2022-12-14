@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 08:59:27 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/26 22:32:29 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/12 00:08:49 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_check_rules(t_data *data)
 	{
 		if (!ft_redir_rules(data, i))
 		{
-			printf("Parse error near `%s'\n", data->tokens[i].value);
+			printf("syntax error near `%s'\n", data->tokens[i].value);
 			return (0);
 		}
 		i++;

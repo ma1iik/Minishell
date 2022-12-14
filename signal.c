@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 04:06:24 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/01 09:39:54 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/13 18:33:00 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,51 +69,91 @@ void		ft_sig_exec(int sig)
 
 int	ft_token_l_red(t_data *data)
 {
-	if (data->lexer.content[data->lexer.i + 1 == '<'])
+	if (data->lexer.content[data->lexer.i + 1] == '<')
 	{
 		ft_init_tok(data, DL_RED, "<<");
 		lexer_advance(data);
+		lexer_advance(data);
 		if (!ft_token_filename(data))
 		{
-			printf("Parse error near `%s'\n'", "<<");
+			if (!data->lexer.content[data->lexer.i])
+				printf("syntax error near `\\n'\n");
+			else
+				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
 			return (0);
 		}
 	}
 	else
 	{
 		ft_init_tok(data, L_RED, "<");
+		lexer_advance(data);
 		if (!ft_token_filename(data))
 		{
-			printf("Parse error near `%s'\n'", "<");
+			if (!data->lexer.content[data->lexer.i])
+				printf("syntax error near `\\n'\n");
+			else
+				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
 			return (0);
 		}
 	}
-	lexer_advance(data);
 	return (1);
 }
 
 
 int	ft_token_r_red (t_data *data)
 {
-	if (data->lexer.content[data->lexer.i + 1 == '>'])
+	if (data->lexer.content[data->lexer.i + 1] == '>')
 	{
 		ft_init_tok(data, DL_RED, ">>");
 		lexer_advance(data);
+		lexer_advance(data);
 		if (!ft_token_filename(data))
 		{
-			printf("Parse error near `%s'\n'", ">>");
+			if (!data->lexer.content[data->lexer.i])
+				printf("syntax error near `\\n'\n");
+			else
+				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
 			return (0);
 		}
 	}
 	else
 	{
 		ft_init_tok(data, L_RED, ">");
+		lexer_advance(data);
 		if (!ft_token_filename(data))
 		{
-			printf("Parse error near `%s'\n'", ">");
+			if (!data->lexer.content[data->lexer.i])
+				printf("syntax error near `\\n'\n");
+			else
+				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
 			return (0);
 		}
 	}
-	lexer_advance(data);
 	return (1);
+}
+
+void	ft_sig_herd(int sig)
+{
+	if (sig == SIGINT)
+	{
+		if (glv.heredoc == 0)
+		{
+			printf("\e[2K");
+			rl_on_new_line();
+			rl_redisplay();
+			printf("\n");
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+			ft_exst(1);
+		}
+		else
+			exit(1);
+	}
+	if (sig == SIGQUIT)
+	{
+		printf("\e[2K");
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }

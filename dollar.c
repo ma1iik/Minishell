@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 02:24:32 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/25 21:34:36 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 16:27:51 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,13 @@ char	*ft_get_env(t_data *data, char *cmd, int start, int end)
 	while (start < end)
 		compare[j++] = cmd[start++];
 	compare[j] = '\0';
+	printf ("compare is %s\n", compare);
 	while (tmp != NULL)
 	{
 		if (ft_strcmp(compare, tmp->name) == 0)
 		{
 			val = ft_strdup(tmp->value);
+			printf ("val is %s\n", val);
 			free(compare);
 			return (val);
 		}
@@ -149,13 +151,6 @@ char	*ft_get_env(t_data *data, char *cmd, int start, int end)
 	}
 	free(compare);
 	return (NULL);
-}
-
-void	ft_free_3(char*s1, char *s2, char *s3)
-{
-	free(s1);
-	free(s2);
-	free(s3);
 }
 
 char	*ft_dollar_errors(char *s1, char *s2, char *s3)
@@ -188,11 +183,11 @@ char	*ft_combine_str(char *s1, char *s2, char *s3)
 	else if (s1 && s2 && !s3)
 		return (ft_strcat(s1, s2));
 	else if (!s1 && s2 && !s3)
-		return (s2);
+		return (ft_strdup(s2));
 	else if (!s1 && !s2 && s3)
-		return (s3);
+		return (ft_strdup(s3));
 	else if (s1 && !s2 && !s3)
-		return (s1);
+		return (ft_strdup(s1));
 	return (NULL);
 }
 
@@ -209,8 +204,10 @@ char	*ft_replace_d(int state, int end, t_data *data)
 	second = ft_get_second(data->cmd, end);
 	if (!first && !env && !second)
 		return (NULL);
-	ret = ft_strdup(ft_combine_str(first, env, second));
-	ft_free_3(first, env, second);
+	ret = ft_combine_str(first, env, second);
+	free(first);
+	free(env);
+	free(second);
 	return (ret);
 }
 
@@ -258,7 +255,7 @@ int	ft_dollar_rules(t_data *data, int sq, int dq)
 		if (data->cmd[data->dollar_i] == '"' || data->cmd[data->dollar_i] == '\'')
 			ft_q_state(&sq, &dq, data->cmd[data->dollar_i]);
 		else if (data->cmd[data->dollar_i] == '$' && data->cmd[data->dollar_i + 1]
-			&& (ft_isalpha(data->cmd[data->dollar_i + 1]) || data->cmd[data->dollar_i] == '?'))
+			&& (ft_isalpha(data->cmd[data->dollar_i + 1]) || data->cmd[data->dollar_i + 1] == '?'))
 		{
 			if (!ft_env_change(data, &sq, &dq))
 				return (0);

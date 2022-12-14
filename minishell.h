@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/11 16:37:54 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 13:33:41 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/wait.h>
+# include <termios.h>
+# include <sys/ioctl.h>
 
 typedef enum e_type
 {
@@ -42,13 +44,16 @@ typedef struct s_cmdl
 	int				pipe[2];
 	int				in;
 	int				out;
+	int				inf;
+	int				outf;
 	int				nb_args;
 	int				status;
 	int				pos;
 	int				exit;
-	char			**rerdir;
+	char			**redir;
 	struct s_cmdl	*prev;
 	struct s_cmdl	*next;
+	int				nocmd;
 }				t_cmdl;
 
 typedef struct s_token
@@ -90,11 +95,13 @@ typedef struct s_data
 	int		cmdl_i;
 	int		pid;
 	char	**env_str;
+	char	**error_str;
 }				t_data;
 
 typedef	struct	s_cmd
 {
-	int			i;
+	int			heredoc;
+	int			redsig;
 	t_list		*env;
 	t_list		*env_exp;
 	int			env_sig;
@@ -142,7 +149,7 @@ char		*ft_take_arg(t_data *data);
 char		*ft_take_cmd(t_data *data);
 void		ft_rm_quotes(t_data *data);
 char 		*ft_rm_quotes2(char *str, int start, int end);
-
+void		puterr(char *cmd);
 //FT_EXEC
 int			ft_exec(t_data *data);
 void		ft_sig_exec(int sig);
@@ -150,8 +157,13 @@ void		ft_sig_exec1(int sig);
 void		ft_exst(int num);
 void		ft_fill_cmdl(t_data *data);
 t_cmdl		*ft_init_cmd(void);
-char		**ft_get_args(t_data *data);
+char		**ft_get_args(t_data *data, t_cmdl *tmp);
 char		**ft_dum_env_unset(t_data *data);
+
+//REDIRS
+void	ft_redirs(t_cmdl *cmd);
+void	heredoc(char **redirs, t_cmdl *cmd);
+void	echo_contr_sequence(int i);
 
 //FREE MEMORY
 
@@ -192,6 +204,8 @@ t_list		*ft_lstnew_last(void);
 void		ft_dealloc_env(t_data *data);
 void		ft_init_data(t_data *data);
 void		ft_lstadd_back(t_list **lst, t_list *new);
+void		ft_print_err(t_data *data);
+void		ft_sig_herd(int sig);
 
 //BUILTINS
 int		ft_isbuiltin(t_data *data);

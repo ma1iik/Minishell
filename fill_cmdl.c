@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 18:58:09 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/11 17:13:06 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 13:35:15 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,50 @@
 int	ft_count_arg(t_data *data, int x)
 {
 	int		cnt;
+	int		arg;
 
 	cnt = 0;
+	arg = 0;
 	while (data->tokens[x].e_type && data->tokens[x].e_type != PIPE && data->tokens[x].e_type != END)
 	{
-		if (data->tokens[x].e_type == ARG || data->tokens[x].e_type == CMD)
+		if (data->tokens[x].e_type < 5 || data->tokens[x].e_type == 6)
+			arg = 1;
+		else if (!arg && (data->tokens[x].e_type == ARG || data->tokens[x].e_type == CMD))
+		{
+			printf("in count its --> %s\n", data->tokens[x].value);
 			cnt++;
+		}
 		x++;
 	}
 	return (cnt);
 }
 
-char	**ft_get_args(t_data *data)
+char	**ft_get_args(t_data *data, t_cmdl *tmp)
 {
 	char	**args;
 	int		arg_c;
 	int		i;
+	int		arg;
 
 	i = 0;
+	arg = 0;
 	arg_c = ft_count_arg(data, data->cmdl_i) + 1;
-	// printf("arg count is %d\n", arg_c);
 	args = ft_calloc(sizeof(char *), arg_c);
 	while (data->tokens[data->cmdl_i].e_type && data->tokens[data->cmdl_i].e_type != PIPE
 		&& data->tokens[data->cmdl_i].e_type != END && i < arg_c)
 	{
-		if (data->tokens[data->cmdl_i].e_type == CMD || data->tokens[data->cmdl_i].e_type == ARG)
+		if (!arg && (data->tokens[data->cmdl_i].e_type == CMD || data->tokens[data->cmdl_i].e_type == ARG))
 		{
+			if (data->tokens[data->cmdl_i].e_type == CMD)
+				tmp->nocmd = 0;
 			args[i] = ft_strdup(data->tokens[data->cmdl_i].value);
-			// printf("get args is -->%s\n", args[i]);
 			i++;
 		}
+		else if (data->tokens[data->cmdl_i].e_type < 5 || data->tokens[data->cmdl_i].e_type == 6)
+			arg = 1;
 		data->cmdl_i++;
 	}
 	args[i] = NULL;
-	// if (data->tokens[data->cmdl_i].e_type == END)
-	// 	data->cmdl_i++;
 	return (args);
 }
 
@@ -85,11 +94,18 @@ void	ft_addback_cmdl(t_cmdl **cmd, t_cmdl *new)
 int	ft_count_red(t_data *data, int x)
 {
 	int		cnt;
+	int		arg;
 
 	cnt = 0;
+	arg = 0;
 	while (data->tokens[x].e_type && data->tokens[x].e_type != PIPE && data->tokens[x].e_type != END)
 	{
-		if (data->tokens[x].e_type < 5|| data->tokens[x].e_type == 6)
+		if (!arg && (data->tokens[x].e_type < 5|| data->tokens[x].e_type == 6))
+		{
+			arg = 1;
+			cnt++;
+		}
+		else if (arg && (data->tokens[x].e_type < 5|| data->tokens[x].e_type == 6 || data->tokens[x].e_type == 8))
 			cnt++;
 		x++;
 	}
@@ -102,26 +118,30 @@ char	**ft_get_redir(t_data *data)
 	int		red_c;
 	int		i;
 	int		place;
+	int		ARG;
 
 	i = 0;
+	ARG = 0;
 	place = data->cmdl_i;
 	red_c = ft_count_red(data, data->cmdl_i) + 1;
-	// printf("red count is %d\n", red_c);
 	redirs = ft_calloc(sizeof(char *), red_c);
 	while (data->tokens[place].e_type && data->tokens[place].e_type != PIPE
 		&& data->tokens[place].e_type != END && i < red_c)
 	{
-		if (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6)
+		if (!ARG && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6))
 		{
 			redirs[i] = ft_strdup(data->tokens[place].value);
-			// printf("get args is -->%s\n", args[i]);
+			i++;
+			ARG = 1;
+		}
+		else if ((ARG && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6 || data->tokens[place].e_type == 8)))
+		{
+			redirs[i] = ft_strdup(data->tokens[place].value);
 			i++;
 		}
 		place++;
 	}
 	redirs[i] = NULL;
-	// if (data->tokens[data->cmdl_i].e_type == END)
-	// 	data->cmdl_i++;
 	return (redirs);
 }
 
@@ -132,8 +152,9 @@ t_cmdl	*ft_cmdl_new(t_data *data)
 
 	x = data->cmdl_i;
 	tmp = ft_calloc(sizeof(t_cmdl), 1);
-	tmp->rerdir = ft_get_redir(data);
-	tmp->cmd = ft_get_args(data);
+	tmp->nocmd = 1;
+	tmp->redir = ft_get_redir(data);
+	tmp->cmd = ft_get_args(data, tmp);
 	tmp->nb_args = ft_count_arg(data, x);
 	tmp->in = STDIN_FILENO;
 	tmp->out = STDOUT_FILENO;

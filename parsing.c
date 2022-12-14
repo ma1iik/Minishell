@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/08 10:52:23 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 13:15:08 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,16 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 				i++;
 			}
 			data->groups += 1;
-            //printf("logic groups ---> %d\n", data->groups);
 		}
 		if (data->cmd[i] == '|')
 		{
 			while (ft_isspace(data->cmd[i + 1]))
 				i++;
 			if (data->cmd[i + 1] == '|')
+			{
+    			printf("syntax error near `|'\n");
 				return (0);
+			}
 			pipes += 1;
 			i++;
 		}
@@ -113,8 +115,8 @@ int	ft_save_groups(t_data *data, int grp_nbr, int ii)
 	int	start;
 	char	c_char;
 
-	grp_nb = grp_nbr + 1;//3 ---> right amount of groups
-	i = ii;// ii = 0 
+	grp_nb = grp_nbr + 1;
+	i = ii;
 	j = 0;
     start = i;
     if (grp_nb == data->groups)

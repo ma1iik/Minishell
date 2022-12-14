@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/11/26 18:31:04 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/12 18:23:51 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	ft_token_filename(t_data *data)
 	i = 0;
 	while (ft_isspace(data->lexer.c))
 		skip_space(data);
-	if (data->lexer.c == '\0')
+	if (data->lexer.c == '\0' || data->lexer.c == '|')
 		return (0);
 	start = data->lexer.i;
-	while (!ft_isspace(data->lexer.c) && data->lexer.c != '<' && data->lexer.c != '>')
+	while (data->lexer.c && !ft_isspace(data->lexer.c) && data->lexer.c != '<' && data->lexer.c != '>')
 		lexer_advance(data);
 	end = data->lexer.i;
 	file = ft_calloc(sizeof(char), (end - start + 1));
@@ -60,8 +60,9 @@ int	ft_token_filename(t_data *data)
 	}
 	file[i] = '\0';
 	ft_init_tok(data, FILE_NAME, file);
-	printf("file\n");
 	free (file);
+	// lexer_advance(data);
+	// ft_token_filename(data);
 	return (1);
 }
 

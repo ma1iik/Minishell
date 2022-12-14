@@ -23,7 +23,8 @@ SRCS	=	main.c	\
 			builtins/export.c \
 			builtins/exit.c \
 			builtins/unset.c \
-			builtins/env.c
+			builtins/env.c \
+			redirs.c
 
 OBJS	= ${SRCS:.c=.o}
 

@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/10 23:12:55 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 16:16:42 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_lexer(t_data *data)
 	data->lexer.c = data->lexer.content[0];
 	//printf("%s\n", data->cmd);
 	if (!get_next_token(data))
-		return (0);
+		return (0);;
 	ft_rm_quotes(data);
 	//print_tok(data);
 	return (1);
@@ -32,6 +32,7 @@ void	ft_init_data(t_data *data)
 	data->exit_t = 1;
 	data->env_f = 1;
 	data->cmd_n = 0;
+	data->error_str = NULL;
 }
 
 void	read_line(t_data *data)
@@ -56,9 +57,9 @@ void	read_line(t_data *data)
 		data->cmd_l_free = data->cmd_l;
 		if (!ft_exec(data))
 			continue;
+		ft_print_err(data);
 		ft_free_all(data);
 		free(data->cmd);
-		// print your cmd
 	}
 }
 
@@ -66,7 +67,8 @@ void	ft_glv(char **env, t_data *data)
 {
 	glv.env = ft_calloc(sizeof(t_list), 1);
 	glv.env_exp = ft_calloc(sizeof(t_list), 1);
-	glv.i = 0;
+	glv.redsig = 1;
+	glv.heredoc = 0;
 	glv.env_sig = 0;
 	int		len;
 	int		i;
@@ -75,7 +77,7 @@ void	ft_glv(char **env, t_data *data)
 	i = 0;
 	len = ft_tab_len(env);
 	ft_fill_envstr(data, env);
-	while (i < len)
+	while (i < len + 1)
 	{
 		ft_lstadd_back(&glv.env, ft_lstnew(env[i]));
 		i++;

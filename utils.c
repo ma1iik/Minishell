@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/08 10:48:32 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 16:17:21 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ void	ft_fill_glv(char **env, int	num)
 		tmp = tmp->link;
 	}
 	tmp->name = ft_strdup("?");
+	tmp->value = ft_strdup("0");
 }
 
 char *ft_strstr(char *str, char *to_find)
@@ -330,8 +331,8 @@ t_list	*ft_lstnew(char *content)
 
 	(void)content;
 	new = ft_calloc(sizeof(t_list), 1);
-	if (!content)
-		return (NULL);
+	// if (!content)
+	// 	return (NULL);
 	if (!new)
 		return (NULL);
 	new->name = NULL; //ft_get_name(content);
@@ -562,6 +563,13 @@ void	ft_free_2d(char **str)
 	free (str);
 }
 
+void	puterr(char *cmd)
+{
+	printf("%s: command not found\n", cmd);
+	ft_exst(127);
+	return ;
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	unsigned int	a;
@@ -591,6 +599,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 int	ft_isbuiltin(t_data *data)
 {
+	if (!data->cmd_l->cmd[0])
+		return (0);
 	if (!ft_strcmp(data->cmd_l->cmd[0], "pwd")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "env")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "cd")
