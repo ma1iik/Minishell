@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 05:02:31 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/10 14:35:49 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/15 04:44:55 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void ft_print_exp(void)
 {
 	t_list	*tmp;
 
-	tmp = glv.env_exp;
+	tmp = g_glv.env_exp;
 	while (tmp)
 	{
 		if (ft_strcmp("?", tmp->name) == 0)
@@ -70,7 +70,7 @@ char	*ft_getvarname(char *s)
 
 	i = 0;
 	len = 0;
-	while (s[len] != '=')
+	while (s[len] != '=' && s[len] != '\0')
 		len++;
 	ret = ft_calloc(sizeof(char), len + 1);
 	if (!ret)
@@ -84,13 +84,14 @@ char	*ft_getvarname(char *s)
 	return (ret);
 }
 
-int ft_exp_exist(char *s)
+int	ft_exp_exist(char *s)
 {
-	char 	*name;
+	char	*name;
 	t_list	*tmp;
 
-	tmp = glv.env_exp;
+	tmp = g_glv.env_exp;
 	name = ft_getvarname(s);
+	printf("env NAME is %s\n", name);
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->name, name) == 0)
@@ -104,29 +105,21 @@ int ft_exp_exist(char *s)
 	return (0);
 }
 
-void	ft_unset_2env(char **str)
+void	ft_unset_2env(char *cmd)
 {
 	t_list	*tmp;
+	char	**str;
 
-	tmp = glv.env;
-	while (tmp)
+	str = ft_split(cmd, '=');
+	tmp = g_glv.env_exp;
+	printf("here\n");
+	while (tmp != NULL)
 	{
 		if (ft_strcmp(str[0], tmp->name) == 0)
 		{
+			printf("assigning\n");
 			free(tmp->value);
 			tmp->value = ft_strdup(str[1]);
-			tmp->flag = 0;
-		}
-		tmp = tmp->link;
-	}
-	tmp = glv.env_exp;
-	while (tmp)
-	{
-		if (ft_strcmp(str[0], tmp->name) == 0)
-		{
-			free(tmp->value);
-			tmp->value = ft_strdup(str[1]);
-			tmp->flag = 0;
 		}
 		tmp = tmp->link;
 	}
@@ -161,21 +154,21 @@ void	ft_exec_export(char *cmd, int num)
 	char	**cmd_sp;
 
 	cmd_sp = ft_split(cmd, '=');
-	if (num == 1)
+	// if (num == 1)
+	// {
+	// 	ft_unset_2env(cmd_sp);
+	// }
+	if (num == 2)
 	{
-		ft_unset_2env(cmd_sp);
-	}
-	else if (num == 2)
-	{
-		ft_lstadd_back(&glv.env, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 0));
-		ft_lstadd_back(&glv.env_exp, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 0));
+		ft_lstadd_back(&g_glv.env, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 0));
+		ft_lstadd_back(&g_glv.env_exp, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 0));
 	}
 	else if (num == 3)
 	{
-		//ft_lstadd_back(&glv.env, ft_lstnew(cmd_sp[0]. cmd_sp[1], 1));
-		ft_lstadd_back(&glv.env_exp, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 1));
+		//ft_lstadd_back(&g_glv.env, ft_lstnew(cmd_sp[0]. cmd_sp[1], 1));
+		ft_lstadd_back(&g_glv.env_exp, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 1));
 	}
-	glv.env_sig = 1;
+	g_glv.env_sig = 1;
 	ft_free_2d(cmd_sp);
 }
 
@@ -187,23 +180,28 @@ void	ft_export(char **cmd, int c)
 	if (ft_tab_len(cmd) == 1)
 		ft_print_exp();
 	else
-	{
-		while (cmd[c])
-		{
-			if(ft_exp_err(cmd[c]))
-			{
-				if (ft_check_ravno(cmd[c]) && ft_exp_exist(cmd[c]))
-					ft_exec_export(cmd[c], 1);
-				else if (ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
-					ft_exec_export(cmd[c], 2);
-				else if (!ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
-					ft_exec_export(cmd[c], 3);
-			}
-			else
-				i = 1;
-			c++;
-		}
-	}
+		ft_unset_2env(cmd[c]);
+	// {
+	// 	while (cmd[c] && cmd[c] != NULL)
+	// 	{
+	// 		if (ft_exp_err(cmd[c]) && ft_check_ravno(cmd[c]) && ft_exp_exist(cmd[c]))
+	// 		{
+	// 			printf("here1\n");
+	// 			ft_unset_2env(cmd[c]);
+	// 		}
+	// 		else if (ft_exp_err(cmd[c]) && ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
+	// 		{
+	// 			printf("here2\n");
+	// 			ft_exec_export(cmd[c], 2);
+	// 		}
+	// 		else if (ft_exp_err(cmd[c]) && !ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
+	// 		{
+	// 			printf("here3\n");
+	// 			ft_exec_export(cmd[c], 3);
+	// 		}
+	// 		c++;
+	// 	}
+	//}
 	if (i == 0)
 		ft_exst(0);
 }

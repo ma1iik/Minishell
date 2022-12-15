@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/14 16:43:51 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/15 04:42:46 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	ft_tlsize(t_list *lst)
 
 char	*ft_combine_envvars(t_data *data, t_list *lst)
 {
-	//int		len;
 	char	*str;
 
 	(void)data;
@@ -58,8 +57,8 @@ char	**ft_dum_env_unset(t_data *data)
 	char	**ret;
 
 	i = 0;
-	ret = calloc(sizeof(char *), (ft_tlsize(glv.env) + 1));
-	tmp = glv.env;
+	ret = calloc(sizeof(char *), (ft_tlsize(g_glv.env) + 1));
+	tmp = g_glv.env;
 	while (tmp && (ft_strcmp(tmp->name, "?") != 0))
 	{
 		ret[i] = ft_combine_envvars(data, tmp);
@@ -88,7 +87,6 @@ char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd)
 
 char	**ft_cur_var1(t_data *data, char **sp_path, int i, t_cmdl *cmd)
 {
-	//int		len;
 	char	*name;
 	char	**cur;
 	int		len2;
@@ -98,11 +96,8 @@ char	**ft_cur_var1(t_data *data, char **sp_path, int i, t_cmdl *cmd)
 	(void)cmd;
 	j = 1;
 	len2 = ft_tab_len(data->cmd_l->cmd);
-	//len = ft_strlen(data->cmd_l->cmd[0]);
 	name = ft_strdup(data->cmd_l->cmd[0]);
 	cur = ft_calloc(sizeof(char *), len2 + 1);
-	//cur[0] = ft_calloc(sizeof(char), (ft_strlen(sp_path[i]) + len + 2));
-	//cur[0] = ft_strcat(cur[0], sp_path[i]);
 	tmp = ft_strcat(sp_path[i], "/");
 	cur[0] = ft_strcat(tmp, name);
 	while (j < len2)
@@ -125,6 +120,7 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 	int		i;
 
 	i = 0;
+	splitted = NULL;
 	if (cmd->nocmd == 1)
 		return ;
 	path = getenv("PATH");
@@ -160,11 +156,11 @@ void	ft_check_path(t_data *data)
 
 	i = 0;
 	len = ft_tab_len(data->env_str);
-	if (glv.env_sig == 1)
+	if (g_glv.env_sig == 1)
 	{
 		ft_free_2d(data->env_str);
 		data->env_str = ft_dum_env_unset(data);
-		glv.env_sig = 0;
+		g_glv.env_sig = 0;
 	}
 	str = ft_strjoin("PATH=", getenv("PATH"));
 	while (data->env_str[i] && i < len)
@@ -227,11 +223,12 @@ void	ft_exbuiltin(t_data *data)
 	if (!ft_strcmp(data->cmd_l->cmd[0], "pwd"))
 		ft_pwd();
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "cd"))
-	{
 		ft_cd(data->cmd_l->cmd);
-	}
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "export"))
-		ft_export(data->cmd_l->cmd, 1);
+		{
+			ft_unset_2env("USER=MALIK");
+			//ft_export(data->cmd_l->cmd, 1);
+		}
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "env"))
 		ft_env();
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "unset"))
@@ -269,7 +266,7 @@ int	ft_check_redir(t_data *data)
 	{
 		if (data->cmd_l->redir[1] == NULL)
 		{
-			glv.redsig = 0;
+			g_glv.redsig = 0;
 			printf("redirs changed to 0\n");
 			return (0);
 		}
@@ -280,7 +277,7 @@ int	ft_check_redir(t_data *data)
 			{
 				if (data->cmd_l->redir[i] == NULL)
 				{
-					glv.redsig = 0;
+					g_glv.redsig = 0;
 					printf("redirs changed to 0\n");
 					return (0);
 				}
@@ -351,7 +348,7 @@ int	ft_child(t_data *data)
 
 	ft_check_path(data);
 	if (!ft_check_redir(data))
-	if (!glv.redsig)
+	if (!g_glv.redsig)
 		ft_errstr(data);
 	data->pid = fork();
 	if (data->pid < 0)
@@ -359,15 +356,15 @@ int	ft_child(t_data *data)
 		perror("fork error");
 		return (0);
 	}
-	if (data->pid == 0 && glv.redsig)
+	if (data->pid == 0 && g_glv.redsig)
 	{
 		ft_pipes(data->cmd_l);
 		ft_redirs(data->cmd_l);
 		ft_execcmd(data, data->env_str);
 	}
 	waitpid(data->pid, &status, 0);
-	if (!glv.redsig)
-		glv.redsig = 1;
+	if (!g_glv.redsig)
+		g_glv.redsig = 1;
 	return (1);
 }
 

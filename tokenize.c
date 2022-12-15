@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/12 18:23:51 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 23:16:35 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ char *ft_rm_quotes2(char *str, int start, int end)
 
 	i = 0;
 	j = 0;
-	tmp = ft_calloc(sizeof(char), ft_strlen(str) - 1);
+	tmp = ft_calloc(sizeof(char), ft_strlen(str));
 	while (str[i])
 	{
 		if (i != start && i != end)

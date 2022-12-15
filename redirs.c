@@ -97,7 +97,7 @@ void	heredoc(char **redirs, t_cmdl *cmd)
 				puterr("");
 			while (1)
 			{
-				glv.heredoc = 1;
+				g_glv.heredoc = 1;
 				echo_contr_sequence(0);
 				str = readline(">");
 				if (!str || !ft_strncmp(str, redirs[i + 1],
@@ -106,7 +106,7 @@ void	heredoc(char **redirs, t_cmdl *cmd)
 				write(file, str, ft_strlen(str));
 				write(file, "\n", 1);
 			}
-			glv.heredoc = 0;
+			g_glv.heredoc = 0;
 		}
 		i += 2;
 	}

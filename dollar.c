@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 02:24:32 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/14 16:27:51 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 21:05:23 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_skip_sq(char *cmd, int i, int sq, int dq)
+int	ft_skip_sq(char *cmd, int i, int sq, int dq)
 {
 	char	c;
 
@@ -32,7 +32,6 @@ int ft_skip_sq(char *cmd, int i, int sq, int dq)
 
 void	ft_q_state(int *sq, int *dq, char c)
 {
-	//if (c == '\'' && dq)
 	if (c == '"' && sq && dq)
 	{
 		sq = 0;
@@ -54,29 +53,29 @@ int	ft_read_state(int *sq, int *dq)
 		return (0);
 }
 
-int	ft_find_end(char *str, int state, int start)
+int	ft_find_end(char *s, int state, int p)
 {
 	if (state == 1)
 	{
-		while (str[start] && (ft_isalnum(str[start]) || str[start] == '_' || str[start] == '@')
-			&& str[start] != ' ' && str[start] != '$')
-			start++;
+		while (s[p] && (ft_isalnum(s[p]) || s[p] == '_'
+				|| s[p] == '@') && s[p] != ' ' && s[p] != '$')
+			p++;
 	}
 	if (state == 2)
 	{
-		while (str[start] && (ft_isalnum(str[start]) || str[start] == '_' || str[start] == '@')
-			&& str[start] != ' ' && str[start] != '$' && str[start] != '"')
-			start++;
+		while (s[p] && (ft_isalnum(s[p]) || s[p] == '_' || s[p] == '@')
+			&& s[p] != ' ' && s[p] != '$' && s[p] != '"')
+			p++;
 	}
 	if (state == 3)
 	{
-		while (str[start] && (ft_isalnum(str[start]) || str[start] == '_' || str[start] == '@')
-			&& str[start] != ' ' && str[start] != '$' && str[start] != '\'')
-			start++;
+		while (s[p] && (ft_isalnum(s[p]) || s[p] == '_'
+				|| s[p] == '@') && s[p] != ' ' && s[p] != '$' && s[p] != '\'')
+			p++;
 	}
-	if (str[start] == '?')
-		return (start + 1);
-	return (start);
+	if (s[p] == '?')
+		return (p + 1);
+	return (p);
 }
 
 char	*ft_get_first(char *cmd, int end)
@@ -120,30 +119,26 @@ char	*ft_get_second(char *cmd, int end)
 	return (ret);
 }
 
-char	*ft_get_env(t_data *data, char *cmd, int start, int end)
+char	*ft_get_env(char *cmd, int start, int end)
 {
 	int		j;
 	char	*compare;
 	t_list	*tmp;
-	char 	*val;
-	
-	(void)data;
-	val = NULL;
+	char	*val;
+
 	j = 0;
-	tmp = glv.env;
+	tmp = g_glv.env;
 	compare = ft_calloc(sizeof(char), end - start + 1);
 	if (!compare)
 		return (0);
 	while (start < end)
 		compare[j++] = cmd[start++];
 	compare[j] = '\0';
-	printf ("compare is %s\n", compare);
 	while (tmp != NULL)
 	{
 		if (ft_strcmp(compare, tmp->name) == 0)
 		{
 			val = ft_strdup(tmp->value);
-			printf ("val is %s\n", val);
 			free(compare);
 			return (val);
 		}
@@ -167,8 +162,6 @@ char	*ft_combine_str(char *s1, char *s2, char *s3)
 	char	*dest;
 	char	*tmp;
 
-	//len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3);
-	//dest = ft_calloc(sizeof(char), len + 1);
 	if (s1 && s2 && s3)
 	{
 		tmp = ft_strcat(s1, s2);
@@ -194,13 +187,13 @@ char	*ft_combine_str(char *s1, char *s2, char *s3)
 char	*ft_replace_d(int state, int end, t_data *data)
 {
 	char	*first;
-	char 	*env;
+	char	*env;
 	char	*second;
 	char	*ret;
 
 	(void)state;
-	first = ft_get_first(data->cmd, data->dollar_i);
-	env = ft_get_env(data, data->cmd, data->dollar_i + 1, end);
+	first = ft_get_first(data->cmd, data->d_i);
+	env = ft_get_env(data->cmd, data->d_i + 1, end);
 	second = ft_get_second(data->cmd, end);
 	if (!first && !env && !second)
 		return (NULL);
@@ -217,8 +210,9 @@ int	ft_env_change(t_data *data, int *sq, int *dq)
 	int		state;
 	int		end;
 
+	new_cmd = NULL;
 	state = ft_read_state(sq, dq);
-	end = ft_find_end(data->cmd, state, data->dollar_i + 1);
+	end = ft_find_end(data->cmd, state, data->d_i + 1);
 	if (state)
 		new_cmd = ft_replace_d(state, end, data);
 	if (!new_cmd)
@@ -249,21 +243,22 @@ int ft_dollar_skip(char *s, int i)
 
 int	ft_dollar_rules(t_data *data, int sq, int dq)
 {
-	while (data->cmd[data->dollar_i])
+	while (data->cmd[data->d_i])
 	{
-		data->dollar_i = ft_skip_sq(data->cmd, data->dollar_i, sq, dq);
-		if (data->cmd[data->dollar_i] == '"' || data->cmd[data->dollar_i] == '\'')
-			ft_q_state(&sq, &dq, data->cmd[data->dollar_i]);
-		else if (data->cmd[data->dollar_i] == '$' && data->cmd[data->dollar_i + 1]
-			&& (ft_isalpha(data->cmd[data->dollar_i + 1]) || data->cmd[data->dollar_i + 1] == '?'))
+		data->d_i = ft_skip_sq(data->cmd, data->d_i, sq, dq);
+		if (data->cmd[data->d_i] == '"' || data->cmd[data->d_i] == '\'')
+			ft_q_state(&sq, &dq, data->cmd[data->d_i]);
+		else if (data->cmd[data->d_i] == '$' && data->cmd[data->d_i + 1]
+			&& (ft_isalpha(data->cmd[data->d_i + 1])
+				|| data->cmd[data->d_i + 1] == '?'))
 		{
 			if (!ft_env_change(data, &sq, &dq))
 				return (0);
 		}
-		if (data->cmd[data->dollar_i] && data->cmd[data->dollar_i] == '$')
-			data->dollar_i = ft_dollar_skip(data->cmd, data->dollar_i);
-		else if (data->cmd[data->dollar_i] != '\0')
-			data->dollar_i++;
+		if (data->cmd[data->d_i] && data->cmd[data->d_i] == '$')
+			data->d_i = ft_dollar_skip(data->cmd, data->d_i);
+		else if (data->cmd[data->d_i] != '\0')
+			data->d_i++;
 	}
 	return (1);
 }

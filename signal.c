@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 04:06:24 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/13 18:33:00 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 22:15:42 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_exst(int num)
 	t_list	*tmp;
 	char	*n;
 
-	tmp = glv.env;
+	tmp = g_glv.env;
 	n = ft_itoa(num);
 	while (tmp != NULL)
 	{
@@ -44,6 +44,7 @@ void	ft_sig_exec1(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		ft_exst(1);
 	}
 	if (sig == SIGQUIT)
 	{
@@ -53,7 +54,7 @@ void	ft_sig_exec1(int sig)
 	}
 }
 
-void		ft_sig_exec(int sig)
+void	ft_sig_exec(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -136,7 +137,7 @@ void	ft_sig_herd(int sig)
 {
 	if (sig == SIGINT)
 	{
-		if (glv.heredoc == 0)
+		if (g_glv.heredoc == 0)
 		{
 			printf("\e[2K");
 			rl_on_new_line();

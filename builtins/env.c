@@ -16,7 +16,7 @@ void	ft_env(void)
 {
 	t_list	*tmp;
 
-	tmp = glv.env;
+	tmp = g_glv.env;
 	while (tmp != NULL && tmp->name != NULL)
 	{
 		if (ft_strcmp(tmp->name, "?") != 0)

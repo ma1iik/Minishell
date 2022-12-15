@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/14 16:16:42 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/15 04:29:14 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ int	ft_lexer(t_data *data)
 		return (0);
 	data->lexer.content = data->cmd;
 	data->lexer.c = data->lexer.content[0];
-	//printf("%s\n", data->cmd);
 	if (!get_next_token(data))
-		return (0);;
+		return (0);
 	ft_rm_quotes(data);
-	//print_tok(data);
 	return (1);
 }
 
@@ -35,6 +33,21 @@ void	ft_init_data(t_data *data)
 	data->error_str = NULL;
 }
 
+void	ft_func()
+{
+	t_list	*tmp;
+
+	tmp = g_glv.env_exp;
+	while (tmp != NULL)
+	{
+		if (ft_strcmp("USER", tmp->name) == 0)
+		{
+			tmp->value = ft_strdup("LOH");
+		}
+		tmp = tmp->link;
+	}
+}
+
 void	read_line(t_data *data)
 {
 	ft_init_data(data);
@@ -42,6 +55,7 @@ void	read_line(t_data *data)
 	{
 		signal(SIGINT, ft_sig_exec1);
 		signal(SIGQUIT, ft_sig_exec1);
+		//ft_func();
 		data->cmd = readline("minishell:");
 		if (!data->cmd)
 			break;
@@ -63,13 +77,13 @@ void	read_line(t_data *data)
 	}
 }
 
-void	ft_glv(char **env, t_data *data)
+void	ft_g_glv(char **env, t_data *data)
 {
-	glv.env = ft_calloc(sizeof(t_list), 1);
-	glv.env_exp = ft_calloc(sizeof(t_list), 1);
-	glv.redsig = 1;
-	glv.heredoc = 0;
-	glv.env_sig = 0;
+	g_glv.env = ft_calloc(sizeof(t_list), 1);
+	g_glv.env_exp = ft_calloc(sizeof(t_list), 1);
+	g_glv.redsig = 1;
+	g_glv.heredoc = 0;
+	g_glv.env_sig = 0;
 	int		len;
 	int		i;
 	
@@ -79,25 +93,25 @@ void	ft_glv(char **env, t_data *data)
 	ft_fill_envstr(data, env);
 	while (i < len + 1)
 	{
-		ft_lstadd_back(&glv.env, ft_lstnew(env[i]));
+		ft_lstadd_back(&g_glv.env, ft_lstnew(env[i]));
 		i++;
 	}
 	i = 0;
 	while (i < len)
 	{
-		ft_lstadd_back(&glv.env_exp, ft_lstnew(env[i]));
+		ft_lstadd_back(&g_glv.env_exp, ft_lstnew(env[i]));
 		i++;
 	}
-	// ft_lstadd_back(&glv.env, ft_lstnew_last());
-	ft_fill_glv(env, 1);
-	ft_fill_glv(env, 2);
+	// ft_lstadd_back(&g_glv.env, ft_lstnew_last());
+	ft_fill_g_glv(env, 1);
+	ft_fill_g_glv(env, 2);
 }
 
-void		ft_print_glv(void)
+void		ft_print_g_glv(void)
 {
 	t_list *tmp;
 
-	tmp = glv.env;
+	tmp = g_glv.env;
 	while (tmp->link != NULL)
 	{
 		write(1, tmp->name, sizeof(tmp->name));
@@ -113,8 +127,8 @@ int	main(int ac, char **av, char **env)
 	(void) ac;
 	(void) av;
 	data = ft_calloc(1, sizeof(t_data));
-	ft_glv(env, data);
-	//ft_print_glv();
+	ft_g_glv(env, data);
+	//ft_print_g_glv();
 	read_line(data);
 	ft_free_envstr(data);
 	//ft_dealloc_envstr(data);

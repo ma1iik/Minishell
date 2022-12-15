@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:57:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/12 18:29:45 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 20:23:19 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void init_lexer(t_data *data)
 {
-	data->dollar_i = 0;
+	data->d_i = 0;
 	data->lexer.i = 0;
 	data->tok_nb = 0;
 }

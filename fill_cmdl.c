@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_cmdl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 18:58:09 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/14 13:35:15 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/15 02:17:59 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	ft_count_arg(t_data *data, int x)
 			arg = 1;
 		else if (!arg && (data->tokens[x].e_type == ARG || data->tokens[x].e_type == CMD))
 		{
-			printf("in count its --> %s\n", data->tokens[x].value);
 			cnt++;
 		}
 		x++;

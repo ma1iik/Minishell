@@ -28,8 +28,14 @@ SRCS	=	main.c	\
 
 OBJS	= ${SRCS:.c=.o}
 
+LIBMAC  =""
+OS = ${shell uname}
+ifeq ($(OS),Darwin)
+	LIBMAC += -L/Users/misrailo/.brew/opt/readline/lib
+endif
+
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline ${LIBMAC} -o ${NAME}
 
 all:	${NAME}
 

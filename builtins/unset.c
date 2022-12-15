@@ -26,9 +26,9 @@ int	ft_uns_err(char *str)
 void	ft_pos_zero(t_list **cur, int num)
 {
 	if (num == 1)
-		glv.env = glv.env->link;
+		g_glv.env = g_glv.env->link;
 	else if (num == 2)
-		glv.env_exp = glv.env_exp->link;
+		g_glv.env_exp = g_glv.env_exp->link;
 	free((*cur)->name);
 	free((*cur)->value);
 	free(*cur);
@@ -49,9 +49,9 @@ void	ft_unset_var_exp(char **cmd, int i, int pos)
 	t_list	*prev;
 	t_list	*cur;
 
-	cur = glv.env_exp;
-	prev = glv.env_exp;
-	if (!glv.env_exp)
+	cur = g_glv.env_exp;
+	prev = g_glv.env_exp;
+	if (!g_glv.env_exp)
 		return ;
 	while (cur)
 	{
@@ -73,9 +73,9 @@ void	ft_unset_var(char **cmd, int i, int pos)
 	t_list	*prev;
 	t_list	*cur;
 
-	cur = glv.env;
-	prev = glv.env;
-	if (!glv.env)
+	cur = g_glv.env;
+	prev = g_glv.env;
+	if (!g_glv.env)
 		return ;
 	while (cur)
 	{
@@ -90,7 +90,7 @@ void	ft_unset_var(char **cmd, int i, int pos)
 		cur = cur->link;
 	}
 	ft_unset_var_exp(cmd, i, 0);
-	glv.env_sig = 1;
+	g_glv.env_sig = 1;
 	return ;
 }
 

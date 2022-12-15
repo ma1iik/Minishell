@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/14 16:17:21 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/14 20:59:49 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,16 +184,16 @@ int	ft_separated(t_data *data)
 		return (0);
 }
 
-void	ft_fill_glv(char **env, int	num)
+void	ft_fill_g_glv(char **env, int	num)
 {
 	int		i;
 	t_list	*tmp;
 
 	i = 0;
 	if (num == 1)
-		tmp = glv.env;
+		tmp = g_glv.env;
 	else if (num == 2)
-		tmp = glv.env_exp;
+		tmp = g_glv.env_exp;
 	while (env[i])
 	{
 		tmp->name = ft_get_name(env[i]);
@@ -537,7 +537,7 @@ void	ft_exit_st(int x)
 {
 	t_list	*tmp;
 
-	tmp = glv.env;
+	tmp = g_glv.env;
 	while (tmp && ft_strcmp(tmp->name, "?") != 0)
 		tmp = tmp->link;
 	if ( tmp && ft_strcmp(tmp->name, "?") == 0)
@@ -705,6 +705,6 @@ char	**ft_split(char const *s, char c)
 			s++;
 		i++;
 	}
-	ptr_str[i] = '\0';
+	ptr_str[i] = NULL;
 	return (ptr_str);
 }
