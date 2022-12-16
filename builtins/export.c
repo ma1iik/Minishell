@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 05:02:31 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/15 04:44:55 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 00:12:45 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	ft_exp_exist(char *s)
 
 	tmp = g_glv.env_exp;
 	name = ft_getvarname(s);
-	printf("env NAME is %s\n", name);
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->name, name) == 0)
@@ -112,17 +111,20 @@ void	ft_unset_2env(char *cmd)
 
 	str = ft_split(cmd, '=');
 	tmp = g_glv.env_exp;
-	printf("here\n");
 	while (tmp != NULL)
 	{
 		if (ft_strcmp(str[0], tmp->name) == 0)
 		{
-			printf("assigning\n");
 			free(tmp->value);
-			tmp->value = ft_strdup(str[1]);
+			if (str[1] != NULL)
+				tmp->value = ft_strdup(str[1]);
+			else
+				tmp->value = NULL;
+			tmp->flag = 0;
 		}
 		tmp = tmp->link;
 	}
+	ft_free_2d(str);
 }
 
 t_list	*ft_lstnew_exp(char *name, char *val, int num)
@@ -136,8 +138,8 @@ t_list	*ft_lstnew_exp(char *name, char *val, int num)
 		return (NULL);
 	if (num == 1)
 	{
-		new->name = NULL;
-		new->value =ft_strdup(val);
+		new->name = ft_strdup(name);
+		new->value = NULL;
 		new->flag = 1;
 	}
 	else if (num == 0)
@@ -172,7 +174,7 @@ void	ft_exec_export(char *cmd, int num)
 	ft_free_2d(cmd_sp);
 }
 
-void	ft_export(char **cmd, int c)
+void	ft_export(t_data *data, char **cmd, int c)
 {
 	int		i;
 
@@ -180,28 +182,22 @@ void	ft_export(char **cmd, int c)
 	if (ft_tab_len(cmd) == 1)
 		ft_print_exp();
 	else
-		ft_unset_2env(cmd[c]);
-	// {
-	// 	while (cmd[c] && cmd[c] != NULL)
-	// 	{
-	// 		if (ft_exp_err(cmd[c]) && ft_check_ravno(cmd[c]) && ft_exp_exist(cmd[c]))
-	// 		{
-	// 			printf("here1\n");
-	// 			ft_unset_2env(cmd[c]);
-	// 		}
-	// 		else if (ft_exp_err(cmd[c]) && ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
-	// 		{
-	// 			printf("here2\n");
-	// 			ft_exec_export(cmd[c], 2);
-	// 		}
-	// 		else if (ft_exp_err(cmd[c]) && !ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
-	// 		{
-	// 			printf("here3\n");
-	// 			ft_exec_export(cmd[c], 3);
-	// 		}
-	// 		c++;
-	// 	}
-	//}
+	{
+		while (cmd[c] && cmd[c] != NULL)
+		{
+			if (ft_exp_err(cmd[c]) && ft_check_ravno(cmd[c]) && ft_exp_exist(cmd[c]))
+				ft_unset_2env(cmd[c]);
+			else if (ft_exp_err(cmd[c]) && ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
+				ft_exec_export(cmd[c], 2);
+			else if (ft_exp_err(cmd[c]) && !ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
+				ft_exec_export(cmd[c], 3);
+			else if (!ft_exp_err(cmd[c]))
+				i = 1;
+			c++;
+		}
+	}
 	if (i == 0)
 		ft_exst(0);
+	if (data->groups != 1 && i ==1)
+		exit(1);
 }

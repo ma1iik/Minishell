@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 05:45:22 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/10 23:13:28 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/15 23:19:42 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,40 @@ void	ft_dealloc_cmds(t_data *data)
 		
 // }
 
+void ft_free_cml1(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	while (data->cmd_l->cmd[i])
+	{
+		free(data->cmd_l->cmd[i]);
+		i++;
+	}
+	i = 0;
+	while (data->cmd_l->redir[i])
+	{
+		free(data->cmd_l->redir[i]);
+		i++;
+	}
+	free(data->cmd_l->cmd);
+	free(data->cmd_l->redir);
+	free(data->cmd_l);
+	data->cmd_l = NULL;
+}
+
 void ft_free_all(t_data *data)
 {
 	//ft_dealloc_lexer(data);
 	//ft_dealloc_tok(data);
 	//ft_free_2d(data->cmd_tab);
 	//free (data->cmd);
-	ft_free_cmdl(data);
+	if (data->freesig == 1)
+		ft_free_cml1(data);
+	else
+		ft_free_cmdl(data);
 	ft_dealloc_cmds(data);
 	ft_free_tokens(data);
+	data->freesig = 0;
 	//ft_dealloc_
 }

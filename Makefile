@@ -35,7 +35,7 @@ ifeq ($(OS),Darwin)
 endif
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline ${LIBMAC} -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME}
 
 all:	${NAME}
 

@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 07:10:53 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/10 14:34:37 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/16 21:09:40 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	ft_unset_var(char **cmd, int i, int pos)
 	return ;
 }
 
-void	ft_unset(char **cmd)
+void	ft_unset(t_data *data, char **cmd)
 {
 	int		i;
 	int		er;
@@ -118,4 +118,6 @@ void	ft_unset(char **cmd)
 		}
 	}
 	ft_exst(er);
+	if (er == 1 && data->groups != 1)
+		exit(1);
 }

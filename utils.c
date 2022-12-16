@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/14 20:59:49 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:31:08 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -533,21 +533,6 @@ char	*ft_strcat1(char *dest, char *src)
 	return (dest);
 }
 
-void	ft_exit_st(int x)
-{
-	t_list	*tmp;
-
-	tmp = g_glv.env;
-	while (tmp && ft_strcmp(tmp->name, "?") != 0)
-		tmp = tmp->link;
-	if ( tmp && ft_strcmp(tmp->name, "?") == 0)
-	{
-		free (tmp->name);
-		tmp->name = ft_strdup(ft_itoa(x));
-	}
-	free (tmp);
-}
-
 void	ft_free_2d(char **str)
 {
 	int		i;
@@ -606,9 +591,36 @@ int	ft_isbuiltin(t_data *data)
 		|| !ft_strcmp(data->cmd_l->cmd[0], "cd")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "echo")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "export")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "exit")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "unset"))
 		return (1);
 	return (0);
+}
+
+int		ft_atoi(const char *str)
+{
+	int neg;
+	int i;
+	int num;
+
+	i = 0;
+	neg = 1;
+	num = 0;
+	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
+			|| str[i] == '\f' || str[i] == '\r')
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			neg *= -1;
+		i++;
+	}
+	while (str[i] >= 48 && str[i] <= 57)
+	{
+		num = num * 10 + (str[i] - 48);
+		i++;
+	}
+	return (num * neg);
 }
 
 int	ft_strncmp(const char *str1, const char *str2, size_t n)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 02:24:32 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/14 21:05:23 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/16 23:11:19 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char	*ft_get_env(char *cmd, int start, int end)
 	while (start < end)
 		compare[j++] = cmd[start++];
 	compare[j] = '\0';
-	while (tmp != NULL)
+	while (tmp != NULL && tmp->name != NULL)
 	{
 		if (ft_strcmp(compare, tmp->name) == 0)
 		{

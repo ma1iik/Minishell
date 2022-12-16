@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/14 13:15:08 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/16 21:38:05 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 	c = c_char;
 	if ((data->cmd[ii + 1]) == '\0')
 	{
-        printf ("quotes didnt close\n");
 		return (-1);
 	}
     else
@@ -29,12 +28,10 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 		i++;
 	if (data->cmd[i] == c)
 	{
-		printf("closed succesfully\n");
 		return (i);
 	}
 	else
 	{
-		printf ("quotes didnt close\n");
 		return (-1);
 	}
 }

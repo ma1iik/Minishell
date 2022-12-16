@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/15 04:42:46 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:52:23 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ char	**ft_dum_env_unset(t_data *data)
 		tmp = tmp->link;
 	}
 	ret[i] = ft_strdup("?=0");
-	free(tmp);
 	return (ret);
 }
 
@@ -208,12 +207,10 @@ void	ft_exec_err(t_data *data, int errn, char **env)
 		ft_exst(126);
 	if (errn == ENOENT)
 		ft_exst(127);
-	if (errn == 127)
-		printf("%s: command not found\n", data->cmd_l->cmd[0]);
-	else if (errn == 126)
+	if (errn == EACCES)
 		printf("%s: argument found but not executable\n", data->cmd_l->cmd[0]);
-	// else if (errn == 1)
-	// 	printf("%s: No such file or directory\n", cmd);
+	else if (errn == ENOENT)
+		printf("%s: command not found\n", data->cmd_l->cmd[0]);
 	ft_free_all(data);
 	exit(EXIT_FAILURE);
 }
@@ -223,29 +220,26 @@ void	ft_exbuiltin(t_data *data)
 	if (!ft_strcmp(data->cmd_l->cmd[0], "pwd"))
 		ft_pwd();
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "cd"))
-		ft_cd(data->cmd_l->cmd);
+		ft_cd(data, data->cmd_l->cmd, 0);
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "export"))
-		{
-			ft_unset_2env("USER=MALIK");
-			//ft_export(data->cmd_l->cmd, 1);
-		}
+		ft_export(data, data->cmd_l->cmd, 1);
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "env"))
 		ft_env();
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "unset"))
-		ft_unset(data->cmd_l->cmd);
+		ft_unset(data, data->cmd_l->cmd);
 	else if (!ft_strcmp(data->cmd_l->cmd[0], "echo"))
-		ft_echo(data->cmd_l->cmd);
+		ft_echo(data, data->cmd_l->cmd);
+	else if (!ft_strcmp(data->cmd_l->cmd[0], "exit"))
+		ft_exit(data, data->cmd_l->cmd);
 }
 
 void	ft_execcmd(t_data *data, char **env)
 {
 	int	execc;
 
-	//printf("EXEC--> %s\n", data->cmd_l->cmd[0]);
 	if (ft_isbuiltin(data) == 1)
 	{
 		ft_exbuiltin(data);
-		//ft_free_all(data);
 		exit (0);
 	}
 	else
@@ -345,6 +339,7 @@ void	ft_errstr(t_data *data)
 int	ft_child(t_data *data)
 {
 	int		status;
+	int exit_code;
 
 	ft_check_path(data);
 	if (!ft_check_redir(data))
@@ -363,6 +358,8 @@ int	ft_child(t_data *data)
 		ft_execcmd(data, data->env_str);
 	}
 	waitpid(data->pid, &status, 0);
+	exit_code = WEXITSTATUS(status);
+	ft_exst(exit_code);
 	if (!g_glv.redsig)
 		g_glv.redsig = 1;
 	return (1);
@@ -389,15 +386,22 @@ int	ft_exec(t_data *data)
 {
 	signal(SIGINT, ft_sig_exec);
 	signal(SIGQUIT, ft_sig_exec);
-	//ft_exit_st(0);
-	(void)data;
-	while (data->cmd_l)
+
+	if (data->groups == 1 && ft_isbuiltin(data))
 	{
-		ft_open_pipe(data->cmd_l);
-		if (!ft_child(data))
-			return (0);
-		ft_close_pipe(data->cmd_l);
-		data->cmd_l = data->cmd_l->next;
+		ft_exbuiltin(data);
+		data->freesig = 1;
+	}
+	else
+	{
+		while (data->cmd_l)
+		{
+			ft_open_pipe(data->cmd_l);
+			if (!ft_child(data))
+				return (0);
+			ft_close_pipe(data->cmd_l);
+			data->cmd_l = data->cmd_l->next;
+		}
 	}
 	return (1);
 }

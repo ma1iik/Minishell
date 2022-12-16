@@ -1,1 +1,36 @@
-here we go 
+total 600
+drwxrwxrwx 1 ma1iik ma1iik   4096 Dec 16 21:10 builtins
+-rwxrwxrwx 1 ma1iik ma1iik   5469 Dec 15 23:06 dollar.c
+-rwxrwxrwx 1 ma1iik ma1iik  24328 Dec 16 21:10 dollar.o
+-rwxrwxrwx 1 ma1iik ma1iik   7988 Dec 16 21:10 exec.c
+-rwxrwxrwx 1 ma1iik ma1iik  42376 Dec 16 21:10 exec.o
+-rwxrwxrwx 1 ma1iik ma1iik      0 Dec 16 21:37 file
+-rwxrwxrwx 1 ma1iik ma1iik   4418 Dec 15 23:06 fill_cmdl.c
+-rwxrwxrwx 1 ma1iik ma1iik  20032 Dec 16 21:10 fill_cmdl.o
+-rwxrwxrwx 1 ma1iik ma1iik   1150 Dec 15 23:06 free.c
+-rwxrwxrwx 1 ma1iik ma1iik   1530 Dec 15 23:06 free_mem2.c
+-rwxrwxrwx 1 ma1iik ma1iik   9208 Dec 16 21:10 free_mem2.o
+-rwxrwxrwx 1 ma1iik ma1iik   2023 Dec 15 23:19 free_mem.c
+-rwxrwxrwx 1 ma1iik ma1iik  11616 Dec 16 21:10 free_mem.o
+-rwxrwxrwx 1 ma1iik ma1iik   7920 Dec 16 21:10 free.o
+-rwxrwxrwx 1 ma1iik ma1iik   2217 Dec 15 23:06 lexer.c
+-rwxrwxrwx 1 ma1iik ma1iik  12992 Dec 16 21:10 lexer.o
+-rwxrwxrwx 1 ma1iik ma1iik     48 Dec 16 21:10 lol
+-rwxrwxrwx 1 ma1iik ma1iik   3040 Dec 15 23:06 main.c
+-rwxrwxrwx 1 ma1iik ma1iik  17080 Dec 16 21:10 main.o
+-rwxrwxrwx 1 ma1iik ma1iik    895 Dec 15 23:07 Makefile
+-rwxrwxrwx 1 ma1iik ma1iik 209000 Dec 16 21:10 minishell
+-rwxrwxrwx 1 ma1iik ma1iik   6139 Dec 16 21:10 minishell.h
+-rwxrwxrwx 1 ma1iik ma1iik   1493 Dec 15 23:06 parsing2.c
+-rwxrwxrwx 1 ma1iik ma1iik   9840 Dec 16 21:10 parsing2.o
+-rwxrwxrwx 1 ma1iik ma1iik   4369 Dec 15 23:06 parsing.c
+-rwxrwxrwx 1 ma1iik ma1iik  19512 Dec 16 21:10 parsing.o
+-rwxrwxrwx 1 ma1iik ma1iik   2949 Dec 16 03:47 redirs.c
+-rwxrwxrwx 1 ma1iik ma1iik  18752 Dec 16 21:10 redirs.o
+-rwxrwxrwx 1 ma1iik ma1iik   3415 Dec 15 23:06 signal.c
+-rwxrwxrwx 1 ma1iik ma1iik  19256 Dec 16 21:10 signal.o
+-rwxrwxrwx 1 ma1iik ma1iik     24 Dec 16 21:11 test.txt
+-rwxrwxrwx 1 ma1iik ma1iik   3815 Dec 15 23:06 tokenize.c
+-rwxrwxrwx 1 ma1iik ma1iik  17456 Dec 16 21:10 tokenize.o
+-rwxrwxrwx 1 ma1iik ma1iik  11052 Dec 16 20:31 utils.c
+-rwxrwxrwx 1 ma1iik ma1iik  46872 Dec 16 21:10 utils.o

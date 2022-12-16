@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:46:15 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 03:08:55 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/16 21:09:27 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ void ft_echo_non(char **cmd)
 	printf("\n");
 }
 
-void	ft_echo(char **cmd)
+void	ft_echo(t_data *data, char **cmd)
 {
 	int	i;
 
+	(void)data;
 	if (cmd[1] == NULL)
 	{
 		printf("\n");

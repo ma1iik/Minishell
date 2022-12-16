@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 02:52:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/02 01:05:58 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/16 20:51:03 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void	ft_pwd(void)
 		ft_putstr_fd(ret, STDOUT_FILENO);
 		write(STDOUT_FILENO, "\n", 1);
 	}
+	ft_exst(0);
 	free(ret);
 }

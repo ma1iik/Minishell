@@ -6,7 +6,7 @@
 /*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:10:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/14 14:18:57 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/16 03:47:57 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,13 @@ void	echo_contr_sequence(int c)
 	ioctl(ttyslot(), TIOCGETD, &conf);
 }
 
-void	heredoc1(char **str, int file, t_cmdl *cmd)
+void	heredoc1(int file, t_cmdl *cmd)
 {
-	free(*str);
-	*str = NULL;
 	close(file);
-	file = open("f", O_RDONLY);
+	file = open("tmp", O_RDONLY);
 	dup2(file, cmd->in);
 	close(file);
-	unlink("f");
+	unlink("tmp");
 }
 
 void	heredoc(char **redirs, t_cmdl *cmd)
@@ -102,13 +100,18 @@ void	heredoc(char **redirs, t_cmdl *cmd)
 				str = readline(">");
 				if (!str || !ft_strncmp(str, redirs[i + 1],
 						(ft_strlen(redirs[i + 1]) + 1)))
+				{
+					free(str);		
 					break ;
+				}
 				write(file, str, ft_strlen(str));
 				write(file, "\n", 1);
+				free(str);
+				//ft_collect_str();
 			}
 			g_glv.heredoc = 0;
 		}
 		i += 2;
 	}
-	heredoc1(&str, file, cmd);
+	heredoc1(file, cmd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/15 04:43:23 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/16 21:52:04 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct s_data
 	int			pid;
 	char		**env_str;
 	char		**error_str;
+	int				freesig;
 }				t_data;
 
 typedef struct s_cmd
@@ -186,7 +187,6 @@ void			ft_free_envstr(t_data *data);
 void			*ft_calloc(size_t count, size_t size);
 void			ft_putstr_fd(char *s, int fd);
 char			*ft_strstr(char *str, char *to_find);
-void			ft_exit_st(int x);
 int				ft_len_list(t_list *lst);
 int				ft_isalnum(int c);
 char			*ft_strcat(char *str1, char *str2);
@@ -194,6 +194,7 @@ char			*ft_strcat1(char *str1, char *str2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			**ft_split(char const *s, char c);
 void			*ft_memset(void *s, int c, size_t len);
+int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 char			*ft_strjoin(char const *s1, char const *s2);
 int				ft_strcmp(char *s1, char *s2);
@@ -220,12 +221,12 @@ void			ft_unset_2env(char *cmd);
 
 //BUILTINS
 int				ft_isbuiltin(t_data *data);
-void			ft_echo(char **cmd);
+void			ft_echo(t_data *data, char **cmd);
 void			ft_pwd(void);
-void			ft_export(char **cmd, int c);
-int				ft_cd(char **cmd);
+void			ft_export(t_data *data, char **cmd, int c);
+int				ft_cd(t_data *data, char **cmd, int i);
 void			ft_env(void);
-void			ft_exit(char **cmd);
-void			ft_unset(char **cmd);
+void			ft_exit(t_data *data, char **cmd);
+void			ft_unset(t_data *data, char **cmd);
 
 #endif
