@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 18:58:09 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/15 02:17:59 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 00:28:18 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	ft_addback_cmdl(t_cmdl **cmd, t_cmdl *new)
 		*cmd = new;
 		return ;
 	}
-	//printf("new CMD --> %s", new->cmd[0]);
 	lst = ft_lst_cmdl(*cmd);
 	new->pos = lst->pos + 1;
 	if (new->pos != 1)
@@ -99,12 +98,12 @@ int	ft_count_red(t_data *data, int x)
 	arg = 0;
 	while (data->tokens[x].e_type && data->tokens[x].e_type != PIPE && data->tokens[x].e_type != END)
 	{
-		if (!arg && (data->tokens[x].e_type < 5|| data->tokens[x].e_type == 6))
+		if (!arg && (data->tokens[x].e_type < 5 || data->tokens[x].e_type == 6))
 		{
 			arg = 1;
 			cnt++;
 		}
-		else if (arg && (data->tokens[x].e_type < 5|| data->tokens[x].e_type == 6 || data->tokens[x].e_type == 8))
+		else if (arg && (data->tokens[x].e_type < 5 || data->tokens[x].e_type == 6 || data->tokens[x].e_type == 8))
 			cnt++;
 		x++;
 	}
@@ -117,23 +116,23 @@ char	**ft_get_redir(t_data *data)
 	int		red_c;
 	int		i;
 	int		place;
-	int		ARG;
+	int		arg;
 
 	i = 0;
-	ARG = 0;
+	arg = 0;
 	place = data->cmdl_i;
 	red_c = ft_count_red(data, data->cmdl_i) + 1;
 	redirs = ft_calloc(sizeof(char *), red_c);
 	while (data->tokens[place].e_type && data->tokens[place].e_type != PIPE
 		&& data->tokens[place].e_type != END && i < red_c)
 	{
-		if (!ARG && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6))
+		if (!arg && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6))
 		{
 			redirs[i] = ft_strdup(data->tokens[place].value);
 			i++;
-			ARG = 1;
+			arg = 1;
 		}
-		else if ((ARG && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6 || data->tokens[place].e_type == 8)))
+		else if ((arg && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6 || data->tokens[place].e_type == 8)))
 		{
 			redirs[i] = ft_strdup(data->tokens[place].value);
 			i++;
@@ -168,7 +167,6 @@ void	ft_set_cmdl(t_data *data)
 
 void	ft_fill_cmdl(t_data *data)
 {
-
 	data->cmdl_i = 0;
 	while (data->cmdl_i < data->tok_nb && data->tokens[data->cmdl_i].e_type != END)
 	{
@@ -179,5 +177,4 @@ void	ft_fill_cmdl(t_data *data)
 		else
 			ft_set_cmdl(data);
 	}
-	//ft_free_all(data);
 }

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/14 23:16:35 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 00:45:30 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ int	ft_token_filename(t_data *data)
 	file[i] = '\0';
 	ft_init_tok(data, FILE_NAME, file);
 	free (file);
-	// lexer_advance(data);
-	// ft_token_filename(data);
 	return (1);
 }
 
@@ -86,7 +84,7 @@ char	*ft_take_cmd(t_data *data)
 		start++;
 	}
 	str[i] = '\0';
-	return (str);	
+	return (str);
 }
 
 char	*ft_take_arg(t_data *data)
@@ -120,7 +118,7 @@ char	*ft_take_arg(t_data *data)
 		start++;
 	}
 	str[i] = '\0';
-	return (str);	
+	return (str);
 }
 
 void	ft_rm_quotes(t_data *data)
@@ -145,7 +143,6 @@ void	ft_rm_quotes(t_data *data)
 				while (data->tokens[i].value[j] != sign && data->tokens[i].value[j])
 					j++;
 				end = j;
-				//printf("\nTHE VALUE: %s\n", data->tokens[i].value);
 				data->tokens[i].value = ft_rm_quotes2(data->tokens[i].value, start, end);
 				j = j - 2;
 			}
@@ -155,7 +152,7 @@ void	ft_rm_quotes(t_data *data)
 	}
 }
 
-char *ft_rm_quotes2(char *str, int start, int end)
+char	*ft_rm_quotes2(char *str, int start, int end)
 {
 	char	*tmp;
 	int		i;

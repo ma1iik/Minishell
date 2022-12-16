@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:10:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/16 03:47:57 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:43:36 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,12 @@ void	heredoc(char **redirs, t_cmdl *cmd)
 				if (!str || !ft_strncmp(str, redirs[i + 1],
 						(ft_strlen(redirs[i + 1]) + 1)))
 				{
-					free(str);		
+					free(str);
 					break ;
 				}
 				write(file, str, ft_strlen(str));
 				write(file, "\n", 1);
 				free(str);
-				//ft_collect_str();
 			}
 			g_glv.heredoc = 0;
 		}

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 05:02:31 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:12:45 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:22:35 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_print_exp(void)
+void	ft_print_exp(void)
 {
 	t_list	*tmp;
 
@@ -156,10 +156,6 @@ void	ft_exec_export(char *cmd, int num)
 	char	**cmd_sp;
 
 	cmd_sp = ft_split(cmd, '=');
-	// if (num == 1)
-	// {
-	// 	ft_unset_2env(cmd_sp);
-	// }
 	if (num == 2)
 	{
 		ft_lstadd_back(&g_glv.env, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 0));
@@ -167,7 +163,6 @@ void	ft_exec_export(char *cmd, int num)
 	}
 	else if (num == 3)
 	{
-		//ft_lstadd_back(&g_glv.env, ft_lstnew(cmd_sp[0]. cmd_sp[1], 1));
 		ft_lstadd_back(&g_glv.env_exp, ft_lstnew_exp(cmd_sp[0], cmd_sp[1], 1));
 	}
 	g_glv.env_sig = 1;
@@ -198,6 +193,6 @@ void	ft_export(t_data *data, char **cmd, int c)
 	}
 	if (i == 0)
 		ft_exst(0);
-	if (data->groups != 1 && i ==1)
+	if (data->groups != 1 && i == 1)
 		exit(1);
 }

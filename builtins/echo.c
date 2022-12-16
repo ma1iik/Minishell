@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:46:15 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/16 21:09:27 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:21:30 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_echo_no_n(char **cmd)
 	printf("\n");
 }
 
-void ft_echo_non(char **cmd)
+void	ft_echo_non(char **cmd)
 {
 	int	i;
 

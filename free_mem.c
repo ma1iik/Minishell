@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_mem.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 05:45:22 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/15 23:19:42 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:28:47 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,8 @@ void	ft_dealloc_lexer(t_data *data)
 
 void	ft_dealloc_cmds(t_data *data)
 {
-		ft_free_2d(data->cmd_tab);
+	ft_free_2d(data->cmd_tab);
 }
-
-// void	ft_dealloc_lexer(t_data *data)
-// {
-// 		free (data->cmd)
-		
-// }
 
 void ft_free_cml1(t_data *data)
 {
@@ -78,10 +72,6 @@ void ft_free_cml1(t_data *data)
 
 void ft_free_all(t_data *data)
 {
-	//ft_dealloc_lexer(data);
-	//ft_dealloc_tok(data);
-	//ft_free_2d(data->cmd_tab);
-	//free (data->cmd);
 	if (data->freesig == 1)
 		ft_free_cml1(data);
 	else
@@ -89,5 +79,4 @@ void ft_free_all(t_data *data)
 	ft_dealloc_cmds(data);
 	ft_free_tokens(data);
 	data->freesig = 0;
-	//ft_dealloc_
 }

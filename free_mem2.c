@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_mem2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/12 19:35:03 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:29:09 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 void	ft_free_cmdl(t_data *data)
 {
 	t_cmdl	*tmp;
-	//t_cmdl	*head;
 	int		i;
 
 	i = 0;
 	tmp = data->cmd_l_free;
-	//head = data->cmd_l_free;
 	while (data->cmd_l_free)
-    {
+	{
 		tmp = data->cmd_l_free;
 		data->cmd_l_free = data->cmd_l_free->next;
 		while (i < tmp->nb_args)
@@ -39,7 +37,7 @@ void	ft_free_cmdl(t_data *data)
 		free (tmp->cmd);
 		free (tmp->redir);
 		free(tmp);
-    }
+		}
 }
 
 void	ft_free_envstr(t_data *data)

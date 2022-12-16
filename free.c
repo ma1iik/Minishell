@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 23:38:27 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/08 22:29:20 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:29:18 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ void	ft_free_tokens(t_data *data)
 		data->tokens[i].value = NULL;
 		i++;
 	}
-		free(data->tokens);
-		data->tokens = NULL;
+	free(data->tokens);
+	data->tokens = NULL;
 }

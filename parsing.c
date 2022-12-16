@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/16 21:38:05 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:42:18 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_check_if_closed(char c_char, int ii, t_data *data)
 	{
 		return (-1);
 	}
-    else
+	else
 		i = ii + 1;
 	while (data->cmd[i] && data->cmd[i] != c)
 		i++;
@@ -52,7 +52,7 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 				if (data->cmd[i] == '"' || data->cmd[i] == '\'')
 				{
 					i = ft_check_if_closed(data->cmd[i], i, data);
-                    if (i == -1)
+					if (i == -1)
 						return (0);
 				}
 				i++;
@@ -65,14 +65,12 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 				i++;
 			if (data->cmd[i + 1] == '|')
 			{
-    			printf("syntax error near `|'\n");
+				printf("syntax error near `|'\n");
 				return (0);
 			}
 			pipes += 1;
 			i++;
 		}
-		// if (data->cmd[i + 1] == '\0')
-		// 	return ();
 	}
 	if (pipes + 1 == data->groups)
 		return (1);
@@ -82,80 +80,78 @@ int	ft_logic_groups(t_data *data, int i, int pipes)
 	return (0);
 }
 
-int ft_one_group_function(t_data *data, int grp_nb, int ii)
+int	ft_one_group_function(t_data *data, int grp_nb, int ii)
 {
-    int i;
-    int j;
-    int start;
-        
-    i = ii;
-    j = 0;
-    while (ft_isspace(data->cmd[i]))
+	int		i;
+	int		j;
+	int		start;
+
+	i = ii;
+	j = 0;
+	while (ft_isspace(data->cmd[i]))
 		i++;
-	
-    start = i;
-    while (data->cmd[i])
-    {
-        i++;
-        j++;
-    }
-    data->cmd_tab[grp_nb] = ft_calloc(j + 1, sizeof(char));
-    ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
-    return (0);
+	start = i;
+	while (data->cmd[i])
+	{
+		i++;
+		j++;
+	}
+	data->cmd_tab[grp_nb] = ft_calloc(j + 1, sizeof(char));
+	ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
+	return (0);
 }
 
 int	ft_save_groups(t_data *data, int grp_nbr, int ii)
 {
-	int	i;
-	int	j;
-	int	grp_nb;
-	int	start;
+	int		i;
+	int		j;
+	int		grp_nb;
+	int		start;
 	char	c_char;
 
 	grp_nb = grp_nbr + 1;
 	i = ii;
 	j = 0;
-    start = i;
-    if (grp_nb == data->groups)
+	start = i;
+	if (grp_nb == data->groups)
 		return (0);
 	if (data->groups == 1 || grp_nb + 1 == data->groups)
 		ft_one_group_function(data, grp_nb, i);
 	else
-    {        
-        while (data->cmd[i] && grp_nb < data->groups)
-        {
-            if (data->cmd[i] && data->cmd[i] == '|')
-            {
-                data->cmd_tab[grp_nb] = ft_calloc(j + 1, sizeof(char));
-                ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
-                //printf("logic grouop %d is %s\ngroups exist - %d\n", grp_nb, data->cmd_tab[grp_nb], data->groups);
-                i++;
-                ft_save_groups(data, grp_nb, i);
-                return (0);
-            }
-            else if (data->cmd[i] && (data->cmd[i] == '"' || data->cmd[i] == '\''))
-            {
+	{
+		while (data->cmd[i] && grp_nb < data->groups)
+		{
+			if (data->cmd[i] && data->cmd[i] == '|')
+			{
+				data->cmd_tab[grp_nb] = ft_calloc(j + 1, sizeof(char));
+				ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
+				i++;
+				ft_save_groups(data, grp_nb, i);
+				return (0);
+			}
+			else if (data->cmd[i] && (data->cmd[i] == '"' || data->cmd[i] == '\''))
+			{
 				c_char = data->cmd[i];
-                i++;
-                while (data->cmd[i] && (data->cmd[i] != c_char))
-                {
-                    i++;
-                    j++;
-                }
-                i++;
-                j = j + 2;
-            }
-            else if (data->cmd[i] && data->cmd[i] != '|' && data->cmd[i] != '"' && data->cmd[i] != '\'' )
-            {
-                while (data->cmd[i] && data->cmd[i] != '|' && data->cmd[i] != '"' && data->cmd[i] != '\'' )
-                {
-                    i++;
-                    j++;
-                }
-            }
-        }
-    }
-    return(0);
+				i++;
+				while (data->cmd[i] && (data->cmd[i] != c_char))
+				{
+					i++;
+					j++;
+				}
+				i++;
+				j = j + 2;
+			}
+			else if (data->cmd[i] && data->cmd[i] != '|' && data->cmd[i] != '"' && data->cmd[i] != '\'' )
+			{
+				while (data->cmd[i] && data->cmd[i] != '|' && data->cmd[i] != '"' && data->cmd[i] != '\'' )
+				{
+					i++;
+					j++;
+				}
+			}
+		}
+	}
+	return (0);
 }
 
 int	ft_custom_split(t_data *data)
@@ -165,6 +161,5 @@ int	ft_custom_split(t_data *data)
 		return (0);
 	data->cmd_tab = ft_calloc(data->groups + 1, sizeof(char *));
 	ft_save_groups(data, -1, 0);
-
 	return (1);
 }

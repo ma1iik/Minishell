@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 01:25:41 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:12:10 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:19:09 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int ft_error_cd(char **cmd, int code)
+int	ft_error_cd(char **cmd, int code)
 {
 	if (code == 1)
 	{
@@ -35,9 +35,9 @@ int ft_error_cd(char **cmd, int code)
 	return (1);
 }
 
-char *ft_get_pwd(char *name)
+char	*ft_get_pwd(char *name)
 {
-	t_list *tmp;
+	t_list	*tmp;
 
 	tmp = g_glv.env;
 	while (tmp)
@@ -49,11 +49,11 @@ char *ft_get_pwd(char *name)
 	return (NULL);
 }
 
-int ft_cd_cases(char **cmd, char *str)
+int	ft_cd_cases(char **cmd, char *str)
 {
-	char *tmp;
-	char *str1;
-	char *subarray;
+	char	*tmp;
+	char	*str1;
+	char	*subarray;
 
 	if (cmd[1] && cmd[1][0] == '-' && cmd[1][1] != '\0')
 	{
@@ -88,7 +88,6 @@ int ft_cd_cases(char **cmd, char *str)
 			if (access(str1, F_OK))
 			{
 				chdir(str1);
-				// free (subarray);
 				free(tmp);
 				free(str1);
 				return (0);
@@ -97,7 +96,6 @@ int ft_cd_cases(char **cmd, char *str)
 			{
 				printf("cd: no such file or directory: %s\n", str1);
 				free(tmp);
-				// free (subarray);
 				free(str1);
 				ft_exst(1);
 				return (1);
@@ -122,9 +120,9 @@ int ft_cd_cases(char **cmd, char *str)
 
 int ft_cd(t_data *data, char **cmd, int i)
 {
-	char *str1;
-	char *str2;
-	char *replace[4];
+	char	*str1;
+	char	*str2;
+	char	*replace[4];
 
 	str1 = getcwd(NULL, 0);
 	if (ft_tab_len(cmd) > 2)

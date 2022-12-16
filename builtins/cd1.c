@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 12:39:48 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/15 02:40:36 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 00:19:36 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	exec_cd(t_data *data, char *path)
 	char	*str1;
 	char	*str2;
 	char	*replace[4];
+
 	if (access(path, F_OK) == 0)
 	{
 		str1 = getcwd(NULL, 0);
@@ -106,5 +107,4 @@ void	exec_cd(t_data *data, char *path)
 		cd_norm(data);
 	else
 		perror(path);
-	
 }

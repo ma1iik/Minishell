@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/16 20:31:08 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:52:45 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ void	*ft_memset(void *s, int c, size_t n)
 	return (s);
 }
 
-int ft_isspace(char c)
+int	ft_isspace(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f')
+	if (c == ' ' || c == '\t' || c == '\r' || c == '\n'
+		|| c == '\v' || c == '\f')
 		return (1);
 	else
 		return (0);
@@ -76,16 +77,6 @@ char	*ft_strncpy(char *dst, char *src, size_t len)
 	return (dst);
 }
 
-void print_cmd(t_data *data)
-{
-	printf("---------------------\n");
-	printf("|	CMD	     |\n");
-	printf("---------------------\n");
-	for(int i = 0; i < data->groups; i++)
-		printf("[%s]\n", data->cmd_tab[i]);
-	printf("---------------------\n");
-}
-
 void	tok_printf(unsigned int tok)
 {
 	if (tok == 1)
@@ -110,19 +101,6 @@ void	tok_printf(unsigned int tok)
 	return ;
 }
 
-void print_tok(t_data *data)
-	{
-		printf("---------------------\n");
-		printf("|	TOKENS	     |\n");
-		printf("---------------------\n");
-		for(int i = 0; i < data->tok_nb; i++)
-		{
-			printf("[%s]\n", data->tokens[i].value);
-			tok_printf(data->tokens[i].e_type);
-		printf("---------------------\n");
-		}
-	}
-
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -143,10 +121,9 @@ size_t	ft_strlen_rl(const char *str)
 	return (i);
 }
 
-
 int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
@@ -164,7 +141,7 @@ char	*ft_strdup(char *src)
 	i = 0;
 	if (!src)
 		return (NULL);
-	dest = ft_calloc(sizeof(char),  (l + 1));
+	dest = ft_calloc(sizeof(char), (l + 1));
 	if (!dest)
 		return (NULL);
 	while (src[i])
@@ -178,13 +155,14 @@ char	*ft_strdup(char *src)
 
 int	ft_separated(t_data *data)
 {
-	if (data->lexer.c == ' ' || data->lexer.c == '<' || data->lexer.c == '>' || !data->lexer.c)
+	if (data->lexer.c == ' ' || data->lexer.c == '<'
+		|| data->lexer.c == '>' || !data->lexer.c)
 		return (1);
 	else
 		return (0);
 }
 
-void	ft_fill_g_glv(char **env, int	num)
+void	ft_fill_g_glv(char **env, int num)
 {
 	int		i;
 	t_list	*tmp;
@@ -205,10 +183,10 @@ void	ft_fill_g_glv(char **env, int	num)
 	tmp->value = ft_strdup("0");
 }
 
-char *ft_strstr(char *str, char *to_find)
+char	*ft_strstr(char *str, char *to_find)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -253,8 +231,8 @@ char	*ft_get_val(char *env)
 	i = 0;
 	len = 0;
 	if (!env)
-	return (NULL);
-	while(env[i] && env[i] != '=')
+		return (NULL);
+	while (env[i] && env[i] != '=')
 		i++;
 	j = i + 1;
 	while (env[j] != '\0' && env[j] != '\n')
@@ -272,11 +250,9 @@ char	*ft_get_val(char *env)
 char	*ft_get_name(char *env)
 {
 	int		i;
-	//int		j;
 	char	*dest;
 
 	i = 0;
-	//j = 0;
 	if (!env)
 		return (NULL);
 	while (env[i] && env[i] != '=')
@@ -285,18 +261,12 @@ char	*ft_get_name(char *env)
 	if (!dest)
 		return (0);
 	dest = ft_strncpy(dest, env, i);
-	// while (j < i)
-	// {
-	// 	dest[j] = env[j];
-	// 	j++;
-	// }
-	// dest[j] = '\0';
 	return (dest);
 }
 
 int ft_tab_len(char **env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (env[i])
@@ -313,7 +283,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		*lst = new;
 		return ;
 	}
-    if (!new)
+	if (!new)
 		return ;
 	tmp_lst = *lst;
 	while (tmp_lst->link)
@@ -331,12 +301,10 @@ t_list	*ft_lstnew(char *content)
 
 	(void)content;
 	new = ft_calloc(sizeof(t_list), 1);
-	// if (!content)
-	// 	return (NULL);
 	if (!new)
 		return (NULL);
-	new->name = NULL; //ft_get_name(content);
-	new->value = NULL; //ft_get_val(content);
+	new->name = NULL;
+	new->value = NULL;
 	new->link = NULL;
 	return (new);
 }
@@ -376,7 +344,6 @@ void	ft_putstr(char *str)
 		i++;
 	}
 }
-
 
 void	ft_putstr_fd(char *s, int fd)
 {
@@ -517,8 +484,8 @@ char	*ft_strcat(char *str1, char *str2)
 
 char	*ft_strcat1(char *dest, char *src)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (dest[i] != '\0')
@@ -597,17 +564,17 @@ int	ft_isbuiltin(t_data *data)
 	return (0);
 }
 
-int		ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
-	int neg;
-	int i;
-	int num;
+	int	neg;
+	int	i;
+	int	num;
 
 	i = 0;
 	neg = 1;
 	num = 0;
 	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-			|| str[i] == '\f' || str[i] == '\r')
+		|| str[i] == '\f' || str[i] == '\r')
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 	{
@@ -625,7 +592,7 @@ int		ft_atoi(const char *str)
 
 int	ft_strncmp(const char *str1, const char *str2, size_t n)
 {
-	size_t	i;
+	size_t			i;
 	unsigned char	*s1;
 	unsigned char	*s2;
 

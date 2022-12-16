@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/16 21:52:23 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/17 00:26:20 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,7 @@ char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd)
 {
 	char	*tmp;
 	char	*cur;
-	// cur =   ft_calloc(sizeof(char),
-	//   		(ft_strlen(sp_path[i]) + ft_strlen((*cmd).cmd[0]) + 2));
-	// cur = ft_strcat1(cur, sp_path[i]);
-	// cur = ft_strcat1(cur, "/");
-	// cur = ft_strcat1(cur, (*cmd).cmd[0]);
+
 	tmp = ft_strcat(sp_path[i], "/");
 	cur = ft_strjoin(tmp, cmd->cmd[0]);
 	free (tmp);
@@ -261,7 +257,6 @@ int	ft_check_redir(t_data *data)
 		if (data->cmd_l->redir[1] == NULL)
 		{
 			g_glv.redsig = 0;
-			printf("redirs changed to 0\n");
 			return (0);
 		}
 		i = 3;
@@ -271,8 +266,7 @@ int	ft_check_redir(t_data *data)
 			{
 				if (data->cmd_l->redir[i] == NULL)
 				{
-					g_glv.redsig = 0;
-					printf("redirs changed to 0\n");
+					g_glv.redsig = 0;;
 					return (0);
 				}
 				i += 2;
@@ -301,10 +295,10 @@ char	*ft_get_errstr(t_data *data)
 void	ft_add_error(t_data *data, int rows, char *str)
 {
 	char	**dest;
-  	int		i;
+	int		i;
 
 	i = 0;
- 	dest = ft_calloc(rows + 2, sizeof(char*));
+	dest = ft_calloc(rows + 2, sizeof(char *));
 	while (data->error_str[i])
 	{
 		dest[i] = ft_strdup(data->error_str[i]);
@@ -339,10 +333,10 @@ void	ft_errstr(t_data *data)
 int	ft_child(t_data *data)
 {
 	int		status;
-	int exit_code;
+	int		exit_code;
 
 	ft_check_path(data);
-	if (!ft_check_redir(data))
+	ft_check_redir(data);
 	if (!g_glv.redsig)
 		ft_errstr(data);
 	data->pid = fork();
@@ -378,7 +372,7 @@ void	ft_print_err(t_data *data)
 			printf("%s", data->error_str[i]);
 			i++;
 		}
-	ft_free_2d(data->error_str);
+		ft_free_2d(data->error_str);
 	}
 }
 
@@ -386,7 +380,6 @@ int	ft_exec(t_data *data)
 {
 	signal(SIGINT, ft_sig_exec);
 	signal(SIGQUIT, ft_sig_exec);
-
 	if (data->groups == 1 && ft_isbuiltin(data))
 	{
 		ft_exbuiltin(data);
