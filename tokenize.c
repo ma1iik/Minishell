@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:45:30 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 21:05:36 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,53 @@ int	ft_token_filename(t_data *data)
 	return (1);
 }
 
+int		ft_quote(t_data *data)
+{
+	if (data->lexer.c == '\'' || data->lexer.c == '"')
+	{
+		if (data->lexer.c == '\'')
+			return (1);
+		if (data->lexer.c == '"')
+			return (2);
+	}
+	return (0);
+}
+
+void		ft_cmdtok(t_data *data)
+{
+	int		qt;
+	int		cp;
+	
+	qt = 0;
+	cp = 0;
+	while (data->lexer.c != '\0')
+	{
+		while(!qt && !ft_separated(data))
+		{
+			qt = ft_quote(data);
+			if (!qt)
+				lexer_advance(data);
+		}
+		if (ft_separated(data))
+			return ;
+		else if (qt)
+		{
+			lexer_advance(data);
+			cp = ft_quote(data);
+			while (cp != qt)
+			{
+				cp = ft_quote(data);
+				lexer_advance(data);
+			}
+			qt = 0;
+		}
+		if (ft_separated(data))
+			return ;
+		else
+			ft_cmdtok(data);
+	}
+}
+
 char	*ft_take_cmd(t_data *data)
 {
 	char	*str;
@@ -73,8 +120,7 @@ char	*ft_take_cmd(t_data *data)
 
 	i = 0;
 	start = data->lexer.i;
-	while (!ft_separated(data))
-		lexer_advance(data);
+	ft_cmdtok(data);
 	end = data->lexer.i;
 	str = ft_calloc(sizeof(char), (end - start + 1));
 	while (start < end)
@@ -138,12 +184,15 @@ void	ft_rm_quotes(t_data *data)
 			if (data->tokens[i].value[j] == '\'' || data->tokens[i].value[j] == '"')
 			{
 				start = j;
+				printf("start is %d\n", start);
 				sign = data->tokens[i].value[j];
 				j++;
 				while (data->tokens[i].value[j] != sign && data->tokens[i].value[j])
 					j++;
 				end = j;
+				printf("end is %d\n", end);
 				data->tokens[i].value = ft_rm_quotes2(data->tokens[i].value, start, end);
+				printf("token val wo quotes is --> %s\n\n\n\n", data->tokens[i].value);
 				j = j - 2;
 			}
 			j++;

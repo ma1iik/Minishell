@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 01:25:41 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:19:09 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 01:13:46 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_cd_cases(char **cmd, char *str)
 	else if (cmd[1] == NULL || !ft_strncmp(cmd[1], "~", 2))
 	{
 		printf("IM HERE\n");
-		if (access("HOME", F_OK))
+		if (access(ft_get_pwd("HOME"), F_OK) == 0)
 			chdir(ft_get_pwd("HOME"));
 		else
 		{
@@ -80,22 +80,21 @@ int	ft_cd_cases(char **cmd, char *str)
 	}
 	else if (!ft_strncmp(cmd[1], "~", 1) && cmd[1][1] != '\0')
 	{
-		if (access("HOME", F_OK))
+		if (access(ft_get_pwd("HOME"), F_OK) == 0)
 		{
 			subarray = &cmd[1][1];
 			tmp = ft_get_pwd("HOME");
 			str1 = ft_strjoin(tmp, subarray);
-			if (access(str1, F_OK))
+			printf("STR IS %s\n", str1);
+			if (access(str1, F_OK) == 0)
 			{
 				chdir(str1);
-				free(tmp);
 				free(str1);
 				return (0);
 			}
 			else
 			{
 				printf("cd: no such file or directory: %s\n", str1);
-				free(tmp);
 				free(str1);
 				ft_exst(1);
 				return (1);

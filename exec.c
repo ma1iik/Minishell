@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:26:20 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 21:08:45 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	**ft_cur_var1(t_data *data, char **sp_path, int i, t_cmdl *cmd)
 	return (cur);
 }
 
-void	ft_arrange_path(t_cmdl *cmd, t_data *data)
+int	ft_arrange_path(t_cmdl *cmd, t_data *data)
 {
 	char	*path;
 	char	**splitted;
@@ -117,10 +117,10 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 	i = 0;
 	splitted = NULL;
 	if (cmd->nocmd == 1)
-		return ;
+		return (0);
 	path = getenv("PATH");
 	if ((access((cmd)->cmd[0], F_OK) == 0) || ft_isbuiltin(data))
-		return ;
+		return (0);
 	else if (cmd->cmd[0][0] != '/' && (cmd->cmd[0][0] != '.' && cmd->cmd[0][1] != '/'))
 	{
 		splitted = ft_split(path, ':');
@@ -133,7 +133,7 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 				data->cmd_l->cmd[0] = ft_strdup(cur);
 				ft_free_2d(splitted);
 				free (cur);
-				return ;
+				return (0);
 			}
 			else
 				free (cur);
@@ -141,13 +141,15 @@ void	ft_arrange_path(t_cmdl *cmd, t_data *data)
 		}
 	}
 	ft_free_2d(splitted);
+	return (1);
 }
 
-void	ft_check_path(t_data *data)
+int	ft_check_path(t_data *data)
 {
 	int		i;
 	char	*str;
 	int		len;
+	int		err;
 
 	i = 0;
 	len = ft_tab_len(data->env_str);
@@ -161,10 +163,13 @@ void	ft_check_path(t_data *data)
 	while (data->env_str[i] && i < len)
 	{
 		if (!ft_strcmp(str, data->env_str[i]))
-			ft_arrange_path(data->cmd_l, data);
+			err = ft_arrange_path(data->cmd_l, data);
 		i++;
 	}
 	free (str);
+	if (err == 1)
+		return (1);
+	return (0);
 }
 
 void	ft_pipes(t_cmdl *cmd)
@@ -334,7 +339,7 @@ int	ft_child(t_data *data)
 {
 	int		status;
 	int		exit_code;
-
+	
 	ft_check_path(data);
 	ft_check_redir(data);
 	if (!g_glv.redsig)
@@ -378,12 +383,20 @@ void	ft_print_err(t_data *data)
 
 int	ft_exec(t_data *data)
 {
+	char	*err;
+	int		pth;
+
+	err = NULL;
+	pth = ft_check_path(data);
+	if (pth && data->groups != 1)
+		err = ft_strjoin(data->cmd_l->cmd[0], ": command not found");
 	signal(SIGINT, ft_sig_exec);
 	signal(SIGQUIT, ft_sig_exec);
 	if (data->groups == 1 && ft_isbuiltin(data))
 	{
 		ft_exbuiltin(data);
 		data->freesig = 1;
+		return(1);
 	}
 	else
 	{
@@ -395,6 +408,11 @@ int	ft_exec(t_data *data)
 			ft_close_pipe(data->cmd_l);
 			data->cmd_l = data->cmd_l->next;
 		}
+	}
+	if (err != NULL)
+	{
+		printf("%s\n", err);
+		free (err);
 	}
 	return (1);
 }

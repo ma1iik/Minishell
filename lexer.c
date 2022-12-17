@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 11:57:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:29:57 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/17 19:52:23 by ma1iik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	get_next_token(t_data *data)
 		}
 		else if (cmd == 0)
 		{
+			printf("cmd tok\n");
 			tok = ft_take_cmd(data);
 			ft_init_tok(data, CMD, tok);
 			free (tok);
@@ -81,6 +82,7 @@ int	get_next_token(t_data *data)
 		}
 		else if (!ft_separated(data) && cmd != 0)
 		{
+			printf("arg tok\n");
 			tok = ft_take_cmd(data);
 			ft_init_tok(data, ARG, tok);
 			free (tok);
