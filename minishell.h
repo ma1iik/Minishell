@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 12:37:10 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:14:15 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int		ft_skip_sq(char *cmd, int i, int sq, int dq);
 void	ft_q_state(int *sq, int *dq, char c);
 //LEXER
 int		ft_lexer(t_data *data);
-int		ft_dollar_rules(t_data *data, int sq, int dq);
+int		ft_dollar_rules(t_data *data);
 void	init_lexer(t_data *data);
 int		lexer_advance(t_data *data);
 void	skip_space(t_data *data);
@@ -260,5 +260,15 @@ int		ft_cd(t_data *data, char **cmd, int i);
 void	ft_env(t_data *data, char **cmd);
 void	ft_exit(t_data *data, char **cmd);
 void	ft_unset(t_data *data, char **cmd);
+int		ft_uns_err(char *str);
+int		ft_error_cd(char **cmd, int code);
+char	*ft_get_pwd(char *name);
+int		ft_case_home(char **cmd);
+int		ft_case_home1(char **cmd);
+void	export_pwds(t_data *data, char **str1, char **str2);
+int		ft_check_ravno(char	*str);
+int		ft_exp_exist(char *s);
+void	ft_print_exp(void);
+int		ft_exp_err(char *str);
 
 #endif

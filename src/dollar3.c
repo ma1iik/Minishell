@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dollar1.c                                          :+:      :+:    :+:   */
+/*   dollar3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 01:32:13 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 16:20:14 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,13 @@ int	ft_dollar_skip(char *s, int i)
 	return (i);
 }
 
-int	ft_dollar_rules(t_data *data, int sq, int dq)
+int	ft_dollar_rules(t_data *data)
 {
+	int		sq;
+	int		dq;
+
+	sq = 0;
+	dq = 0;
 	while (data->cmd[data->d_i])
 	{
 		data->d_i = ft_skip_sq(data->cmd, data->d_i, sq, dq);

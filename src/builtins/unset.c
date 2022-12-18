@@ -6,22 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 07:10:53 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:37 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:13:41 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-int	ft_uns_err(char *str)
-{
-	if (!ft_isalpha(str[0]))
-	{
-		printf("unset: %s: invalid parameter name\n", str);
-		ft_exst(1);
-		return (0);
-	}
-	return (1);
-}
 
 void	ft_pos_zero(t_list **cur, int num)
 {

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 04:54:02 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:20:31 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	ft_child(t_data *data)
 	if (data->pid == 0 && g_glv.redsig)
 	{
 		ft_pipes(data->cmd_l);
-		ft_redirs(data->cmd_l);
+		if (!ft_check_path(data))
+			ft_redirs(data->cmd_l);
 		ft_execcmd(data, data->env_str);
 	}
 	waitpid(data->pid, &status, 0);
@@ -84,7 +85,7 @@ int	ft_exec(t_data *data, int pth)
 		err = ft_strjoin(data->cmd_l->cmd[0], ": command not found");
 	signal(SIGINT, ft_sig_exec);
 	signal(SIGQUIT, ft_sig_exec);
-	if (data->groups == 1 && ft_isbuiltin(data))
+	if (data->groups == 500 && ft_isbuiltin(data))
 	{
 		ft_exbuiltin(data);
 		data->freesig = 1;

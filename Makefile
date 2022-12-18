@@ -15,13 +15,13 @@ SRCS	=	src/main.c	\
 			src/fill_cmdl.c 		src/fill_cmdl2.c \
 			src/free_mem.c			src/free_mem2.c \
 			src/redirs.c			src/redirs2.c \
-			src/builtins/export.c \
-			src/builtins/unset.c \
+			src/builtins/export.c 	src/builtins/export2.c \
+			src/builtins/unset.c 	src/builtins/unset2.c \
 			src/builtins/exit.c \
 			src/builtins/echo.c \
 			src/builtins/env.c \
 			src/builtins/pwd.c \
-			src/builtins/cd.c \
+			src/builtins/cd.c 		src/builtins/cd2.c \
 			src/signal.c \
 
 OBJS	= ${SRCS:.c=.o}

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 12:11:52 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:02:39 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_lexer(t_data *data)
 {
 	init_lexer(data);
-	if (!ft_dollar_rules(data, 0, 0))
+	if (!ft_dollar_rules(data))
 		return (0);
 	data->lexer.content = data->cmd;
 	data->lexer.c = data->lexer.content[0];
@@ -76,7 +76,7 @@ void	ft_g_glv(char **env, t_data *data)
 	i = 0;
 	len = ft_tab_len(env);
 	ft_fill_envstr(data, env);
-	while (i < len + 1)
+	while (i < len)
 	{
 		ft_lstadd_back(&g_glv.env, ft_lstnew(env[i]));
 		i++;

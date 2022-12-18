@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 02:24:32 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 16:22:26 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int	ft_skip_sq(char *cmd, int i, int sq, int dq)
 
 void	ft_q_state(int *sq, int *dq, char c)
 {
-	if (c == '"' && sq && dq)
+	if (c == '"' && *sq && *dq)
 	{
-		sq = 0;
+		*sq = 0;
 		*dq = 0;
 	}
 	else if (c == '"')
-		*dq = !dq;
+		*dq = !*dq;
 }
 
 int	ft_read_state(int *sq, int *dq)
