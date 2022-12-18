@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 18:58:09 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 05:12:01 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int	ft_count_arg(t_data *data, int x)
 
 	cnt = 0;
 	arg = 0;
-	while (data->tokens[x].e_type && data->tokens[x].e_type != PIPE && data->tokens[x].e_type != END)
+	while (data->tokens[x].e_type && data->tokens[x].e_type != PIPE
+		&& data->tokens[x].e_type != END)
 	{
 		if (data->tokens[x].e_type < 5 || data->tokens[x].e_type == 6)
 			arg = 1;
-		else if (!arg && (data->tokens[x].e_type == ARG || data->tokens[x].e_type == CMD))
+		else if (!arg && (data->tokens[x].e_type == ARG
+				|| data->tokens[x].e_type == CMD))
 		{
 			cnt++;
 		}
@@ -110,34 +112,29 @@ int	ft_count_red(t_data *data, int x)
 	return (cnt);
 }
 
-char	**ft_get_redir(t_data *data)
+char	**ft_get_redir(t_data *d, int i, int arg)
 {
 	char	**redirs;
 	int		red_c;
-	int		i;
-	int		place;
-	int		arg;
+	int		p;
 
-	i = 0;
-	arg = 0;
-	place = data->cmdl_i;
-	red_c = ft_count_red(data, data->cmdl_i) + 1;
+	p = d->cmdl_i;
+	red_c = ft_count_red(d, d->cmdl_i) + 1;
 	redirs = ft_calloc(sizeof(char *), red_c);
-	while (data->tokens[place].e_type && data->tokens[place].e_type != PIPE
-		&& data->tokens[place].e_type != END && i < red_c)
+	while (d->tokens[p].e_type && d->tokens[p].e_type != PIPE
+		&& d->tokens[p].e_type != END && i < red_c)
 	{
-		if (!arg && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6))
+		if (!arg && (d->tokens[p].e_type < 5
+				|| d->tokens[p].e_type == 6))
 		{
-			redirs[i] = ft_strdup(data->tokens[place].value);
+			redirs[i] = ft_strdup(d->tokens[p].value);
 			i++;
 			arg = 1;
 		}
-		else if ((arg && (data->tokens[place].e_type < 5 || data->tokens[place].e_type == 6 || data->tokens[place].e_type == 8)))
-		{
-			redirs[i] = ft_strdup(data->tokens[place].value);
-			i++;
-		}
-		place++;
+		else if ((arg && (d->tokens[p].e_type < 5
+					|| d->tokens[p].e_type == 6 || d->tokens[p].e_type == 8)))
+			redirs[i++] = ft_strdup(d->tokens[p].value);
+		p++;
 	}
 	redirs[i] = NULL;
 	return (redirs);
@@ -151,7 +148,7 @@ t_cmdl	*ft_cmdl_new(t_data *data)
 	x = data->cmdl_i;
 	tmp = ft_calloc(sizeof(t_cmdl), 1);
 	tmp->nocmd = 1;
-	tmp->redir = ft_get_redir(data);
+	tmp->redir = ft_get_redir(data, 0, 0);
 	tmp->cmd = ft_get_args(data, tmp);
 	tmp->nb_args = ft_count_arg(data, x);
 	tmp->in = STDIN_FILENO;

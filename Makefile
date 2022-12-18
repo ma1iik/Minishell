@@ -16,6 +16,10 @@ SRCS	=	src/main.c	\
 			src/dollar1.c \
 			src/dollar2.c \
 			src/exec.c \
+			src/exec2.c \
+			src/exec3.c \
+			src/exec4.c \
+			src/exec5.c \
 			src/fill_cmdl.c \
 			src/free_mem.c \
 			src/free_mem2.c \

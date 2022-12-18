@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 01:52:28 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 05:02:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct s_cmd
 
 t_cmd		g_glv;
 
-//ENV
+///ENV
 void	ft_fill_g_glv(char **env, int num);
 int		ft_tab_len(char **env);
 char	*ft_get_name(char *env);
@@ -178,13 +178,31 @@ void	ft_fill_cmdl(t_data *data);
 t_cmdl	*ft_init_cmd(void);
 char	**ft_get_args(t_data *data, t_cmdl *tmp);
 char	**ft_dum_env_unset(t_data *data);
+int		ft_check_redir(t_data *data);
+void	ft_errstr(t_data *data);
+void	ft_pipes(t_cmdl *cmd);
+void	ft_execcmd(t_data *data, char **env);
+void	ft_open_pipe(t_cmdl *cmd);
+void	ft_close_pipe(t_cmdl *cmd);
+int		ft_check_path(t_data *data);
+void	ft_exbuiltin(t_data *data);
+int		ft_child(t_data *data);
+int		exec_cmds(t_data *data);
+void	ft_exec_err(t_data *data, int errn, char **env);
+int		ft_arrange_path(t_cmdl *cmd, t_data *data);
+char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd);
+void	ft_addback_cmdl(t_cmdl **cmd, t_cmdl *new);
+int		ft_count_arg(t_data *data, int x);
+
 //REDIRS
 void	ft_redirs(t_cmdl *cmd);
 void	heredoc(char **redirs, t_cmdl *cmd);
 void	echo_contr_sequence(int i);
+int		ft_count_red(t_data *data, int x);
+void	heredoc1(int file, t_cmdl *cmd);
 
 //FREE MEMORY
-
+void	ft_free_cml1(t_data *data);
 void	ft_free_tokens(t_data *data);
 void	ft_free_2d(char **str);
 void	ft_free_all(t_data *data);
