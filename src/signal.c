@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 04:06:24 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:44:29 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:52 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_exst(int num)
 {

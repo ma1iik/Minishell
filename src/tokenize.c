@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ma1iik <ma1iik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 11:25:29 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 21:05:36 by ma1iik           ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_init_tok(t_data *data, int type, char *value)
 {

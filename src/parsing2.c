@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 08:59:27 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:42:59 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_redir_rules(t_data *data, int i)
 {

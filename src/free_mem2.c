@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:29:09 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_free_cmdl(t_data *data)
 {

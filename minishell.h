@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/17 00:34:47 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:52:28 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,15 @@ int		ft_rules(t_data *data);
 int		ft_check_rules(t_data *data);
 int		ft_redir_rules(t_data *data, int i);
 
+//DOLLAR
+char	*ft_get_first(char *cmd, int end);
+char	*ft_get_env(char *cmd, int start, int end);
+char	*ft_get_second(char *cmd, int end);
+int		ft_read_state(int *sq, int *dq);
+int		ft_find_end(char *s, int state, int p);
+int		ft_skip_sq(char *cmd, int i, int sq, int dq);
+void	ft_q_state(int *sq, int *dq, char c);
+
 //LEXER
 int		ft_lexer(t_data *data);
 int		ft_dollar_rules(t_data *data, int sq, int dq);
@@ -161,7 +170,7 @@ void	ft_rm_quotes(t_data *data);
 char	*ft_rm_quotes2(char *str, int start, int end);
 void	puterr(char *cmd);
 //FT_EXEC
-int		ft_exec(t_data *data);
+int		ft_exec(t_data *data, int path);
 void	ft_sig_exec(int sig);
 void	ft_sig_exec1(int sig);
 void	ft_exst(int num);
@@ -216,7 +225,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_print_err(t_data *data);
 void	ft_sig_herd(int sig);
 void	rl_replace_line(const char *buff, int n);
-void	ft_unset_2env(char *cmd);
+void	ft_unset_2env(char *cmd, int i);
 
 //BUILTINS
 int		ft_isbuiltin(t_data *data);
@@ -224,7 +233,7 @@ void	ft_echo(t_data *data, char **cmd);
 void	ft_pwd(void);
 void	ft_export(t_data *data, char **cmd, int c);
 int		ft_cd(t_data *data, char **cmd, int i);
-void	ft_env(void);
+void	ft_env(t_data *data, char **cmd);
 void	ft_exit(t_data *data, char **cmd);
 void	ft_unset(t_data *data, char **cmd);
 

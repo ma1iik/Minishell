@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 05:45:22 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:28:47 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_dealloc_envstr(t_data *data)
 {

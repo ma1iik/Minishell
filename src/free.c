@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/27 02:52:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:22:39 by misrailo         ###   ########.fr       */
+/*   Created: 2022/10/28 23:38:27 by ma1iik            #+#    #+#             */
+/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_pwd(void)
+void	ft_free_tokens(t_data *data)
 {
-	char	*ret;
+	int		i;
 
-	ret = getcwd(NULL, 0);
-	if (ret == NULL)
-		perror(ret);
-	else
+	i = 0;
+	if (!data->tokens)
+		return ;
+	while (i < data->tok_nb)
 	{
-		ft_putstr_fd(ret, STDOUT_FILENO);
-		write(STDOUT_FILENO, "\n", 1);
+		free (data->tokens[i].value);
+		data->tokens[i].value = NULL;
+		i++;
 	}
-	ft_exst(0);
-	free(ret);
+	free(data->tokens);
+	data->tokens = NULL;
 }

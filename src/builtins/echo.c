@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 21:46:15 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:21:30 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:37 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 int	ft_check_n(char **cmd)
 {

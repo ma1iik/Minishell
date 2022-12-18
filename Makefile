@@ -4,27 +4,29 @@ CC				= 	gcc
 RM				= 	rm -rf
 CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
 
-SRCS	=	main.c	\
-			utils.c	\
-			parsing.c \
-			lexer.c \
-			free.c \
-			tokenize.c \
-			signal.c \
-			parsing2.c \
-			dollar.c \
-			exec.c \
-			fill_cmdl.c \
-			free_mem.c \
-			free_mem2.c \
-			builtins/pwd.c \
-			builtins/echo.c \
-			builtins/cd.c \
-			builtins/export.c \
-			builtins/exit.c \
-			builtins/unset.c \
-			builtins/env.c \
-			redirs.c
+SRCS	=	src/main.c	\
+			src/utils.c	\
+			src/parsing.c \
+			src/lexer.c \
+			src/free.c \
+			src/tokenize.c \
+			src/signal.c \
+			src/parsing2.c \
+			src/dollar.c \
+			src/dollar1.c \
+			src/dollar2.c \
+			src/exec.c \
+			src/fill_cmdl.c \
+			src/free_mem.c \
+			src/free_mem2.c \
+			src/builtins/pwd.c \
+			src/builtins/echo.c \
+			src/builtins/cd.c \
+			src/builtins/export.c \
+			src/builtins/exit.c \
+			src/builtins/unset.c \
+			src/builtins/env.c \
+			src/redirs.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -35,7 +37,7 @@ ifeq ($(OS),Darwin)
 endif
 
 $(NAME):	${OBJS}
-			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline -o ${NAME}
+			${CC} ${CFLAGS} ${OBJS} -L/usr/local/lib -I/usr/local/include -lreadline ${LIBMAC} -o ${NAME}
 
 all:	${NAME}
 

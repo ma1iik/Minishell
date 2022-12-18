@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 02:56:26 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:21:42 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:37 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	ft_exst_c(char *str)
 {
@@ -47,6 +47,31 @@ int	ft_numonly(char *str)
 	return (1);
 }
 
+void	exit_not_num(t_data *data, char **cmd)
+{
+	if (data->groups == 1)
+	{
+		ft_exst(2);
+		printf("exit\n");
+	}
+	printf("exit: %s: numeric argument required\n", cmd[1]);
+	if (data->groups == 1)
+		exit(0);
+	else
+		exit (2);
+}
+
+void	exit_num(t_data *data, char **cmd)
+{
+	ft_exst_c(cmd[1]);
+	if (data->groups == 1)
+		printf("exit\n");
+	if (data->groups == 1)
+		exit(0);
+	else
+		exit(ft_atoi(cmd[1]));
+}
+
 void	ft_exit(t_data *data, char **cmd)
 {
 	if (cmd[1] == NULL)
@@ -56,15 +81,7 @@ void	ft_exit(t_data *data, char **cmd)
 		exit(0);
 	}
 	else if ((ft_numonly(cmd[1]) && cmd[2] == NULL))
-	{
-		ft_exst_c(cmd[1]);
-		if (data->groups == 1)
-			printf("exit\n");
-		if (data->groups == 1)
-			exit(0);
-		else
-			exit(ft_atoi(cmd[1]));
-	}
+		exit_num(data, cmd);
 	else if (ft_numonly(cmd[1]) && cmd[2])
 	{
 		if (data->groups == 1)
@@ -75,16 +92,5 @@ void	ft_exit(t_data *data, char **cmd)
 			exit(1);
 	}
 	else if (!ft_numonly(cmd[1]))
-	{
-		if (data->groups == 1)
-		{
-			ft_exst(2);
-			printf("exit\n");
-		}
-		printf("exit: %s: numeric argument required\n", cmd[1]);
-		if (data->groups == 1)
-			exit(0);
-		else
-			exit (2);
-	}
+		exit_not_num(data, cmd);
 }

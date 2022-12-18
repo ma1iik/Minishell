@@ -6,11 +6,11 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:10:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/17 00:43:36 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 01:59:52 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	open_if(char *infile, t_cmdl *cmd)
 {
