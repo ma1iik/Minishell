@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 05:25:10 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_free_cmdl(t_data *data)
 		free (tmp->cmd);
 		free (tmp->redir);
 		free(tmp);
-		}
+	}
 }
 
 void	ft_free_envstr(t_data *data)
@@ -53,4 +53,15 @@ void	ft_free_envstr(t_data *data)
 		i++;
 	}
 	free (data->env_str);
+}
+
+void	ft_free_all(t_data *data)
+{
+	if (data->freesig == 1)
+		ft_free_cml1(data);
+	else
+		ft_free_cmdl(data);
+	ft_dealloc_cmds(data);
+	ft_free_tokens(data);
+	data->freesig = 0;
 }

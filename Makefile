@@ -7,20 +7,21 @@ CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
 SRCS	=	src/main.c	\
 			src/utils.c	\
 			src/parsing.c \
+			src/parsing2.c \
 			src/lexer.c \
 			src/free.c \
 			src/tokenize.c \
 			src/signal.c \
-			src/parsing2.c \
 			src/dollar.c \
-			src/dollar1.c \
 			src/dollar2.c \
+			src/dollar3.c \
 			src/exec.c \
 			src/exec2.c \
 			src/exec3.c \
 			src/exec4.c \
 			src/exec5.c \
 			src/fill_cmdl.c \
+			src/fill_cmdl2.c \
 			src/free_mem.c \
 			src/free_mem2.c \
 			src/builtins/pwd.c \

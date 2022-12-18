@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 05:02:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 05:18:00 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ void	ft_sig_exec1(int sig);
 void	ft_exst(int num);
 void	ft_fill_cmdl(t_data *data);
 t_cmdl	*ft_init_cmd(void);
-char	**ft_get_args(t_data *data, t_cmdl *tmp);
+char	**ft_get_args(t_data *data, t_cmdl *tmp, int arg, int i);
 char	**ft_dum_env_unset(t_data *data);
 int		ft_check_redir(t_data *data);
 void	ft_errstr(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 05:06:26 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 05:23:26 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char	*ft_combine_envvars(t_data *data, t_list *lst)
 	char	*str;
 
 	(void)data;
-	str = ft_calloc(sizeof(char), ft_strlen(lst->name) + ft_strlen(lst->value) + 2);
+	str = ft_calloc(sizeof(char), ft_strlen(lst->name)
+			+ ft_strlen(lst->value) + 2);
 	str = ft_strcat1(str, lst->name);
 	str = ft_strcat1(str, "=");
 	str = ft_strcat1(str, lst->value);
@@ -76,33 +77,6 @@ char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd)
 
 	tmp = ft_strcat(sp_path[i], "/");
 	cur = ft_strjoin(tmp, cmd->cmd[0]);
-	free (tmp);
-	return (cur);
-}
-
-char	**ft_cur_var1(t_data *data, char **sp_path, int i, t_cmdl *cmd)
-{
-	char	*name;
-	char	**cur;
-	int		len2;
-	int		j;
-	char	*tmp;
-
-	(void)cmd;
-	j = 1;
-	len2 = ft_tab_len(data->cmd_l->cmd);
-	name = ft_strdup(data->cmd_l->cmd[0]);
-	cur = ft_calloc(sizeof(char *), len2 + 1);
-	tmp = ft_strcat(sp_path[i], "/");
-	cur[0] = ft_strcat(tmp, name);
-	while (j < len2)
-	{
-		cur[j] = ft_strdup(data->cmd_l->cmd[j]);
-		j++;
-	}
-	cur[j] = NULL;
-	ft_free_2d(data->cmd_l->cmd);
-	free (name);
 	free (tmp);
 	return (cur);
 }
