@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 12:11:52 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,19 @@ int	ft_lexer(t_data *data)
 		return (0);
 	data->lexer.content = data->cmd;
 	data->lexer.c = data->lexer.content[0];
-	if (!get_next_token(data))
+	if (!get_next_token(data, 0))
 		return (0);
-	ft_rm_quotes(data);
+	ft_rm_quotes(data, 0, 0);
 	return (1);
 }
 
 void	ft_init_data(t_data *data)
 {
-	data->exit_t = 1;
+	data->lg_p = 0;
+	data->lg_i = 0;
 	data->env_f = 1;
 	data->cmd_n = 0;
 	data->error_str = NULL;
-}
-
-void	ft_func(void)
-{
-	t_list	*tmp;
-
-	tmp = g_glv.env_exp;
-	while (tmp != NULL)
-	{
-		if (ft_strcmp("USER", tmp->name) == 0)
-		{
-			tmp->value = ft_strdup("LOH");
-		}
-		tmp = tmp->link;
-	}
 }
 
 void	read_line(t_data *data)
@@ -103,18 +89,6 @@ void	ft_g_glv(char **env, t_data *data)
 	}
 	ft_fill_g_glv(env, 1);
 	ft_fill_g_glv(env, 2);
-}
-
-void	ft_print_g_glv(void)
-{
-	t_list	*tmp;
-
-	tmp = g_glv.env;
-	while (tmp->link != NULL)
-	{
-		write(1, tmp->name, sizeof(tmp->name));
-		tmp = tmp->link;
-	}
 }
 
 int	main(int ac, char **av, char **env)

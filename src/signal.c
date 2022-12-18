@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 04:06:24 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:52 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 11:56:13 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,70 +66,6 @@ void	ft_sig_exec(int sig)
 		write(1, "Quit: 3\n", 8);
 		ft_exst(131);
 	}
-}
-
-int	ft_token_l_red(t_data *data)
-{
-	if (data->lexer.content[data->lexer.i + 1] == '<')
-	{
-		ft_init_tok(data, DL_RED, "<<");
-		lexer_advance(data);
-		lexer_advance(data);
-		if (!ft_token_filename(data))
-		{
-			if (!data->lexer.content[data->lexer.i])
-				printf("syntax error near `\\n'\n");
-			else
-				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
-			return (0);
-		}
-	}
-	else
-	{
-		ft_init_tok(data, L_RED, "<");
-		lexer_advance(data);
-		if (!ft_token_filename(data))
-		{
-			if (!data->lexer.content[data->lexer.i])
-				printf("syntax error near `\\n'\n");
-			else
-				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
-			return (0);
-		}
-	}
-	return (1);
-}
-
-int	ft_token_r_red (t_data *data)
-{
-	if (data->lexer.content[data->lexer.i + 1] == '>')
-	{
-		ft_init_tok(data, DL_RED, ">>");
-		lexer_advance(data);
-		lexer_advance(data);
-		if (!ft_token_filename(data))
-		{
-			if (!data->lexer.content[data->lexer.i])
-				printf("syntax error near `\\n'\n");
-			else
-				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
-			return (0);
-		}
-	}
-	else
-	{
-		ft_init_tok(data, L_RED, ">");
-		lexer_advance(data);
-		if (!ft_token_filename(data))
-		{
-			if (!data->lexer.content[data->lexer.i])
-				printf("syntax error near `\\n'\n");
-			else
-				printf("syntax error near `%c'\n'", data->lexer.content[data->lexer.i]);
-			return (0);
-		}
-	}
-	return (1);
 }
 
 void	ft_sig_herd(int sig)

@@ -5,32 +5,24 @@ RM				= 	rm -rf
 CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
 
 SRCS	=	src/main.c	\
-			src/utils.c	\
-			src/parsing.c \
-			src/parsing2.c \
-			src/lexer.c \
-			src/tokenize.c \
-			src/signal.c \
-			src/dollar.c \
-			src/dollar2.c \
-			src/dollar3.c \
-			src/exec.c \
-			src/exec2.c \
-			src/exec3.c \
-			src/exec4.c \
-			src/exec5.c \
-			src/fill_cmdl.c \
-			src/fill_cmdl2.c \
-			src/free_mem.c \
-			src/free_mem2.c \
-			src/builtins/pwd.c \
-			src/builtins/echo.c \
-			src/builtins/cd.c \
+			src/exec.c				src/exec2.c			src/exec3.c			src/exec4.c			src/exec5.c \
+			src/utils.c				src/utils2.c		src/utils3.c		src/utils4.c \
+			src/utils5.c			src/utils6.c		src/utils7.c		src/utils8.c \
+			src/parsing.c			src/parsing2.c		src/parsing3.c		src/parsing4.c \
+			src/lexer.c				src/lexer2.c		src/lexer3.c \
+			src/dollar.c			src/dollar2.c		src/dollar3.c \
+			src/tokenize.c			src/tokenize2.c \
+			src/fill_cmdl.c 		src/fill_cmdl2.c \
+			src/free_mem.c			src/free_mem2.c \
+			src/redirs.c			src/redirs2.c \
 			src/builtins/export.c \
-			src/builtins/exit.c \
 			src/builtins/unset.c \
+			src/builtins/exit.c \
+			src/builtins/echo.c \
 			src/builtins/env.c \
-			src/redirs.c
+			src/builtins/pwd.c \
+			src/builtins/cd.c \
+			src/signal.c \
 
 OBJS	= ${SRCS:.c=.o}
 

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 08:59:27 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 10:00:11 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,16 @@ int	ft_rules(t_data *data)
 		i++;
 	}
 	return (1);
+}
+
+void	sg_cmdtab(t_data *data, int grp_nb, int j, int start)
+{
+	data->cmd_tab[grp_nb] = ft_calloc(j + 1, sizeof(char));
+	ft_strncpy(data->cmd_tab[grp_nb], &data->cmd[start], j);
+}
+
+void	sg_savetab(t_data *data, int *i, int grp_nb)
+{
+	*i += 1;
+	ft_save_groups(data, grp_nb, *i, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 05:26:43 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 12:21:56 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,13 @@ void	ft_free_tokens(t_data *data)
 	}
 	free(data->tokens);
 	data->tokens = NULL;
+}
+
+void	ft_freemem(char **ptr_str, int i)
+{
+	while (i > 0)
+	{
+		free(ptr_str[i - 1]);
+		i--;
+	}
 }

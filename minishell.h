@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 05:18:00 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 12:37:10 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,19 +96,19 @@ typedef struct s_data
 	int			tok_nb;
 	char		*cmd;
 	char		**cmd_tab;
-	int			exit_t;
 	int			env_f;
 	int			cmd_n;
 	int			groups;
 	int			d_i;
 	t_cmdl		*cmd_l;
 	t_cmdl		*cmd_l_free;
-	t_list		*env;
 	int			cmdl_i;
 	int			pid;
 	char		**env_str;
 	char		**error_str;
 	int			freesig;
+	int			lg_p;
+	int			lg_i;
 }				t_data;
 
 typedef struct s_cmd
@@ -128,21 +128,21 @@ int		ft_tab_len(char **env);
 char	*ft_get_name(char *env);
 char	*ft_get_val(char *env);
 void	ft_fill_envstr(t_data *data, char **env);
-
 //PARSING
 void	read_line(t_data *data);
 int		ft_custom_split(t_data *data);
-int		ft_logic_groups(t_data *data, int i, int pipes);
-int		ft_save_groups(t_data *data, int grp_nbr, int ii);
+int		ft_logic_groups(t_data *data, int end, int pipes);
+void	ft_save_groups(t_data *data, int grp_nbr, int ii, int start);
 int		ft_one_group_function(t_data *data, int grp_nb, int ii);
 int		ft_check_if_closed(char c_char, int ii, t_data *data);
-
+void	sg_quotes(t_data *data, int *i, int *j, char *c_char);
+void	sg_noquotes(t_data *data, int *i, int *j);
+void	sg_savetab(t_data *data, int *i, int grp_nb);
+void	sg_cmdtab(t_data *data, int grp_nb, int j, int start);
 //PARSING2
-
 int		ft_rules(t_data *data);
 int		ft_check_rules(t_data *data);
 int		ft_redir_rules(t_data *data, int i);
-
 //DOLLAR
 char	*ft_get_first(char *cmd, int end);
 char	*ft_get_env(char *cmd, int start, int end);
@@ -151,24 +151,27 @@ int		ft_read_state(int *sq, int *dq);
 int		ft_find_end(char *s, int state, int p);
 int		ft_skip_sq(char *cmd, int i, int sq, int dq);
 void	ft_q_state(int *sq, int *dq, char c);
-
 //LEXER
 int		ft_lexer(t_data *data);
 int		ft_dollar_rules(t_data *data, int sq, int dq);
 void	init_lexer(t_data *data);
 int		lexer_advance(t_data *data);
 void	skip_space(t_data *data);
-int		get_next_token(t_data *data);
+int		get_next_token(t_data *data, int len);
 void	ft_init_tok(t_data *data, int type, char *value);
 int		ft_token_r_red(t_data *data);
 int		ft_token_l_red(t_data *data);
-int		ft_token_filename(t_data *data);
+int		ft_token_filename(t_data *data, int i);
 int		ft_separated(t_data *data);
 char	*ft_take_arg(t_data *data);
 char	*ft_take_cmd(t_data *data);
-void	ft_rm_quotes(t_data *data);
+void	ft_rm_quotes(t_data *data, int i, int j);
 char	*ft_rm_quotes2(char *str, int start, int end);
 void	puterr(char *cmd);
+void	init_pipe(t_data *data, int *cmd);
+void	init_cmd(t_data *data, int *cmd, char **tok);
+int		ft_filename_error(t_data *data);
+void	ft_cmdtok(t_data *data, int qt, int cp);
 //FT_EXEC
 int		ft_exec(t_data *data, int path);
 void	ft_sig_exec(int sig);
@@ -193,14 +196,15 @@ int		ft_arrange_path(t_cmdl *cmd, t_data *data);
 char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd);
 void	ft_addback_cmdl(t_cmdl **cmd, t_cmdl *new);
 int		ft_count_arg(t_data *data, int x);
-
 //REDIRS
 void	ft_redirs(t_cmdl *cmd);
-void	heredoc(char **redirs, t_cmdl *cmd);
+void	heredoc(char **redirs, t_cmdl *cmd, int i);
 void	echo_contr_sequence(int i);
 int		ft_count_red(t_data *data, int x);
 void	heredoc1(int file, t_cmdl *cmd);
-
+void	echo_contr_sequence(int c);
+void	ft_redirs(t_cmdl *cmd);
+void	heredoc1(int file, t_cmdl *cmd);
 //FREE MEMORY
 void	ft_free_cml1(t_data *data);
 void	ft_free_tokens(t_data *data);
@@ -210,7 +214,8 @@ void	ft_dealloc_envstr(t_data *data);
 void	ft_dealloc_cmds(t_data *data);
 void	ft_free_cmdl(t_data *data);
 void	ft_free_envstr(t_data *data);
-
+void	ft_freemem(char **ptr_str, int i);
+//UTILS
 void	*ft_calloc(size_t count, size_t size);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strstr(char *str, char *to_find);
@@ -223,6 +228,8 @@ char	**ft_split(char const *s, char c);
 void	*ft_memset(void *s, int c, size_t len);
 int		ft_atoi(const char *str);
 int		ft_isalpha(int c);
+int		ft_itoasize(int n);
+int		ft_isneg(int n);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_itoa(int n);
@@ -244,7 +251,6 @@ void	ft_print_err(t_data *data);
 void	ft_sig_herd(int sig);
 void	rl_replace_line(const char *buff, int n);
 void	ft_unset_2env(char *cmd, int i);
-
 //BUILTINS
 int		ft_isbuiltin(t_data *data);
 void	ft_echo(t_data *data, char **cmd);
