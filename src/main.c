@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 17:02:39 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:01:48 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	read_line(t_data *data)
 			continue ;
 		ft_fill_cmdl(data);
 		data->cmd_l_free = data->cmd_l;
-		if (!ft_exec(data, 0))
+		if (!ft_exec(data))
 			continue ;
 		ft_print_err(data);
 		ft_free_all(data);

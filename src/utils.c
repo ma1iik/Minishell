@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 12:15:58 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:05:54 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,4 @@ char	*ft_strncpy(char *dst, char *src, size_t len)
 		dst[i] = '\0';
 	}
 	return (dst);
-}
-
-void	tok_printf(unsigned int tok)
-{
-	if (tok == 1)
-		printf("R_RED");
-	else if (tok == 2)
-		printf("L_RED");
-	else if (tok == 3)
-		printf("DR_RED");
-	else if (tok == 4)
-		printf("DL_RED");
-	else if (tok == 5)
-		printf("FILE_NAME");
-	else if (tok == 6)
-		printf("DOLLAR");
-	else if (tok == 7)
-		printf("CMD");
-	else if (tok == 8)
-		printf("ARG");
-	else if (tok == 9)
-		printf("PIPE");
-	printf("\n");
-	return ;
 }

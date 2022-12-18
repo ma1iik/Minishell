@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 17:14:15 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:05:22 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include <stdlib.h>
-//# include <readline/ffe.h>
-//# include <readline/history.h>
 # include <signal.h>
 # include <fcntl.h>
 # include <errno.h>
@@ -173,7 +171,7 @@ void	init_cmd(t_data *data, int *cmd, char **tok);
 int		ft_filename_error(t_data *data);
 void	ft_cmdtok(t_data *data, int qt, int cp);
 //FT_EXEC
-int		ft_exec(t_data *data, int path);
+int		ft_exec(t_data *data);
 void	ft_sig_exec(int sig);
 void	ft_sig_exec1(int sig);
 void	ft_exst(int num);
@@ -181,7 +179,7 @@ void	ft_fill_cmdl(t_data *data);
 t_cmdl	*ft_init_cmd(void);
 char	**ft_get_args(t_data *data, t_cmdl *tmp, int arg, int i);
 char	**ft_dum_env_unset(t_data *data);
-int		ft_check_redir(t_data *data);
+int		ft_check_redir(t_data *data, int i);
 void	ft_errstr(t_data *data);
 void	ft_pipes(t_cmdl *cmd);
 void	ft_execcmd(t_data *data, char **env);

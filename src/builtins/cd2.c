@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 01:25:41 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 17:05:10 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 18:06:15 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ft_cd_cases(char **cmd)
 	else if (cmd[1] && cmd[1][0] != '-' && cmd[1][0] != '~'
 		&& chdir(cmd[1]) != 0)
 	{
-		printf("case4\n");
 		ft_error_cd(cmd, 3);
 		return (1);
 	}
@@ -43,9 +42,7 @@ void	export_pwds(t_data *data, char **str1, char **str2)
 	char	*replace[3];
 
 	replace[0] = ft_strjoin("OLDPWD=", *str1);
-	printf("oldpwd %s\n", replace[0]);
 	replace[1] = ft_strjoin("PWD=", *str2);
-	printf("newpwd %s\n", replace[1]);
 	replace[2] = NULL;
 	ft_export(data, replace, 0);
 	free(*str1);
