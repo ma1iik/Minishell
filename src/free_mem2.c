@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/08 11:03:19 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 05:25:10 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/18 05:26:43 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,21 @@ void	ft_free_all(t_data *data)
 	ft_dealloc_cmds(data);
 	ft_free_tokens(data);
 	data->freesig = 0;
+}
+
+void	ft_free_tokens(t_data *data)
+{
+	int		i;
+
+	i = 0;
+	if (!data->tokens)
+		return ;
+	while (i < data->tok_nb)
+	{
+		free (data->tokens[i].value);
+		data->tokens[i].value = NULL;
+		i++;
+	}
+	free(data->tokens);
+	data->tokens = NULL;
 }

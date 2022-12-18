@@ -9,7 +9,6 @@ SRCS	=	src/main.c	\
 			src/parsing.c \
 			src/parsing2.c \
 			src/lexer.c \
-			src/free.c \
 			src/tokenize.c \
 			src/signal.c \
 			src/dollar.c \
