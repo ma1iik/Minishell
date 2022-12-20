@@ -40,22 +40,6 @@ int	ft_child(t_data *data)
 	return (1);
 }
 
-void	ft_print_err(t_data *data)
-{
-	int		i;
-
-	i = 0;
-	if (data->error_str != NULL)
-	{
-		while (data->error_str[i])
-		{
-			printf("%s", data->error_str[i]);
-			i++;
-		}
-		ft_free_2d(data->error_str);
-	}
-}
-
 int	exec_cmds(t_data *data)
 {
 	ft_open_pipe(data->cmd_l);

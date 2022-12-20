@@ -103,7 +103,6 @@ typedef struct s_data
 	int			cmdl_i;
 	int			pid;
 	char		**env_str;
-	char		**error_str;
 	int			freesig;
 	int			lg_p;
 	int			lg_i;
@@ -245,7 +244,6 @@ t_list	*ft_lstnew_last(void);
 void	ft_dealloc_env(t_data *data);
 void	ft_init_data(t_data *data);
 void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_print_err(t_data *data);
 void	ft_sig_herd(int sig);
 void	rl_replace_line(const char *buff, int n);
 void	ft_unset_2env(char *cmd, int i);

@@ -31,7 +31,22 @@ void	ft_init_data(t_data *data)
 	data->lg_i = 0;
 	data->env_f = 1;
 	data->cmd_n = 0;
-	data->error_str = NULL;
+}
+
+int	ft__onlysp(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] != ' ')
+			return (0);
+		i++;
+	}
+	if (s != NULL)
+		free (s);
+	return (1);
 }
 
 void	read_line(t_data *data)
@@ -44,6 +59,8 @@ void	read_line(t_data *data)
 		data->cmd = readline("minishell:");
 		if (!data->cmd)
 			break ;
+		if (ft__onlysp(data->cmd))
+			continue;
 		if (!ft_custom_split(data))
 			continue ;
 		if (data->cmd)
@@ -56,7 +73,6 @@ void	read_line(t_data *data)
 		data->cmd_l_free = data->cmd_l;
 		if (!ft_exec(data))
 			continue ;
-		ft_print_err(data);
 		ft_free_all(data);
 		free(data->cmd);
 	}

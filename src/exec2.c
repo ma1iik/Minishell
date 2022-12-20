@@ -58,22 +58,3 @@ int	ft_check_redir(t_data *data, int i)
 	}
 	return (1);
 }
-
-void	ft_add_error(t_data *data, int rows, char *str)
-{
-	char	**dest;
-	int		i;
-
-	i = 0;
-	dest = ft_calloc(rows + 2, sizeof(char *));
-	while (data->error_str[i])
-	{
-		dest[i] = ft_strdup(data->error_str[i]);
-		i++;
-	}
-	dest[i] = ft_strdup(str);
-	i++;
-	dest[i] = NULL;
-	ft_free_2d(data->error_str);
-	data->error_str = dest;
-}
