@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 19:03:06 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 18:01:48 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/20 18:50:04 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,6 @@ void	ft_init_data(t_data *data)
 	data->cmd_n = 0;
 }
 
-int	ft__onlysp(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] != ' ')
-			return (0);
-		i++;
-	}
-	if (s != NULL)
-		free (s);
-	return (1);
-}
-
 void	read_line(t_data *data)
 {
 	ft_init_data(data);
@@ -59,8 +43,8 @@ void	read_line(t_data *data)
 		data->cmd = readline("minishell:");
 		if (!data->cmd)
 			break ;
-		if (ft__onlysp(data->cmd))
-			continue;
+		if (ft_onlysp(data->cmd))
+			continue ;
 		if (!ft_custom_split(data))
 			continue ;
 		if (data->cmd)

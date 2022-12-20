@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 18:05:22 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/20 18:50:58 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ char	*ft_get_val(char *env);
 void	ft_fill_envstr(t_data *data, char **env);
 //PARSING
 void	read_line(t_data *data);
+int		ft_onlysp(char *s);
 int		ft_custom_split(t_data *data);
 int		ft_logic_groups(t_data *data, int end, int pipes);
 void	ft_save_groups(t_data *data, int grp_nbr, int ii, int start);

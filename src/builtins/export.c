@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 05:02:31 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 17:12:13 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:32:33 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	ft_unset_2env(char *cmd, int i)
 	{
 		if (ft_strcmp(str[0], tmp->name) == 0)
 		{
-			printf("found exp\n");
 			free(tmp->value);
 			if (str[1] != NULL)
 				tmp->value = ft_strdup(str[1]);
