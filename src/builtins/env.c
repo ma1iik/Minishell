@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tidigov <tidigov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/07 07:03:11 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/18 01:59:37 by misrailo         ###   ########.fr       */
+/*   Created: 2022/12/21 23:03:40 by tidigov           #+#    #+#             */
+/*   Updated: 2022/12/21 23:03:42 by tidigov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ void	ft_env(t_data *data, char **cmd)
 	while (tmp != NULL && tmp->name != NULL)
 	{
 		if (ft_strcmp(tmp->name, "?") != 0)
-			printf("%s=%s\n", tmp->name, tmp->value);
+		{
+			if (tmp->value != NULL)
+				printf("%s=%s\n", tmp->name, tmp->value);
+			else
+				printf("%s=\n", tmp->name);
+		}
 		tmp = tmp->link;
 	}
 	ft_exst(0);

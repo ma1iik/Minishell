@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 10:11:13 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 22:36:36 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	ft_custom_split(t_data *data)
 {
 	data->groups = 0;
 	if (!ft_logic_groups(data, ft_strlen_rl(data->cmd), 0))
+		return (0);
+	if (!ft_inv_char(data->cmd))
 		return (0);
 	data->cmd_tab = ft_calloc(data->groups + 1, sizeof(char *));
 	ft_save_groups(data, 0, 0, 0);

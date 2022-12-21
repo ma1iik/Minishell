@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/21 20:17:18 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 22:27:03 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	ft_exec(t_data *data)
 {
 	signal(SIGINT, ft_sig_exec);
 	signal(SIGQUIT, ft_sig_exec);
-	if (data->groups == 1 && ft_isbuiltin(data) == 1)
+	if (data->groups == 1 && ft_isbuiltin(data) == 1
+		&& data->cmd_l->redir[0] == NULL)
 	{
 		ft_exbuiltin(data);
 		data->freesig = 1;

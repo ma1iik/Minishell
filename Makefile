@@ -2,9 +2,10 @@ NAME			=	minishell
 HEADERS			=	minishell.h
 CC				= 	gcc 
 RM				= 	rm -rf
-CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon -fsanitize=address
+CFLAGS 			=  -g -Wall -Wextra -Werror -fcommon
 
 SRCS	=	src/main.c	\
+			src/builtins/export.c 	src/builtins/export2.c	src/builtins/export3.c\
 			src/exec.c				src/exec2.c			src/exec3.c			src/exec4.c			src/exec5.c \
 			src/utils.c				src/utils2.c		src/utils3.c		src/utils4.c \
 			src/utils5.c			src/utils6.c		src/utils7.c		src/utils8.c \
@@ -15,7 +16,6 @@ SRCS	=	src/main.c	\
 			src/fill_cmdl.c 		src/fill_cmdl2.c \
 			src/free_mem.c			src/free_mem2.c \
 			src/redirs.c			src/redirs2.c \
-			src/builtins/export.c 	src/builtins/export2.c \
 			src/builtins/unset.c 	src/builtins/unset2.c \
 			src/builtins/exit.c \
 			src/builtins/echo.c \

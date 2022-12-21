@@ -3,25 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tidigov <tidigov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/02 05:02:31 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/21 19:40:30 by misrailo         ###   ########.fr       */
+/*   Created: 2022/12/21 23:03:50 by tidigov           #+#    #+#             */
+/*   Updated: 2022/12/21 23:03:54 by tidigov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_unset_2env(char *cmd, int i)
+void	ft_unset_2env(char *cmd)
 {
 	t_list	*tmp;
 	char	**str;
+	int		num;
 
 	str = ft_split(cmd, '=');
-	if (i == 1)
-		tmp = g_glv.env_exp;
-	else
-		tmp = g_glv.env;
+	tmp = g_glv.env;
 	while (tmp != NULL && tmp->name != NULL)
 	{
 		if (ft_strcmp(str[0], tmp->name) == 0)
@@ -32,33 +30,28 @@ void	ft_unset_2env(char *cmd, int i)
 			else
 				tmp->value = NULL;
 			tmp->flag = 0;
+			num = 1;
 		}
 		tmp = tmp->link;
 	}
+	if (num != 1)
+		ft_lstadd_back(&g_glv.env, ft_lstnew_addenv(str[0], str[1]));
 	ft_free_2d(str);
 }
 
-t_list	*ft_lstnew_exp(char *name, char *val, int num)
+t_list	*ft_lstnew_addenv(char *name, char *val)
 {
 	t_list	*new;
 
 	new = ft_calloc(sizeof(t_list), 1);
-	if (!name)
-		return (NULL);
 	if (!new)
 		return (NULL);
-	if (num == 1)
-	{
-		new->name = ft_strdup(name);
+	new->name = ft_strdup(name);
+	if (val && val != NULL)
+		new->name = ft_strdup(val);
+	else
 		new->value = NULL;
-		new->flag = 1;
-	}
-	else if (num == 0)
-	{
-		new->name = ft_strdup(name);
-		new->value = ft_strdup(val);
-	}
-		new->link = NULL;
+	new->link = NULL;
 	return (new);
 }
 
@@ -84,8 +77,8 @@ void	exec_export(char **cmd, int c)
 {
 	if (ft_check_ravno(cmd[c]) && ft_exp_exist(cmd[c]))
 	{
-		ft_unset_2env(cmd[c], 1);
-		ft_unset_2env(cmd[c], 2);
+		ft_unset_2envexp(cmd[c]);
+		ft_unset_2env(cmd[c]);
 	}
 	else if (ft_check_ravno(cmd[c]) && !ft_exp_exist(cmd[c]))
 		ft_exec_export(cmd[c], 2);

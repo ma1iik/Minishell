@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/21 19:44:53 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 22:37:15 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	ft_fill_envstr(t_data *data, char **env);
 void	read_line(t_data *data);
 int		ft_onlysp(char *s);
 int		ft_custom_split(t_data *data);
+int		ft_inv_char(char *str);
 int		ft_logic_groups(t_data *data, int end, int pipes);
 void	ft_save_groups(t_data *data, int grp_nbr, int ii, int start);
 int		ft_one_group_function(t_data *data, int grp_nb, int ii);
@@ -246,7 +247,9 @@ void	ft_init_data(t_data *data);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_sig_herd(int sig);
 void	rl_replace_line(const char *buff, int n);
-void	ft_unset_2env(char *cmd, int i);
+void	ft_unset_2env(char *cmd);
+void	ft_unset_2envexp(char *cmd);
+t_list	*ft_lstnew_addenv(char *name, char *val);
 //BUILTINS
 int		ft_isbuiltin(t_data *data);
 void	ft_echo(t_data *data, char **cmd);
@@ -266,5 +269,6 @@ int		ft_check_ravno(char	*str);
 int		ft_exp_exist(char *s);
 void	ft_print_exp(void);
 int		ft_exp_err(char *str);
+t_list	*ft_lstnew_exp(char *name, char *val, int num);
 
 #endif

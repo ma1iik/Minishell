@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 22:45:05 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/20 18:50:42 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 22:36:59 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,30 @@ int	ft_onlysp(char *s)
 	}
 	if (s != NULL)
 		free (s);
+	return (1);
+}
+
+int	ft_inv_char(char *str)
+{
+	int		i;
+	char	c;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			c = str[i];
+			i++;
+			while (str[i] != c && str[i])
+				i++;
+		}
+		else if (str[i] == ';' || str[i] == '\\')
+		{
+			printf("Error: invalid character\n");
+			return (0);
+		}
+		i++;
+	}
 	return (1);
 }
