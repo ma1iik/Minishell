@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils copy 6.c                                     :+:      :+:    :+:   */
+/*   utils7.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 20:06:15 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/18 12:20:34 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:15:59 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ int	ft_isbuiltin(t_data *data)
 {
 	if (!data->cmd_l->cmd[0])
 		return (0);
-	if (!ft_strcmp(data->cmd_l->cmd[0], "pwd")
+	if (!ft_strcmp(data->cmd_l->cmd[0], "echo")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "env")
-		|| !ft_strcmp(data->cmd_l->cmd[0], "cd")
-		|| !ft_strcmp(data->cmd_l->cmd[0], "echo")
-		|| !ft_strcmp(data->cmd_l->cmd[0], "export")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "pwd"))
+		return (2);
+	if (!ft_strcmp(data->cmd_l->cmd[0], "cd")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "exit")
+		|| !ft_strcmp(data->cmd_l->cmd[0], "export")
 		|| !ft_strcmp(data->cmd_l->cmd[0], "unset"))
 		return (1);
 	return (0);

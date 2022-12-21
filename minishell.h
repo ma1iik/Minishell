@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 11:38:46 by misrailo          #+#    #+#             */
-/*   Updated: 2022/12/20 18:50:58 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:44:53 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,6 @@ char	*ft_cur_var(char **sp_path, int i, t_cmdl *cmd);
 void	ft_addback_cmdl(t_cmdl **cmd, t_cmdl *new);
 int		ft_count_arg(t_data *data, int x);
 //REDIRS
-void	ft_redirs(t_cmdl *cmd);
 void	heredoc(char **redirs, t_cmdl *cmd, int i);
 void	echo_contr_sequence(int i);
 int		ft_count_red(t_data *data, int x);

@@ -6,7 +6,7 @@
 /*   By: misrailo <misrailo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 16:01:14 by ma1iik            #+#    #+#             */
-/*   Updated: 2022/12/20 18:49:21 by misrailo         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:17:48 by misrailo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_execcmd(t_data *data, char **env)
 {
 	int	execc;
 
-	if (ft_isbuiltin(data) == 1)
+	if (ft_isbuiltin(data))
 	{
 		ft_exbuiltin(data);
 		exit (0);
